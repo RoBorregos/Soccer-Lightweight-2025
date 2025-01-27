@@ -13,6 +13,7 @@ motor::motor(int pin1, int pin2, int speed){
     pin2_ = pin2;
     speed_ = speed;
 };
+
 void startMotors(){
     pinMode(pin1_, OUTPUT);
     pinMode(pin2_, OUTPUT);

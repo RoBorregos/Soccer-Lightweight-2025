@@ -38,7 +38,8 @@ class motor
 		void MoveMotor4();
 		float GetRPM();
 		float GetAngularVelocity();
-		float GetDegree(;)
+		float GetDegree();
+		
 
 };
 #endif
