@@ -3,7 +3,7 @@
 #define ARDUINO_MOTORS_H
 
 #include "Arduino.h"
-#include "motor.h"
+#include "Motor.h"
 
 
 class Motors  
