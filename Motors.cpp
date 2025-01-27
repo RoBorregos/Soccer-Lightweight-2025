@@ -51,5 +51,9 @@ void Motors::StopMotors(){
     motor4.stop();
 };
 void Motors:: MoveForward(){
+    motor1.forward();
+    motor2.forward();
+    motor3.forward();
+    motor4.forward();
 
-}
+};
