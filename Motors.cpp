@@ -57,3 +57,76 @@ void Motors:: MoveForward(){
     motor4.forward();
 
 };
+void Motors::MoveRight(){
+    StopMotors();
+    motor1.forward();
+    motor2.backward();
+    motor3.backward();
+    motor4.backward();
+};
+void Motors::MoveLeft(){
+    StopMotors();
+    motor1.backward();
+    motor2.forward();
+    motor3.forward();
+    motor4.forward();
+
+};
+void Motors::MoveBackward(){
+    StopMotors();
+    motor2.backward();
+    motor3.forward();
+};
+void Motors::MoveMotor1(){
+    motor1.forward();
+};
+void Motors::MoveMotor2(){
+    motor2.forward();
+};
+void Motors::MoveMotor3(){
+    motor3.forward();
+};
+void Motors::MoveMotor4(){
+    motor4.forward();
+};
+
+void Motors::MoveMotors(int degree, int speed){
+    float m1= cos(((45+degree)*PI/180));
+    float m2= cos(((135+degree)*PI/180));
+    float m3= cos(((225+degree)*PI/180));
+    float m4= cos(((315+degree)*PI/180));
+    int speedA=abs(int(m1*speed));
+    int speedB=abs(int(m1*speed));
+    int speedC=abs(int(m1*speed));
+    int speedD=abs(int(m1*speed));
+
+    analogWrite(motor1.getSpeed_(), speedA);
+    analogWrite(motor2.getSpeed_(), speedB);
+    analogWrite(motor3.getSpeed_(), speedC);
+    analogWrite(motor4.getSpeed_(), speedD);
+
+    if (m1 >=0){
+        motor1.forward();
+    }
+    else{
+        motor1.backward();
+    }
+    if (m2 >=0){
+        motor2.forward();
+    }
+    else{
+        motor2.backward();
+    }
+    if (m3 >=0){
+        motor3.forward();
+    }
+    else{
+        motor3.backward();
+    }
+    if (m4 >=0){
+        motor4.forward();
+    }
+    else{
+        motor4.backward();
+    }
+};
