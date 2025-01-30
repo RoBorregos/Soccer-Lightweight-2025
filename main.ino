@@ -16,29 +16,29 @@ void setup() {
 }
 
 void loop() {
-    Serial.println("Moviendo hacia adelante...");
+    Serial.println("Mover hacia adelante");
     motors.MoveForward();
     delay(2000);
 
-    Serial.println("Moviendo hacia atrás...");
+    Serial.println("Mover hacia atrás");
     motors.MoveBackward();
     delay(2000);
 
-    Serial.println("Girando a la izquierda...");
+    Serial.println("Girar a la izquierda");
     motors.MoveLeft();
     delay(2000);
 
-    Serial.println("Girando a la derecha...");
+    Serial.println("Girar a la derecha");
     motors.MoveRight();
     delay(2000);
 
-    Serial.println("Girando en círculos...");
+    Serial.println("Girar en círculos);
     for (int angle = 0; angle < 360; angle += 45) {  // Gira en múltiples ángulos
         motors.MoveMotors(angle, 255);
         delay(500);
     }
 
-    Serial.println("Deteniendo motores...");
+    Serial.println("Detener motores");
     motors.StopMotors();
     delay(3000);  
 }
