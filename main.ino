@@ -1,6 +1,6 @@
 #include "Motors.h"
 #include "constants.h"
-s.h
+
 Motors motors(
     MOTOR1_PWM, MOTOR1_IN1, MOTOR1_IN2, 
     MOTOR2_PWM, MOTOR2_IN1, MOTOR2_IN2, 
@@ -34,7 +34,7 @@ void loop() {
 
     Serial.println("Girando en círculos...");
     for (int angle = 0; angle < 360; angle += 45) {  // Gira en múltiples ángulos
-        motors.MoveMotors(angle, 150);
+        motors.MoveMotors(angle, 255);
         delay(500);
     }
 
