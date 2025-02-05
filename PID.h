@@ -3,14 +3,18 @@
 #define ARDUINO_PID_H
 #include <Arduino.h>
 
-class PID  
-{
-	private:
+class PID {
+    public:
+        PID(double kp, double ki, double kd, double max_error);
+        double Calculate(double setpoint, double input);
 
-	public:
-
-		PID();
-		~PID();
-
+    private:
+        double kp_;
+        double ki_;
+        double kd_;
+        double max_error_;
+        double last_error_;
+        double last_time_;
 };
+
 #endif
