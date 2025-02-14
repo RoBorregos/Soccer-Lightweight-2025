@@ -10,9 +10,7 @@ Motors motors(
 
 void setup() {
     Serial.begin(9600);
-    motors.InitializeDriver();  // Inicializar el driver de los motores
-    motors.InitializeMotors();  // Inicializar los motores
-    Serial.println("Prueba de motores iniciada.");
+
 }
 
 void loop() {
