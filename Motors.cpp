@@ -50,7 +50,7 @@ void Motors::StopMotors(){
     motor3.stop();
     motor4.stop();
 };
-void Motors:: MoveForward(){
+void Motors::MoveForward(){
     motor1.forward();
     motor2.forward();
     motor3.forward();

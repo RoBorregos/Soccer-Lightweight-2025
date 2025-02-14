@@ -1,40 +1,55 @@
 #include "Arduino.h"
-#include "Motor.h"  
+#include "motor.h"
 
-motor::motor(){
-    pin1_ = 0;
-    pin2_ = 0;
-    speed_ = 0;
-
-};
-
-motor::motor(int pin1, int pin2, int speed){
-    pin1_ = pin1;
-    pin2_ = pin2;
+Motor::Motor(uint8_t speed, uint8_t in1, uint8_t in2)
+{
     speed_ = speed;
-};
+    in1_ = in1;
+    in2_ = in2;
+}
 
-void startMotors(){
-    pinMode(pin1_, OUTPUT);
-    pinMode(pin2_, OUTPUT);
+void Motor::InitializeMotor()
+{
+    pinMode(in1_, OUTPUT);
+    pinMode(in2_, OUTPUT);
     pinMode(speed_, OUTPUT);
-
 };
-void Motor::SetSpeed(int pwm, int speed){
+
+void Motor::SetSpeed(uint8_t pwm, uint8_t speed)
+{
     analogWrite(pwm, speed);
 };
-void motor::forward(){
-    digitalWrite(pin1_, HIGH);
-    digitalWrite(pin2_, LOW);
 
+void Motor::Forward()
+{
+
+    digitalWrite(in1_, HIGH);
+    digitalWrite(in2_, LOW);
 };
-void motor::backward(){
-    digitalWrite(pin1_, LOW);
-    digitalWrite(pin2_, HIGH);
 
+void Motor::Backward()
+{
+    digitalWrite(in1_, LOW);
+    digitalWrite(in2_, HIGH);
 };
-void motor::stop(){
-    digitalWrite(pin1_, LOW);
-    digitalWrite(pin2_, LOW);
 
+void Motor::Stop()
+{
+    digitalWrite(in1_, LOW);
+    digitalWrite(in2_, LOW);
+};
+
+uint8_t Motor::GetSpeed()
+{
+    return speed_;
+};
+
+uint8_t Motor::GetIn1()
+{
+    return in1_;
+};
+
+uint8_t Motor::GetIn2()
+{
+    return in2_;
 };
