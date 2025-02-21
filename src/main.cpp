@@ -18,4 +18,28 @@ void loop() {
     Serial.println("Mover hacia adelante");
     motors.SetAllSpeeds(90);
     motors.MoveForward();
+    /*
+    Serial.println("Mover hacia atrás");
+    motors.MoveBackward();
+    delay(2000);
+
+    Serial.println("Girar a la izquierda");
+    motors.MoveLeft();
+    delay(2000);
+
+    Serial.println("Girar a la derecha");
+    motors.MoveRight();
+    delay(2000);
+
+    Serial.println("Girar en círculos");
+    for (int angle = 0; angle < 360; angle += 45) {  // Gira en múltiples ángulos
+        motors.MoveMotors(angle, 255);
+        delay(500);
     }
+
+    Serial.println("Detener motores");
+    motors.StopMotors();
+    delay(3000);  
+    */
+}
+

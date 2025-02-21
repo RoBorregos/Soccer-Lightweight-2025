@@ -12,7 +12,6 @@ public:
     void MoveForward();
     void MoveBackward();
     void StopMotor();
-    void InitializeDriver();
     void SetSpeed(uint8_t pwm, uint8_t speed);
     uint8_t GetSpeed();
     uint8_t GetIn1();

@@ -17,15 +17,6 @@ void Motors::InitializeMotors()
     motor4.InitializeMotor();
 };
 
-
-void Motors::SetSpeed(uint8_t pwm, uint8_t speed)
-{
-    motor1.SetSpeed(pwm, speed);
-    motor2.SetSpeed(pwm, speed);
-    motor3.SetSpeed(pwm, speed);
-    motor4.SetSpeed(pwm, speed);
-};
-
 void Motors::SetAllSpeeds(uint8_t speed)
 {
     motor1.SetSpeed(MOTOR1_PWM, speed);
@@ -167,8 +158,6 @@ void Motors::MoveMotorsImu(double degree, uint8_t speed, double speed_w)
     int speedB = abs(int(m2));
     int speedC = abs(int(m3));
     int speedD = abs(int(m4));
-
-
 
     analogWrite(motor1.GetSpeed(), speedA);
     analogWrite(motor2.GetSpeed(), speedB);

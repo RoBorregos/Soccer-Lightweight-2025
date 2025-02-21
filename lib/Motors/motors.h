@@ -19,8 +19,6 @@ public:
            uint8_t speed4, uint8_t in1_4, uint8_t in2_4);
 
     void InitializeMotors();
-    void InitializeDriver();
-    void SetSpeed(uint8_t pwm, uint8_t speed);
     void SetAllSpeeds(uint8_t speed);
     void StopMotors();
     void MoveForward();
