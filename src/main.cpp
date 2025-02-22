@@ -21,10 +21,12 @@ void setup() {
 void loop() {
 
     bno.getEuler();
+    
+    /*
     Serial.println("Mover hacia adelante");
     motors.SetAllSpeeds(90);
     motors.MoveForward();
-    /*
+    
     Serial.println("Mover hacia atrás");
     motors.MoveBackward();
     delay(2000);
