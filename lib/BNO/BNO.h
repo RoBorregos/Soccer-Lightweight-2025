@@ -13,7 +13,7 @@ class Bno
     Bno();
     void bno_begin();
     void getEuler();
-
+    double getYaw();
   
   private:
     Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);

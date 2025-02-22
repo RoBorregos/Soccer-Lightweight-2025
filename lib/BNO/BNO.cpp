@@ -38,6 +38,9 @@ yaw = -1*(360 - yaw);
 Serial.print("X: ");
 Serial.print(yaw);
 Serial.println("");
+}
 
+double Bno::getYaw()
+{
 return yaw;
 }
