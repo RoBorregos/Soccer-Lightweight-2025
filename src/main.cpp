@@ -1,4 +1,5 @@
 #include "motors.h"
+#include "BNO.h"
 
 
 Motors motors(
@@ -8,13 +9,18 @@ Motors motors(
     MOTOR4_PWM, MOTOR4_IN1, MOTOR4_IN2
 );
 
+Bno bno;
 void setup() {
     Serial.begin(9600);
     motors.InitializeMotors();  // Inicializar los motores
     Serial.println("Prueba de motores iniciada.");
+
+    bno.bno_begin();
 }
 
 void loop() {
+
+    bno.getEuler();
     Serial.println("Mover hacia adelante");
     motors.SetAllSpeeds(90);
     motors.MoveForward();
