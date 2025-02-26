@@ -1,8 +1,12 @@
 #include "motors.h"
+<<<<<<< HEAD
 #include<Wire.h>
 #include "Bno.h"
 #include "PID.h"
 #include <Servo.h>
+=======
+#include "BNO.h"
+>>>>>>> a3b404393f8d725ac4ae8b311e010b7817c458a4
 
 #include <PID.h>
 
@@ -44,6 +48,7 @@ Motors motors(
     MOTOR4_PWM, MOTOR4_IN1, MOTOR4_IN2
 );
 
+<<<<<<< HEAD
 void setup() 
     {
     Serial.begin(9600);
@@ -114,6 +119,21 @@ void loop() {
     {
         motors.StopMotors();
     }*/
+=======
+Bno bno;
+void setup() {
+    Serial.begin(9600);
+    motors.InitializeMotors();  // Inicializar los motores
+    Serial.println("Prueba de motores iniciada.");
+
+    bno.bno_begin();
+}
+
+void loop() {
+
+    bno.getEuler();
+    
+>>>>>>> a3b404393f8d725ac4ae8b311e010b7817c458a4
     /*
     Serial.println("Mover hacia adelante");
     motors.SetAllSpeeds(90);

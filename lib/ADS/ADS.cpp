@@ -13,7 +13,11 @@ bool ADS::InitializeAdafruit(){
         return false;
     }
 }
+<<<<<<< HEAD
 double ADS::GetAverageRight(){
+=======
+double ADS::getAverageRight(){
+>>>>>>> a3b404393f8d725ac4ae8b311e010b7817c458a4
     const int16_t ads5=right.readADC_SingleEnded(0);
     const int16_t ads6=right.readADC_SingleEnded(1);
     const int16_t ads7=right.readADC_SingleEnded(2);
