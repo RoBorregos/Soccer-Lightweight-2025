@@ -14,10 +14,10 @@ bool ADS::initializeAdafruit(){
     }
 }
 double ADS::getAverageRight(){
-    int16_t ads5=right.readADC_SingleEnded(0);
-    int16_t ads6=right.readADC_SingleEnded(1);
-    int16_t ads7=right.readADC_SingleEnded(2);
-    int16_t ads8=right.readADC_SingleEnded(3);
+    const int16_t ads5=right.readADC_SingleEnded(0);
+    const int16_t ads6=right.readADC_SingleEnded(1);
+    const int16_t ads7=right.readADC_SingleEnded(2);
+    const int16_t ads8=right.readADC_SingleEnded(3);
 
     return (ads5+ads6+ads7+ads8)/4.0;
 }
