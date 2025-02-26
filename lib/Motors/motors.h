@@ -8,11 +8,10 @@
 class Motors
 {
 public:
-    Motor motor1;
-    Motor motor2;
-    Motor motor3;
-    Motor motor4;
-
+    Motor upper_right_motor_;
+    Motor upper_left_motor_;
+    Motor lower_right_motor_;
+    Motor lower_left_motor_;
     Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1,
            uint8_t speed2, uint8_t in1_2, uint8_t in2_2,
            uint8_t speed3, uint8_t in1_3, uint8_t in2_3,
@@ -20,20 +19,16 @@ public:
 
     void InitializeMotors();
     void SetAllSpeeds(uint8_t speed);
-    void StopMotors();
-    void MoveForward();
-    void MoveBackward();
-    void MoveRight();
-    void MoveLeft();
-    void MoveMotor1();
-    void MoveMotor2();
-    void MoveMotor3();
-    void MoveMotor4();
-    void MoveMotors(int degree, uint8_t speed);
+    void StopAllMotors();
+    void MoveBaseForward();
+    void MoveBaseBackward();
+    void MoveBaseRight();
+    void MoveBaseLeft();
+    void MoveBaseInDirection(int degree, uint8_t speed);
     void IndividualMotor(uint8_t motor, uint8_t speed);
     void GetAllSpeeds();
     void MoveOneMotor(uint8_t motor, uint8_t speed);
-    void MoveMotorsImu(double target_angle, uint8_t speed, double speed_w);
+    void MoveBaseWithImu(double target_angle, uint8_t speed, double speed_w);
     void MoveMotorsProportional(double target_angle, uint8_t setpoint);
 };
 

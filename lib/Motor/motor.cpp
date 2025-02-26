@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "motor.h"
 
-Motor::Motor(uint8_t speed, uint8_t in1, uint8_t in2)
+Motor::Motor(const uint8_t speed, const uint8_t in1,const  uint8_t in2)
 {
     speed_ = speed;
     in1_ = in1;
@@ -15,7 +15,7 @@ void Motor::InitializeMotor()
     pinMode(speed_, OUTPUT);
 };
 
-void Motor::SetSpeed(uint8_t pwm, uint8_t speed)
+void Motor::SetSpeed(const uint8_t pwm, const uint8_t speed)
 {
     analogWrite(pwm, speed);
 };
@@ -53,3 +53,17 @@ uint8_t Motor::GetIn2()
 {
     return in2_;
 };
+void Motor::SetDirectionAndMove(float value) {
+    if (value >= 0) {
+        MoveForward();
+    } else {
+        MoveBackward();
+    }
+}
+void Motor::SetDirectionAndMoveWithImu(float value) {
+    if (value >= 0) {
+        MoveForward();
+    } else {
+        MoveBackward();
+    }
+}

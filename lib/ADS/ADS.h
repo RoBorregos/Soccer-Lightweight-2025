@@ -10,30 +10,27 @@ class ADS  {
 	Adafruit_ADS1115 right;
 	Adafruit_ADS1115 left;
 	Adafruit_ADS1115 back;
-	int umbralLinea=3683;
-	int umbralCampo=4159;
+	int threshold_line=3683;
+	int threshold_field=4159;
 
 	public:
 	ADS();
 	ADS( Adafruit_ADS1115 _Right, Adafruit_ADS1115 _Left, Adafruit_ADS1115 _Back);
 
 	//Inicializa los sensores de IR
-	bool initializeAdafruit();
+	bool InitializeAdafruit();
 	//Promedio de los valores
-	double getAverageRight();
-	double getAverageLeft();
-	double getAverageBack();
+	double GetAverageRight();
+	double GetAverageLeft();
+	double GetAverageBack();
 	//Obtener el valor de los sensores
-	int16_t getIndividualValueRight(int channel);
-	int16_t getIndividualValueLeft(int channel);
-	int16_t getIndividualValueBack(int channel);
+	const int16_t GetIndividualValueRight(int channel);
+	const int16_t GetIndividualValueLeft(int channel);
+	const int16_t GetIndividualValueBack(int channel);
 	//Detectar linea
-	bool detectLineRight();
-	bool detectLineLeft();
-	bool detectLineBack();
-	//Ajustar movimiento
-	void moveComplementary( bool moveRight, bool moveLeft, bool moveBack);
-
+	bool DetectLineRight();
+	bool DetectLineLeft();
+	bool DetectLineBack();
 };
 #endif
 
