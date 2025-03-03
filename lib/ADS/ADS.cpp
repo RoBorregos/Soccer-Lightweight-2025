@@ -5,7 +5,7 @@ ADS::ADS(Adafruit_ADS1115 _Right, Adafruit_ADS1115 _Left, Adafruit_ADS1115 _Back
     : right(_Right), left(_Left), back(_Back) {}
 
 
-bool ADS::initializeAdafruit(){
+bool ADS::initializeAds(){
     right.setGain(GAIN_FOUR);
     left.setGain(GAIN_FOUR);
     back.setGain(GAIN_FOUR);
@@ -58,14 +58,14 @@ bool ADS::detectLineBack(){
     double _back=getAverageBack();
     return _back<umbralLinea;
 }
-void ADS::moveComplementary( bool moveRight, bool moveLeft, bool moveBack){
-    if(moveRight){
+void ADS::moveComplementary( bool RightLine, bool LeftLine, bool BackLine){
+    if(RightLine){
         //Mover a la derecha
         Serial.println("Right");
-    } else if(moveLeft){
+    } else if(LeftLine){
         //Mover a la izquierda
         Serial.println("Left");
-    }else if(moveBack){
+    }else if(BackLine){
         //Mover hacia atras
         Serial.println("Back");
     }

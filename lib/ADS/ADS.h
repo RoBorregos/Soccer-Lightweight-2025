@@ -17,8 +17,8 @@ class ADS  {
 	ADS();
 	ADS( Adafruit_ADS1115 _Right, Adafruit_ADS1115 _Left, Adafruit_ADS1115 _Back);
 
-	//Inicializa los sensores de IR
-	bool initializeAdafruit();
+	//Inicializa los fototransistores
+	bool initializeAds();
 	//Promedio de los valores
 	double getAverageRight();
 	double getAverageLeft();
