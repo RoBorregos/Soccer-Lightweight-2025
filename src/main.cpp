@@ -35,7 +35,32 @@ void setup() {
 }
 
 void loop() {
-  /*
+int photoValue = analogRead(A2);
+int photoValue1 = analogRead(A7);
+int photoValue2 = analogRead(A3); // no
+int photoValue3 = analogRead(A12);
+int photoValue4 = analogRead(A13);
+int photoValue5 = analogRead(A14);
+int analogPin1 = analogRead(A8);
+int analogPin2 = analogRead(A9);
+int photo_value5 = analogRead(A15);
+int photo_value6 = analogRead(A17);
+int photo_value7 = analogRead(A6);
+
+Serial.println(photoValue);
+Serial.println(photoValue1);
+Serial.println(photoValue2);
+Serial.println(photoValue3);
+Serial.println(photoValue4);
+Serial.println(photoValue5);
+Serial.println(analogPin1);
+Serial.println(analogPin2);
+Serial.println(photo_value5);
+Serial.println(photo_value6);
+Serial.println(photo_value7);
+
+
+/*
 bool LeftLine = ads.detectLineLeft();
 bool RightLine = ads.detectLineRight();
 bool BackLine = ads.detectLineBack();
