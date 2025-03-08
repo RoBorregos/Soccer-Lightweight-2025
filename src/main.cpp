@@ -9,6 +9,16 @@ int setpoint = 0;
 int translation_angle = 0;
 int adjust_angle = 0;
 
+unsigned long motor_start_millis = 0;
+unsigned long motor_photo_correction = 90;
+
+int photo_value_left1;
+int photo_value_left2;
+int photo_value_right;
+int photo_value_back1;
+int photo_value_back2;
+
+
 
 Motors motors(
     MOTOR1_PWM, MOTOR1_IN1, MOTOR1_IN2, 
@@ -19,12 +29,13 @@ Motors motors(
 
 Bno bno;
 
-PID pid(1.5, 0.0, 45, 200); // parametros para correccion angular (1.5, 0.00735, 45, 200)
+PID pid(1.5, 0.00735, 45, 200); // parametros para correccion angular (1.5, 0.00735, 45, 200)
 ADS ads;
 
 void setup() {
     Serial.begin(9600);
-    ads.initializeAds();
+    analogReadResolution(12);
+    //ads.initializeAds();
     motors.InitializeMotors();  // Inicializar los motores
     Serial.println("Prueba de motores iniciada.");
 
@@ -35,59 +46,43 @@ void setup() {
 }
 
 void loop() {
-int photoValue = analogRead(A2);
-int photoValue1 = analogRead(A7);
-int photoValue2 = analogRead(A3); // no
-int photoValue3 = analogRead(A12);
-int photoValue4 = analogRead(A13);
-int photoValue5 = analogRead(A14);
-int analogPin1 = analogRead(A8);
-int analogPin2 = analogRead(A9);
-int photo_value5 = analogRead(A15);
-int photo_value6 = analogRead(A17);
-int photo_value7 = analogRead(A6);
+//----------------------------Photoresistors detection--------------------------------/
+photo_value_left1 = analogRead(A2); //Izquierda > 2000
+photo_value_left2 = analogRead(A7); //Izquierda > 2000
+photo_value_right = analogRead(A3); //Derecha > 2000
+photo_value_back1 = analogRead(A10); //Back > 1300
+photo_value_back2 = analogRead(A11); //Back > 1300
 
-Serial.println(photoValue);
-Serial.println(photoValue1);
-Serial.println(photoValue2);
-Serial.println(photoValue3);
-Serial.println(photoValue4);
-Serial.println(photoValue5);
-Serial.println(analogPin1);
-Serial.println(analogPin2);
-Serial.println(photo_value5);
-Serial.println(photo_value6);
-Serial.println(photo_value7);
+unsigned long current_millis = millis();
 
+motors.MoveMotorsImu(90,180,0);
+
+if (photo_value_left1 > 2000 || photo_value_left2 > 2000)
+{
+    motors.MoveMotorsImu(90,255,0);
+    motor_start_millis = current_millis;
+    if (current_millis - motor_start_millis >= motor_photo_correction)
+    {
+    motors.StopMotors();
+    }
+}
+if (photo_value_right > 2000 || (photo_value_right > 2000 && photo_value_back1 > 1300) || (photo_value_right > 2000 && photo_value_back2 > 1300))
+{
+    motors.MoveMotorsImu(270,255,0);
+    motor_start_millis = current_millis;
+    if (current_millis - motor_start_millis >= motor_photo_correction)
+    {
+    motors.StopMotors();
+    }
+}
+if (photo_value_back1 > 1300 || photo_value_back2 > 1300)
+{
+    // motors.MoveMotorsImu(0,200,0);
+}
 
 /*
-bool LeftLine = ads.detectLineLeft();
-bool RightLine = ads.detectLineRight();
-bool BackLine = ads.detectLineBack();
-
-ads.moveComplementary(RightLine, LeftLine, BackLine);
-
-    //----------------------------ADS detection--------------------------------/
-    /*
-    bool AdsLeft = ads.detectLineLeft();
-    bool AdsRight = ads.detectLineRight();
-    bool AdsBack = ads.detectLineBack();
-    */
-    //----------------------------ADS movement--------------------------------/
-
-/*
-if(AdsLeft== true){
-  motors.MoveRight();
-}
-if(AdsRight== true){
-  motors.MoveLeft();
-}
-if(AdsBack== true){
-  motors.MoveForward();
-}
-
     //----------------------------Ball detection--------------------------------/
-    /*
+    
     ball_seen_openmv = digitalRead(ball_pin);
     if (ball_seen_openmv == 1)
     {
@@ -156,7 +151,7 @@ if(AdsBack== true){
             motors.StopMotors();
         }
     }
-
+*/
     //----------------------------Linear correction with PID--------------------------------/
     /*
     bno.getEuler();
@@ -165,10 +160,10 @@ if(AdsBack== true){
     double output = pid.Calculate(setpoint, yaw);
     Serial.println(output);
 
-    motors.MoveMotorsImu(setpoint, 150, output);
+    // motors.MoveMotorsImu(setpoint, 150, output);
 
-    //----------------------------Angular correction with PID--------------------------------/
-    /*
+    //----------------------------Angular correction with PID--------------------------------
+    
     translation_angle = 0;
     adjust_angle = translation_angle - 90;
     double speed_w = pid.Calculate(setpoint, yaw);
@@ -178,10 +173,10 @@ if(AdsBack== true){
      Serial.print("angle");
      Serial.println(yaw);
     }
-
+delay(1000);
     //----------------------------Motor movement funcrions--------------------------------/
 
-    
+    /*
     Serial.println("Mover hacia adelante");
     motors.SetAllSpeeds(90);
     motors.MoveForward();
