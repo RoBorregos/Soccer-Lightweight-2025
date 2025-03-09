@@ -46,6 +46,19 @@ void setup() {
 }
 
 void loop() {
+ //----------------------------Correction with PID--------------------------------/
+    
+ bno.getEuler();
+ double yaw = bno.getYaw();    
+ translation_angle = 0;
+ adjust_angle = translation_angle - 90;
+ double speed_w = pid.Calculate(setpoint, yaw);
+ // motors.MoveMotorsImu(setpoint, 150, 0);
+
+ if(speed_w != 0){
+     motors.StopMotors();
+     motors.MoveMotorsImu(0, 0, speed_w);
+ }
 //----------------------------Photoresistors detection--------------------------------/
 photo_value_left1 = analogRead(A2); //Izquierda > 2000
 photo_value_left2 = analogRead(A7); //Izquierda > 2000
@@ -66,7 +79,8 @@ if (photo_value_left1 > 2000 || photo_value_left2 > 2000)
     motors.StopMotors();
     }
 }
-if (photo_value_right > 2000 || (photo_value_right > 2000 && photo_value_back1 > 1300) || (photo_value_right > 2000 && photo_value_back2 > 1300))
+
+if (photo_value_right > 2000 || photo_value_back1 > 1300 || photo_value_back2 > 1300)
 {
     motors.MoveMotorsImu(270,255,0);
     motor_start_millis = current_millis;
@@ -75,11 +89,10 @@ if (photo_value_right > 2000 || (photo_value_right > 2000 && photo_value_back1 >
     motors.StopMotors();
     }
 }
-if (photo_value_back1 > 1300 || photo_value_back2 > 1300)
-{
+//if (photo_value_back1 > 1300 || photo_value_back2 > 1300)
+//{
     // motors.MoveMotorsImu(0,200,0);
-}
-
+//}
 /*
     //----------------------------Ball detection--------------------------------/
     
@@ -152,28 +165,8 @@ if (photo_value_back1 > 1300 || photo_value_back2 > 1300)
         }
     }
 */
-    //----------------------------Linear correction with PID--------------------------------/
-    /*
-    bno.getEuler();
-    double yaw = bno.getYaw();
+   
 
-    double output = pid.Calculate(setpoint, yaw);
-    Serial.println(output);
-
-    // motors.MoveMotorsImu(setpoint, 150, output);
-
-    //----------------------------Angular correction with PID--------------------------------
-    
-    translation_angle = 0;
-    adjust_angle = translation_angle - 90;
-    double speed_w = pid.Calculate(setpoint, yaw);
-    if(speed_w != 0){
-    motors.MoveMotorsImu(0, 0, speed_w);
-    Serial.print(speed_w);
-     Serial.print("angle");
-     Serial.println(yaw);
-    }
-delay(1000);
     //----------------------------Motor movement funcrions--------------------------------/
 
     /*
