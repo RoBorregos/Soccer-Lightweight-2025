@@ -62,16 +62,22 @@ void loop() {
 //----------------------------Photoresistors detection--------------------------------/
 photo_value_left1 = analogRead(A2); //Izquierda > 2000
 photo_value_left2 = analogRead(A7); //Izquierda > 2000
-photo_value_right = analogRead(A3); //Derecha > 2000
+photo_value_right = analogRead(A3); //Derecha > 2500
 photo_value_back1 = analogRead(A10); //Back > 1300
 photo_value_back2 = analogRead(A11); //Back > 1300
 
-unsigned long current_millis = millis();
+//unsigned long current_millis = millis();
 
-motors.MoveMotorsImu(90,180,0);
+Serial.print("Photoresistor left1: ");
+Serial.println(photo_value_left1);
+Serial.print("Photoresistor left2: ");
+Serial.println(photo_value_left2);
+Serial.print("Photoresistor right: ");
+Serial.println(photo_value_right);
 
 if (photo_value_left1 > 2000 || photo_value_left2 > 2000)
 {
+    Serial.println("Detectó linea izquierda"); 
     motors.MoveMotorsImu(90,255,0);
     motor_start_millis = current_millis;
     if (current_millis - motor_start_millis >= motor_photo_correction)
@@ -80,8 +86,9 @@ if (photo_value_left1 > 2000 || photo_value_left2 > 2000)
     }
 }
 
-if (photo_value_right > 2000 || photo_value_back1 > 1300 || photo_value_back2 > 1300)
+if (photo_value_right > 2500)
 {
+    Serial.println("Detectó linea derecha"); 
     motors.MoveMotorsImu(270,255,0);
     motor_start_millis = current_millis;
     if (current_millis - motor_start_millis >= motor_photo_correction)
@@ -93,6 +100,7 @@ if (photo_value_right > 2000 || photo_value_back1 > 1300 || photo_value_back2 > 
 //{
     // motors.MoveMotorsImu(0,200,0);
 //}
+
 /*
     //----------------------------Ball detection--------------------------------/
     
