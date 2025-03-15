@@ -9,14 +9,13 @@ Bno::Bno()
   current_yaw = 0;
 }
 
-void Bno::bno_begin()
+void Bno::InitializeBNO()
 {
 Serial.println("Orientation Sensor Test"); Serial.println("");
   if(!bno.begin())
   {
     /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-    while(1);
   }
   
   delay(1000);
@@ -24,7 +23,7 @@ Serial.println("Orientation Sensor Test"); Serial.println("");
   bno.setExtCrystalUse(true);
 }
 
-void Bno::getEuler()
+void Bno::GetBNOData()
 {
 imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
 yaw = euler.x();
@@ -40,7 +39,7 @@ Serial.print(yaw);
 Serial.println("");
 }
 
-double Bno::getYaw()
+double Bno::GetYaw()
 {
 return yaw;
 }

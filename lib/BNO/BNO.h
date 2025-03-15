@@ -11,9 +11,9 @@ class Bno
 {
   public:
     Bno();
-    void bno_begin();
-    void getEuler();
-    double getYaw();
+    void InitializeBNO();
+    void GetBNOData();
+    double GetYaw();
   
   private:
     Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
