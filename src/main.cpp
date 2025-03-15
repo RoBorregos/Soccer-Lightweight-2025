@@ -17,10 +17,7 @@ Motors motors(
 
 void setup() {
     Serial.begin(9600);
-    motors.InitializeMotors();  // Inicializar los motores
-    Serial.println("Prueba de motores iniciada.");
 
-    bno.InitializeBNO();
 }
 
 void loop() {
