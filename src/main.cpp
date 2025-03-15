@@ -1,8 +1,42 @@
 #include "motors.h"
 #include "BNO.h"
+//#include "PixyCam.h"
+#include <Arduino.h>
+#include"IRRing.h"
 
+IRRing irring;
+void setup() {
+    Serial.begin(115200);
+    unsigned long currentTime = millis();
+    irring.init(&currentTime);
+    irring.setOffset(0.0);
+}
+void loop() {
+    irring.updateData();
 
-Motors motors(
+    double angle=irring.getAngle();
+    double newAngle=(angle<0 ? 360+angle:angle);
+    newAngle=360-newAngle;
+    double strength=irring.getStrength();
+    Serial.print("Angle: ");
+    Serial.print(newAngle);
+    Serial.print("\tradio: ");
+    Serial.println(strength);
+    delay(50);
+}
+
+/*PixyCam pixy;
+void setup() {
+    Serial.begin(9600);
+    pixy.init();
+}
+void loop() {
+    pixy.detectGoals();
+    delay(1000);
+  
+}*/
+
+/*Motors motors(
     MOTOR1_PWM, MOTOR1_IN1, MOTOR1_IN2, 
     MOTOR2_PWM, MOTOR2_IN1, MOTOR2_IN2, 
     MOTOR3_PWM, MOTOR3_IN1, MOTOR3_IN2, 
@@ -49,5 +83,4 @@ void loop() {
     motors.StopMotors();
     delay(3000);  
     */
-}
-
+//}
