@@ -5,6 +5,13 @@
 #include"IRRing.h"
 
 IRRing irring;
+Motors motors(
+    MOTOR1_PWM, MOTOR1_IN1, MOTOR1_IN2, 
+    MOTOR2_PWM, MOTOR2_IN1, MOTOR2_IN2, 
+    MOTOR3_PWM, MOTOR3_IN1, MOTOR3_IN2, 
+    MOTOR4_PWM, MOTOR4_IN1, MOTOR4_IN2
+);
+
 void setup() {
     Serial.begin(115200);
     unsigned long currentTime = millis();
@@ -13,11 +20,19 @@ void setup() {
 }
 void loop() {
     irring.updateData();
-
     double angle=irring.getAngle();
     double newAngle=(angle<0 ? 360+angle:angle);
     newAngle=360-newAngle;
     double strength=irring.getStrength();
+    
+    if (newAngle > 45 && newAngle < 315) {
+        motors.MoveMotorsImu(newAngle,150,0);
+        Serial.println("fuera de rango");
+    }
+    else if (newAngle < 45 || newAngle > 315) {
+        motors.StopMotors();
+        Serial.println("dentro de rango");
+    }
     Serial.print("Angle: ");
     Serial.print(newAngle);
     Serial.print("\tradio: ");
