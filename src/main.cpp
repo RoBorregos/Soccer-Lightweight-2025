@@ -1,8 +1,19 @@
 #include "motors.h"
-#include<Wire.h>
+#include <Wire.h>
 #include "BNO.h"
 #include <PID.h>
+#include "IRRing.h"
 
+unsigned long start_millis;
+unsigned long current_millis;
+int setpoint = 0;
+int translation_angle = 0;
+int adjust_angle = 0;
+
+unsigned long motor_start_millis = 0;
+unsigned long motor_photo_correction = 90;
+
+IRRing irring;
 // Definir PID con parámetros (ajústalos según tu caso)
 PID pid(6.0, 0.000, 30, 200);
 
@@ -17,39 +28,41 @@ Motors motors(
 
 void setup() {
     Serial.begin(9600);
-
+    unsigned long currentTime = millis();
+    analogReadResolution(12);
+    //ads.initializeAds();
+    motors.InitializeMotors(); 
+    bno.InitializeBNO();
+    start_millis = millis();
+    irring.init(&currentTime);
+    irring.setOffset(0.0);
 }
 
 void loop() {
 
-    bno.GetBNOData();
-    /*
-    Serial.println("Mover hacia adelante");
-    motors.SetAllSpeeds(90);
-    motors.MoveForward();
-    
-    Serial.println("Mover hacia atrás");
-    motors.MoveBackward();
-    delay(2000);
-
-    Serial.println("Girar a la izquierda");
-    motors.MoveLeft();
-    delay(2000);
-
-    Serial.println("Girar a la derecha");
-    motors.MoveRight();
-    delay(2000);
-
-    Serial.println("Girar en círculos");
-    for (int angle = 0; angle < 360; angle += 45) {  // Gira en múltiples ángulos
-        motors.MoveMotors(angle, 255);
-        delay(500);
+    double yaw = bno.GetYaw();    
+    translation_angle = 0;
+    adjust_angle = translation_angle - 90;
+    double speed_w = pid.Calculate(setpoint, yaw);
+    if(speed_w != 0){
+        motors.StopAllMotors();
+        motors.MoveBaseWithImu(0, 0, speed_w);
     }
 
-    Serial.println("Detener motores");
-    motors.StopMotors();
-    delay(3000);  
-    */
+    irring.updateData();
+    double angle=irring.getAngle();
+    double newAngle=(angle<0 ? 360+angle:angle);
+    newAngle=360-newAngle;
+    double strength=irring.getStrength();
+    
+    if (newAngle > 45 && newAngle < 315) {
+        motors.MoveBaseWithImu(newAngle,150,0);
+        Serial.println("fuera de rango");
+    }
+    else if (newAngle < 45 || newAngle > 315) {
+        motors.StopAllMotors();
+        Serial.println("dentro de rango");
+    }
 }
     
 

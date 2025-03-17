@@ -23,9 +23,9 @@ public:
     void SetDirectionAndMoveWithImu(float value);
 
 private:
-    const uint8_t speed_;
-    const uint8_t in1_;
-    const uint8_t in2_;
+    uint8_t speed_;
+    uint8_t in1_;
+    uint8_t in2_;
 };
 
 #endif
