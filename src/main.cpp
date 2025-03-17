@@ -3,8 +3,15 @@
 //#include "PixyCam.h"
 #include <Arduino.h>
 #include"IRRing.h"
+#include "PID.h"
 
+int setpoint = 0;
+int translation_angle = 0;
+int adjust_angle = 0;
+
+Bno bno;
 IRRing irring;
+PID pid(1.5, 0.00735, 45, 200);
 Motors motors(
     MOTOR1_PWM, MOTOR1_IN1, MOTOR1_IN2, 
     MOTOR2_PWM, MOTOR2_IN1, MOTOR2_IN2, 
@@ -19,6 +26,18 @@ void setup() {
     irring.setOffset(0.0);
 }
 void loop() {
+    bno.getEuler();
+    double yaw = bno.getYaw();    
+    translation_angle = 0;
+    adjust_angle = translation_angle - 90;
+    double speed_w = pid.Calculate(setpoint, yaw);
+    // motors.MoveMotorsImu(setpoint, 150, 0);
+   
+    if(speed_w != 0){
+        motors.StopMotors();
+        motors.MoveMotorsImu(0, 0, speed_w);
+    }
+
     irring.updateData();
     double angle=irring.getAngle();
     double newAngle=(angle<0 ? 360+angle:angle);
