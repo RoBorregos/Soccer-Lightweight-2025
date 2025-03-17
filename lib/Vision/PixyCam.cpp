@@ -17,6 +17,10 @@ void PixyCam::detectGoals() {
       Serial.print(pixy.ccc.blocks[i].m_x);
       Serial.print(" y");
       Serial.print(pixy.ccc.blocks[i].m_y);
+      Serial.print(" width");
+      Serial.print(pixy.ccc.blocks[i].m_width);
+      Serial.print(" height");
+      Serial.println(pixy.ccc.blocks[i].m_height);
 
       if (pixy.ccc.blocks[i].m_signature == 1) {
         Serial.println(" - Goal 1 Yellow");
