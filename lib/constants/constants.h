@@ -38,6 +38,38 @@ const int kMotor1In1 = 29;
 const int kMotor1In2 = 28;
 const int kMotor1Pwm = 2;
 
+// Photo Left
+const int kPhotoLeft1 = A0;
+const int kPhotoLeft2 = A1;
+const int kPhotoLeft3 = A2;
+const int kPhotoLeft4 = A3;
+const int kPhotoLeft5 = A4;
+const int kPhotoLeft6 = A5;
+const int kPhotoLeft7 = A6;
+const int kPhotoLeft8 = A7;
+
+// Photo Right
+const int kPhotoRight1 = A8;
+const int kPhotoRight2 = A9;
+const int kPhotoRight3 = A10;
+const int kPhotoRight4 = A11;
+const int kPhotoRight5 = A12;
+const int kPhotoRight6 = A13;
+const int kPhotoRight7 = A14;
+const int kPhotoRight8 = A15;
+const int kPhotoFront1 = A16;
+const int kPhotoFront2 = A17;
+
+/*
+// Photo Front
+const int kPhotoFront3 = A18;
+const int kPhotoFront4 = A19;
+const int kPhotoFront5 = A20;
+const int kPhotoFront6 = A21;
+const int kPhotoFront7 = A22;
+const int kPhotoFront8 = A23;
+*/
+
 // Receive signals
 const uint8_t kReceiveBno = 's';
 const uint8_t kReceiveBallAngle = 'c';
