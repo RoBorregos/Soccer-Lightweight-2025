@@ -20,7 +20,10 @@ void IRRing::updateData() {
     if (Serial1.available()) {
         String data = Serial1.readStringUntil('\n');
         data.trim();  
-
+        
+        // Data is expected to be received in the format: 
+        // “a 0.1” for angle or “r 10” for force.
+        
         if (data.length() > 2) {  
             char type = data[0];
             String valueStr = data.substring(2);  
