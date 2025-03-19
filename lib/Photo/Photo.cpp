@@ -1,10 +1,13 @@
 #include "Photo.h"
-#include "constants.h"
-#include "motors.h"
-#include <Arduino.h>
 
 
-Photo::Photo() {}
+Photo::Photo() :
+motors(
+    kMotor1Pwm, kMotor1In1, kMotor1In2,
+    kMotor2Pwm, kMotor2In1, kMotor2In2,
+    kMotor3Pwm, kMotor3In1, kMotor3In2,
+    kMotor4Pwm, kMotor4In1, kMotor4In2
+  )  {}
 
 
 void Photo::ReadPhotoLeft() {
@@ -62,11 +65,11 @@ void Photo::LineCorrectionLeft() {
     double motor_start_millis = 0;
     double motor_photo_correction = 90;
     
-    motors.MoveMotorsImu(90,255,0);
+    motors.MoveBaseWithImu(90,255,0);
     motor_start_millis = current_millis;
     if (current_millis - motor_start_millis >= motor_photo_correction)
     {
-    motors.StopMotors();
+    motors.StopAllMotors();
     }
 }
 
@@ -75,11 +78,11 @@ void Photo::LineCorrectionRight() {
     double motor_start_millis = 0;
     double motor_photo_correction = 90;
     
-    motors.MoveMotorsImu(270,255,0);
+    motors.MoveBaseWithImu(270,255,0);
     motor_start_millis = current_millis;
     if (current_millis - motor_start_millis >= motor_photo_correction)
     {
-    motors.StopMotors();
+    motors.StopAllMotors();
     }
 }
 
@@ -88,11 +91,11 @@ void Photo::LineCorrectionFront() {
     double motor_start_millis = 0;
     double motor_photo_correction = 90;
     
-    motors.MoveMotorsImu(180,255,0);
+    motors.MoveBaseWithImu(180,255,0);
     motor_start_millis = current_millis;
     if (current_millis - motor_start_millis >= motor_photo_correction)
     {
-    motors.StopMotors();
+    motors.StopAllMotors();
     }
 }
 

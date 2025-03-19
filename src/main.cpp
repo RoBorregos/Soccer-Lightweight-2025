@@ -2,11 +2,13 @@
 #include<Wire.h>
 #include "BNO.h"
 #include <PID.h>
+#include "Photo.h"
 
 // Definir PID con parámetros (ajústalos según tu caso)
 PID pid(6.0, 0.000, 30, 200);
 
 Bno bno;
+Photo photo;
 /*PID pid(0.6, 0.00735, 45, 200);*/
 Motors motors(
   kMotor1Pwm, kMotor1In1, kMotor1In2,
@@ -23,6 +25,12 @@ void setup() {
 void loop() {
 
     bno.GetBNOData();
+    photo.ReadPhotoLeft();
+    int PhotoValue = photo.GetPhotoValueLeft();
+    if (PhotoValue < 500) {
+        photo.LineCorrectionLeft();  
+    }
+    
     /*
     Serial.println("Mover hacia adelante");
     motors.SetAllSpeeds(90);

@@ -1,5 +1,8 @@
 #ifndef PHOTO_H
 #define PHOTO_H
+#include "Arduino.h"
+#include "motors.h"
+#include "constants.h"
 
 class Photo {
 public:
@@ -15,6 +18,7 @@ public:
     void LineCorrectionFront();
 
 private:
+Motors motors;
     // Photo Left
     int photo_left1;
     int photo_left2;
