@@ -7,6 +7,7 @@ Bno::Bno()
   yaw = 0;
   target_yaw = 0;
   current_yaw = 0;
+  isRightFlag=false;
 }
 
 void Bno::InitializeBNO()
@@ -42,4 +43,10 @@ Serial.println("");
 double Bno::GetYaw()
 {
 return yaw;
+}
+void Bno::setOffset(double off){
+  offset=off;
+}
+bool Bno::GetisRight() {
+  return isRightFlag;
 }
