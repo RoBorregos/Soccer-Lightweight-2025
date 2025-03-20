@@ -29,5 +29,34 @@ double PID::Calculate(double setpoint, double input)
         last_time_ = current_time;
         return output;
     }  
+
     return 0;
+}
+void PID::SetR(bool r)
+{
+    this->r = r;
+}
+bool PID::getR()
+{
+    return r;
+}
+void PID::setKp(double P)
+{
+    kp_ = P;
+}   
+double PID::getKp()
+{
+    return kp_;
+}   
+void PID::setMinToMove(int min)
+{
+    minToMove = min;
+}
+int PID::getMinToMove()
+{
+    return minToMove;
+}
+void PID::setAngle(double angle)
+{
+    this->angle = angle;
 }
