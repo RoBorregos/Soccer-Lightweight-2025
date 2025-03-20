@@ -25,11 +25,6 @@ void setup() {
 void loop() {
 
     bno.GetBNOData();
-    photo.ReadPhotoLeft();
-    int PhotoValue = photo.GetPhotoValueLeft();
-    if (PhotoValue < 500) {
-        photo.LineCorrectionLeft();  
-    }
     
     /*
     Serial.println("Mover hacia adelante");

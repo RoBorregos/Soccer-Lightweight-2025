@@ -7,18 +7,15 @@
 class Photo {
 public:
     Photo();
-    void ReadPhotoLeft();
-    void ReadPhotoRight();
-    void ReadPhotoFront();
-    int GetPhotoValueLeft();
-    int GetPhotoValueRight();
-    int GetPhotoValueFront();
-    void LineCorrectionLeft();
-    void LineCorrectionRight();
-    void LineCorrectionFront();
+    int ReadPhotoLeft();
+    int ReadPhotoRight();
+    int ReadPhotoFront();
+    bool CheckPhotoLeft();
+    bool CheckPhotoRight();
+    bool CheckPhotoFront();
 
 private:
-Motors motors;
+    int Line_Treshold;
     // Photo Left
     int photo_left1;
     int photo_left2;

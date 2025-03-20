@@ -1,16 +1,12 @@
 #include "Photo.h"
 
 
-Photo::Photo() :
-motors(
-    kMotor1Pwm, kMotor1In1, kMotor1In2,
-    kMotor2Pwm, kMotor2In1, kMotor2In2,
-    kMotor3Pwm, kMotor3In1, kMotor3In2,
-    kMotor4Pwm, kMotor4In1, kMotor4In2
-  )  {}
+Photo::Photo() {
+    Line_Treshold = 3000;
+}
 
 
-void Photo::ReadPhotoLeft() {
+int Photo::ReadPhotoLeft() {
     photo_left1 = analogRead(kPhotoLeft1);
     photo_left2 = analogRead(kPhotoLeft2);
     photo_left3 = analogRead(kPhotoLeft3);
@@ -20,9 +16,10 @@ void Photo::ReadPhotoLeft() {
     photo_left7 = analogRead(kPhotoLeft7);
     photo_left8 = analogRead(kPhotoLeft8);
     average_photo_left = (photo_left1 + photo_left2 + photo_left3 + photo_left4 + photo_left5 + photo_left6 + photo_left7 + photo_left8) / 8;
+    return average_photo_left;
 }
 
-void Photo::ReadPhotoRight() {
+int Photo::ReadPhotoRight() {
     photo_right1 = analogRead(kPhotoRight1);
     photo_right2 = analogRead(kPhotoRight2);
     photo_right3 = analogRead(kPhotoRight3);
@@ -32,9 +29,10 @@ void Photo::ReadPhotoRight() {
     photo_right7 = analogRead(kPhotoRight7);
     photo_right8 = analogRead(kPhotoRight8);
     average_photo_right = (photo_right1 + photo_right2 + photo_right3 + photo_right4 + photo_right5 + photo_right6 + photo_right7 + photo_right8) / 8;
+    return average_photo_right;
 }
 
-void Photo::ReadPhotoFront() {
+int Photo::ReadPhotoFront() {
     /*
     photo_front1 = analogRead(kPhotoFront1);
     photo_front2 = analogRead(kPhotoFront2);
@@ -45,57 +43,24 @@ void Photo::ReadPhotoFront() {
     photo_front7 = analogRead(kPhotoFront7);
     photo_front8 = analogRead(kPhotoFront8);
     int average_photo_front = (photo_front1 + photo_front2 + photo_front3 + photo_front4 + photo_front5 + photo_front6 + photo_front7 + photo_front8) / 8;
-*/
-}
-
-int Photo::GetPhotoValueLeft() {
-    return average_photo_left;
-}
-
-int Photo::GetPhotoValueRight() {
-    return average_photo_right;
-}
-
-int Photo::GetPhotoValueFront() {
     return average_photo_front;
+    */
 }
 
-void Photo::LineCorrectionLeft() {
-    double current_millis = millis();
-    double motor_start_millis = 0;
-    double motor_photo_correction = 90;
-    
-    motors.MoveBaseWithImu(90,255,0);
-    motor_start_millis = current_millis;
-    if (current_millis - motor_start_millis >= motor_photo_correction)
-    {
-    motors.StopAllMotors();
-    }
+bool Photo::CheckPhotoFront() {
+    int front = ReadPhotoFront();
+    return front < Line_Treshold;
 }
 
-void Photo::LineCorrectionRight() {
-    double current_millis = millis();
-    double motor_start_millis = 0;
-    double motor_photo_correction = 90;
-    
-    motors.MoveBaseWithImu(270,255,0);
-    motor_start_millis = current_millis;
-    if (current_millis - motor_start_millis >= motor_photo_correction)
-    {
-    motors.StopAllMotors();
-    }
+bool Photo::CheckPhotoLeft() {
+    int left = ReadPhotoLeft();
+    return left < Line_Treshold;
 }
 
-void Photo::LineCorrectionFront() {
-    double current_millis = millis();
-    double motor_start_millis = 0;
-    double motor_photo_correction = 90;
-    
-    motors.MoveBaseWithImu(180,255,0);
-    motor_start_millis = current_millis;
-    if (current_millis - motor_start_millis >= motor_photo_correction)
-    {
-    motors.StopAllMotors();
-    }
+bool Photo::CheckPhotoRight() {
+    int right = ReadPhotoRight();
+    return right < Line_Treshold;
 }
+
+
 
