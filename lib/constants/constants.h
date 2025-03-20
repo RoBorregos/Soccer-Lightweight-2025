@@ -39,36 +39,19 @@ const int kMotor1In2 = 28;
 const int kMotor1Pwm = 2;
 
 // Photo Left
-const int kPhotoLeft1 = A0;
-const int kPhotoLeft2 = A1;
-const int kPhotoLeft3 = A2;
-const int kPhotoLeft4 = A3;
-const int kPhotoLeft5 = A4;
-const int kPhotoLeft6 = A5;
-const int kPhotoLeft7 = A6;
-const int kPhotoLeft8 = A7;
+const int kPhotoLeftElements = 7;
+const int kPhotoLeftPins[kPhotoLeftElements] = {A0, A1, A2, A3, A4, A5, A6};
 
 // Photo Right
-const int kPhotoRight1 = A8;
-const int kPhotoRight2 = A9;
-const int kPhotoRight3 = A10;
-const int kPhotoRight4 = A11;
-const int kPhotoRight5 = A12;
-const int kPhotoRight6 = A13;
-const int kPhotoRight7 = A14;
-const int kPhotoRight8 = A15;
-const int kPhotoFront1 = A16;
-const int kPhotoFront2 = A17;
+const int kPhotoRightElements = 7;
+const int kPhotoRightPins[kPhotoRightElements] = {A7, A8, A9, A10, A11, A12, A13};
 
-/*
 // Photo Front
-const int kPhotoFront3 = A18;
-const int kPhotoFront4 = A19;
-const int kPhotoFront5 = A20;
-const int kPhotoFront6 = A21;
-const int kPhotoFront7 = A22;
-const int kPhotoFront8 = A23;
-*/
+const int kPhotoFrontElements = 3;
+const int kPhotoFrontPins[kPhotoFrontElements] = {A14, A15, A16};
+
+// Photo Treshold
+const int kPhotoTreshold = 3000;
 
 // Receive signals
 const uint8_t kReceiveBno = 's';
