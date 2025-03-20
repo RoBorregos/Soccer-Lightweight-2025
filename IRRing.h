@@ -14,11 +14,11 @@ class IRRing
 
 	public:
 	IRRing();
-	void init(unsigned long& current_time);
-	void updateData();
-	void setOffset(double offset);
-	double getAngle();
-	double getStrength();
+	void Init(unsigned long& current_time);
+	void UpdateData();
+	void SetOffset(double offset);
+	double GetAngle();
+	double GetStrength();
 
 };
 #endif
