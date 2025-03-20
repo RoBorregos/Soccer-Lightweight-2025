@@ -4,7 +4,7 @@
 #include <PID.h>
 #include "IRRing.h"
 
-unsigned long start_millis;
+/*unsigned long start_millis;
 unsigned long current_millis;
 int setpoint = 0;
 int translation_angle = 0;
@@ -18,7 +18,7 @@ IRRing irring;
 PID pid(6.0, 0.000, 30, 200);
 
 Bno bno;
-/*PID pid(0.6, 0.00735, 45, 200);*/
+//PID pid(0.6, 0.00735, 45, 200);//
 Motors motors(
   kMotor1Pwm, kMotor1In1, kMotor1In2,
   kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -32,7 +32,7 @@ void setup() {
     analogReadResolution(12);
     //ads.initializeAds();
     motors.InitializeMotors(); 
-    bno.InitializeBNO();
+    Bno.InitializeBNO();
     start_millis = millis();
     irring.init(&currentTime);
     irring.setOffset(0.0);
@@ -63,8 +63,7 @@ void loop() {
         motors.StopAllMotors();
         Serial.println("dentro de rango");
     }
-}
-    
+}*/
 
 
 
