@@ -5,7 +5,12 @@
 SingleEMAFilter<double> filterAngle(0.6);
 SingleEMAFilter<double> filterStr(0.6);
 
-IRRing::IRRing():angle(0),strength(0),offset(0),current_time(nullptr),last_time(0)
+IRRing::IRRing():
+angle(0),
+strength(0),
+offset(0),
+current_time(nullptr),
+last_time(0)
 {
 
 }
