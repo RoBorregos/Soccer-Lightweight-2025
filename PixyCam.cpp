@@ -2,32 +2,28 @@
 
 PixyCam::PixyCam() {}
 
-void PixyCam::init() {
+void PixyCam::Init() {
   Wire.begin();
-  pixy.init();
+  pixy_.init();
 }
-void PixyCam::detectGoals() {
-  pixy.ccc.getBlocks();
+std::vector<GoalData> PixyCam::DetectGoals() {
+  pixy_.ccc.getBlocks();
+  std::vector<GoalData> detectedgoals;
 
-  if (pixy.ccc.numBlocks > 0) {
-    for (int i = 0; i < pixy.ccc.numBlocks; i++) {
-      Serial.print("Signature: ");
-      Serial.print(pixy.ccc.blocks[i].m_signature);
-      Serial.print("x");
-      Serial.print(pixy.ccc.blocks[i].m_x);
-      Serial.print(" y");
-      Serial.print(pixy.ccc.blocks[i].m_y);
-      Serial.print(" width");
-      Serial.print(pixy.ccc.blocks[i].m_width);
-      Serial.print(" height");
-      Serial.printl(pixy.ccc.blocks[i].m_height);
+  if (pixy_.ccc.numBlocks > 0) {
+    for (int i = 0; i < pixy_.ccc.numBlocks; i++) {
+      GoalData goal;
+      goal.signature=pixy_.ccc.blocks[i].m_signature;
+      goal.x=pixy_.ccc.blocks[i].m_x;
+      goal.y=pixy_.ccc.blocks[i].m_y;
+      goal.width=.ccc.blocks[i].m_width;
+      goal.height=pixy_.ccc.blocks[i].m_height;
 
-      if (pixy.ccc.blocks[i].m_signature == 1) {
-        Serial.println(" - Goal 1 Yellow");
-      } else if (pixy.ccc.blocks[i].m_signature == 2) {
-        Serial.println(" - Goal 2 Blue");
+      detectedgoals.push_back(goal);
       }
     }
+    return detectedgoals;
+ }
 
   }
 }
