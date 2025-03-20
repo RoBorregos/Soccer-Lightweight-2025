@@ -5,16 +5,20 @@
 #include <Wire.h>
 #include <Pixy2I2C.h>
 
+struct GoalData{
+	uint16_t signature;
+	int x,y,width,height;
+}
 
 class PixyCam 
 {
 	private:
-	Pixy2I2C pixy;
+	Pixy2I2C pixy_;
 
 	public:
 	PixyCam();
-	void init();
-	void detectGoals();
+	void Init();
+	std::vector<GoalData> DetectGoals();
 };
 
 #endif 
