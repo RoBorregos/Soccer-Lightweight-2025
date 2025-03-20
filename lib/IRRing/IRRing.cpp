@@ -9,14 +9,14 @@ IRRing::IRRing():angle(0),strength(0),offset(0),current_time(nullptr),last_time(
 {
 
 }
-void IRRing::init(unsigned long*current_time)
+void IRRing::Init(unsigned long*current_time)
 {
     this->current_time=current_time;
     Serial1.begin(115200);
     Serial1.setTimeout(100);
 }
 
-void IRRing::updateData() {
+void IRRing::UpdateData() {
     if (Serial1.available()) {
         String data = Serial1.readStringUntil('\n');
         data.trim();  
@@ -39,12 +39,12 @@ void IRRing::updateData() {
     last_time = *current_time;
 }
 
-void IRRing::setOffset(double offset){
+void IRRing::SetOffset(double offset){
     this->offset=offset;
 }
-double IRRing::getAngle(){
+double IRRing::GetAngle(){
     return angle;
 }
-double IRRing::getStrength(){
+double IRRing::GetStrength(){
     return filterStr.GetLowPass();
 }
