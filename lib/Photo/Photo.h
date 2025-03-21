@@ -16,13 +16,13 @@ public:
 
 private:
     // Photo Left
-    int photo_left[kPhotoLeftElements];
+    uint16_t photo_left[kPhotoLeftElements];
     int average_photo_left;
     // Photo Right
-    int photo_right[kPhotoRightElements];
+    uint16_t photo_right[kPhotoRightElements];
     int average_photo_right;
     // Photo Front
-    int photo_front[kPhotoFrontElements];
+    uint16_t photo_front[kPhotoFrontElements];
     int average_photo_front;
 };
 
