@@ -1,15 +1,14 @@
-#include "statusMachineStricker.h"  
+#include "stateMachineStricker.h"
 
-statusMachineStricker::statusMachineStricker(){}
 //-------------------------------------IR Ring
 //Search and move according to the position of the ball
-void statusMachineStricker::searchBall();
+void stateMachineStricker::searchBall(){
     int change= getCorrectionsImu();
     robotIrRing.UpdateData();
     double angle=robotIrRing.GetAngle();
     double str=robotIrRing.GetStrength();
     if(str==0){
-        motorsRobot.StopallMotors();
+        motorsRobot.StopAllMotors();
         return;
     }else if(str>80 && abs(angle)<=90){
         motorsRobot.upper_right_motor_.MoveForward();
@@ -23,7 +22,7 @@ void statusMachineStricker::searchBall();
         motorsRobot.lower_left_motor_.SetSpeed(motorsRobot.lower_left_motor_.GetSpeed(), 50);
 
     }else{
-        motorsRobot.StopallMotors();
+        motorsRobot.StopAllMotors();
     }
 
     int result= -1000;
@@ -51,9 +50,9 @@ void statusMachineStricker::searchBall();
         }
 
         if (result== -1000){
-            motorsRobot.StopallMotors();
+            motorsRobot.StopAllMotors();
         }else{
-            motorsRobot.MoveBaseWithImu(result-gyro.GetYaw(),ConstantsStricker::velocities, change, gyro.GetisRight());
+            motorsRobot.MoveBaseWithImu(result-gyro.GetYaw(),ConstantsStricker::velocities, change);
             
         }
         if (angle>0){
@@ -61,17 +60,17 @@ void statusMachineStricker::searchBall();
         }else{
             last=-1;
         }
-
+    }
 //Goalposts
 //Incluir si se agrega ultrasonico o IR
-void statusMachineStricker::gol(int xPosition, int y1){
+void stateMachineStricker::gol(int xPosition, int y1){
     int change= getCorrectionsImu();
     if (xPosition == -1){
-        motorsRobot.MoveBaseWithImu(170*lastP,ConstantsStricker::velocities, change, gyro.GetisRight());
+        motorsRobot.MoveBaseWithImu(170*lastP,ConstantsStricker::velocities, change);
     }else if (xPosition<10 || xPosition>310){
-        motorsRobot.MoveBaseWithImu(150*lastP,ConstantsStricker::velocities, change, gyro.GetisRight());
+        motorsRobot.MoveBaseWithImu(150*lastP,ConstantsStricker::velocities, change);
     }else{
-        atackGoal(xPosition, y1);
+        attackGoal(xPosition, y1);
     }
 
     if(xPosition<160){
@@ -82,29 +81,29 @@ void statusMachineStricker::gol(int xPosition, int y1){
 
 }
 //Attack the goal
-void statusMachineStricker::attackGoal(int xPosition, int y1){
+void stateMachineStricker::attackGoal(int xPosition, int y1){
     if (y1>100){
         motorsRobot.StopAllMotors();
     }
     if (y1==-1){
         int change= getCorrectionsImu();
-        motorsRobot.MoveBaseWithImu(180-gyro.GetYaw(),ConstantsStricker::velocities, change, gyro.GetisRight());
+        motorsRobot.MoveBaseWithImu(180-gyro.GetYaw(),ConstantsStricker::velocities, change);
     }
     if(y1>110 && atack<100){
-        atack++;
+        atack = static_cast<decltype(atack)>(static_cast<int>(atack) + 1);
         int change= getCorrectionsImu();
         bool r=gyro.GetisRight();
 
         if (xPosition>200){
             int change= getCorrectionsImuTarget(40);
-            motorsRobot.MoveBaseWithImu(0,ConstantsStricker::velocities, change,robotPid.getR());  
+            motorsRobot.MoveBaseWithImu(0,ConstantsStricker::velocities, change);  
             Serial.println("Derecha"); 
         }else if (xPosition<120){
             int change= getCorrectionsImuTarget(-40);
-            motorsRobot.MoveBaseWithImu(0,ConstantsStricker::velocities, change,robotPid.getR());
+            motorsRobot.MoveBaseWithImu(0,ConstantsStricker::velocities, change);
             Serial.println("Izquierda");
         }else{ //centro
-            motorsRobot.MoveBaseWithImu(0-gyro.GetYaw(),ConstantsStricker::velocities, change,robotPid.getR());
+            motorsRobot.MoveBaseWithImu(0-gyro.GetYaw(),ConstantsStricker::velocities, change);
             Serial.println("Adelante");
         }
     }else{
@@ -115,29 +114,29 @@ void statusMachineStricker::attackGoal(int xPosition, int y1){
 
     if (abs(error)<25){
         Serial.println("forward");
-        motorsRobot.MoveBaseWithImu(0-gyro.GetYaw(),ConstantsStricker::velocities, change, gyro.GetisRight());
+        motorsRobot.MoveBaseWithImu(0-gyro.GetYaw(),ConstantsStricker::velocities, change);
     }else{
         int ang=(error>0)?(error*kp_):(error*kp_);
         Serial.println("Move");
-        motorsRobot.MoveBaseWithImu(ang-gyro.GetYaw(),ConstantsStricker::velocities, change, gyro.GetisRight());
+        motorsRobot.MoveBaseWithImu(ang-gyro.GetYaw(),ConstantsStricker::velocities, change);
     }
     if (y1<=100){
-        atack=0;
+        atack=ConstantsStricker::sides::blue;
     }
 
 }
 }
 //Correction of the IMU
 //Return the value of the correction of the IMU
-int statusMachineStricker::getCorrectionsImu(){
+int stateMachineStricker::getCorrectionsImu(){
     gyro.GetBNOData();
-    int change= robotPid.Calculate(0,gyro.GetYaw(),ConstantsStricker::velocities);
+    int change= robotPid.Calculate(0,gyro.GetYaw());
     return change;
 }
 
-int statusMachineStricker::getCorrectionsImuTarget(int target){
+int stateMachineStricker::getCorrectionsImuTarget(int target){
     gyro.GetBNOData();
-    int change= robotPid.Calculate(target,gyro.GetYaw(),ConstantsStricker::velocities);
+    robotPid.Calculate(target,gyro.GetYaw());
     int error=abs(target-gyro.GetYaw());
     bool r=((target-gyro.GetYaw())>0)?true:false;
     robotPid.SetR(r);
@@ -151,24 +150,24 @@ int statusMachineStricker::getCorrectionsImuTarget(int target){
     return error;
 }
 
-void statusMachineStricker::goOutOfLine(int angleC){
+void stateMachineStricker::goOutOfLine(int angleC){
     int change= getCorrectionsImu();
     unsigned long ms2=millis();
 
     while((millis()-ms2)<700){
         gyro.GetBNOData();
-        motorsRobot.MoveBaseWithImu(angleC,ConstantsStricker::velocities, change, gyro.GetisRight());
+        motorsRobot.MoveBaseWithImu(angleC,ConstantsStricker::velocities, change);
 
     }
 }
 
-bool statusMachineStricker::hasPosesion(){
+bool stateMachineStricker::hasPosesion(){
     robotIrRing.UpdateData();
     double angle=robotIrRing.GetAngle();
     double str=robotIrRing.GetStrength();
-    return (str>80 && abs(angle)<=40)
+    return (str>80 && abs(angle)<=40);
 }
-int statusMachineStricker::detector(){
+/*int stateMachineStricker::detector(){
     int pulseWidth=0;
     int deltaPulseWidth=5;
     const unsigned long startTime_us= micros();
@@ -180,23 +179,14 @@ int statusMachineStricker::detector(){
         }while (micros()-startTime_us<833);
         return pulseWidth;
     
-}
+}*/
 //Obtain and store the data of the camera
-void statusMachineStricker::updateGoalData(){
-    Pixy.detectGoals();
-    if (Pixy.ccc.numBlocks>0){
-        for (int i=0; i<Pixy.ccc.numBlocks; i++){
-            if (Pixy.ccc.blocks[i].m_signature==1){
-                yellowGoal=Pixy.ccc.blocks[i];
-            }else if (Pixy.ccc.blocks[i].m_signature==2){
-                blueGoal=Pixy.ccc.blocks[i];
-            }
-        }
-    }
+void stateMachineStricker::updateGoalData(){
+    Pixy.DetectGoals();
 }
-void statusMachineStricker::startObjects(){
-    Serial13.begin(115200);
-    Serial13.setTimeout(100);
+void stateMachineStricker::startObjects(){
+    Serial3.begin(115200);
+    Serial3.setTimeout(100);
     Serial.begin(9600);
     Serial2.begin(9600);
     Serial2.setTimeout(100);
@@ -204,8 +194,9 @@ void statusMachineStricker::startObjects(){
     robotPid.setKp(0.2);
     robotPid.setMinToMove(40);
     gyro.InitializeBNO();
-    robotIRring.Init();
-    robotIRring.UpdateData();
+    unsigned long current_time = millis();
+    robotIrRing.Init(&current_time);
+    robotIrRing.UpdateData();
     motorsRobot.InitializeMotors();
 
     pinMode(ConstantsStricker::analogReadPin, INPUT);
@@ -216,4 +207,13 @@ void statusMachineStricker::startObjects(){
         robotPid.setAngle(120);
     }
 
+}
+bool stateMachineStricker::detectLeftLine(){
+    return robotPthototransistors.CheckPhotoLeft();
+}
+bool stateMachineStricker::detectRightLine(){
+    return robotPthototransistors.CheckPhotoRight();
+}
+bool stateMachineStricker::detectFrontLine(){
+    return robotPthototransistors.CheckPhotoFront();
 }

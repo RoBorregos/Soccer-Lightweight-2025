@@ -1,9 +1,7 @@
 
-#ifndef ARDUINO_STATUSMACHINESTRICKER_H
-#define ARDUINO_STATUSMACHINESTRICKER_H
+#ifndef ARDUINO_STATEMACHINESTRICKER_H
+#define ARDUINO_STATEMACHINESTRICKER_H
 #include <Arduino.h>
-#include "Adafruit_ADS1X15.h"
-#include "ADS.h"
 #include "BNO.h"
 #include "constants.h"
 #include "IRRing.h"
@@ -14,9 +12,12 @@
 #include "ConstantsStricker.h"
 #include "PID.h"
 #include <Wire.h>
-#include "Pixy2I2C.h"
+#include "Photo.h"
+#include "SingleEMAFilterLib.h"
+#include <Pixy2I2C.h>
+#include <Pixy2.h>
 
-class statusMachineStricker  
+class stateMachineStricker  
 {
 	private:
 	IRRing robotIrRing;
@@ -24,17 +25,17 @@ class statusMachineStricker
 	Bno gyro;
 	PixyCam Pixy;
 	Motors motorsRobot;
+	Photo robotPthototransistors;
 
 	int last=1;
 	int lastP=1;
-	int atack=1;
 	ConstantsStricker:: stateMachine state;
 	ConstantsStricker:: sides atack=ConstantsStricker::sides::yellow;
 
 
 	public:
 
-		statusMachineStricker();
+		stateMachineStricker() : robotIrRing(), robotPid(), gyro(), Pixy(), motorsRobot(), robotPthototransistors(), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow) {}
 		void searchBall();
 		void gol(int xPosition, int y1);
 		void attackGoal(int xPosition, int y1);
@@ -45,6 +46,10 @@ class statusMachineStricker
 		int detector();
 		void updateGoalData();
 		void startObjects();
+		bool detectLeftLine();
+		bool detectRightLine();
+		bool detectFrontLine();
+	
 		
 
 };
