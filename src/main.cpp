@@ -3,16 +3,7 @@
 #include "PixyCam.h"
 #include <Arduino.h>
 #include"IRRing.h"
-<<<<<<< HEAD
-/*Motors motors(
-    MOTOR1_PWM, MOTOR1_IN1, MOTOR1_IN2, 
-    MOTOR2_PWM, MOTOR2_IN1, MOTOR2_IN2, 
-    MOTOR3_PWM, MOTOR3_IN1, MOTOR3_IN2, 
-    MOTOR4_PWM, MOTOR4_IN1, MOTOR4_IN2
-);*/
-=======
 #include "PID.h"
->>>>>>> daaa6f90ff30d9d204fbd92107ab015082f4e6f5
 
 int setpoint = 0;
 int translation_angle = 0;
@@ -53,6 +44,7 @@ void loop() {
     newAngle=360-newAngle;
     double strength=irring.getStrength();
     
+
     if (newAngle > 45 && newAngle < 315) {
         motors.MoveMotorsImu(newAngle,150,0);
         Serial.println("fuera de rango");
