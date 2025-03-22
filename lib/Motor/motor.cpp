@@ -1,9 +1,9 @@
 #include "Arduino.h"
 #include "motor.h"
 
-Motor::Motor(const uint8_t speed, const uint8_t in1,const  uint8_t in2)
+Motor::Motor(uint8_t speed, uint8_t in1, uint8_t in2)
 {
-    speed_ = speed;
+    speed_ = speed; 
     in1_ = in1;
     in2_ = in2;
 }
