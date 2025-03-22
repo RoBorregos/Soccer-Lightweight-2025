@@ -14,7 +14,7 @@ class IRRing
 
 	public:
 	IRRing();
-	void Init(unsigned long& current_time);
+	void init(unsigned long& current_time);
 	void UpdateData();
 	void SetOffset(double offset);
 	double GetAngle();
