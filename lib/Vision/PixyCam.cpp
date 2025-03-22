@@ -16,11 +16,20 @@ std::vector<GoalData> PixyCam::DetectGoals() {
       goal.signature=pixy_.ccc.blocks[i].m_signature;
       goal.x=pixy_.ccc.blocks[i].m_x;
       goal.y=pixy_.ccc.blocks[i].m_y;
-      goal.width=.ccc.blocks[i].m_width;
+      goal.width=pixy_.ccc.blocks[i].m_width;
       goal.height=pixy_.ccc.blocks[i].m_height;
 
+      goal.angle=angleGoal(goal.x);
       detectedgoals.push_back(goal);
       }
     }
     return detectedgoals;
+ }
+ float PixyCam::angleGoal(float x){
+    const float FOV = 60.0;   
+   const int x_center = 158; 
+    const int x_max = 158;    
+
+    float angle = ((x - x_center) / (float)x_max) * (FOV / 2);
+    return angle;
  }
