@@ -21,7 +21,7 @@ void IRRing::init(unsigned long*current_time)
     Serial1.setTimeout(100);
 }
 
-void IRRing::updateData() {
+void IRRing::UpdateData() {
     if (Serial1.available()) {
         String data = Serial1.readStringUntil('\n');
         data.trim();  
@@ -47,12 +47,12 @@ void IRRing::updateData() {
     last_time = *current_time;
 }
 
-void IRRing::setOffset(double offset){
+void IRRing::SetOffset(double offset){
     this->offset=offset;
 }
-double IRRing::getAngle(){
+double IRRing::GetAngle(){
     return angle;
 }
-double IRRing::getStrength(){
+double IRRing::GetStrength(){
     return filterStr.GetLowPass();
 }
