@@ -1,69 +1,62 @@
 #include "stateMachineStricker.h"
+void stateMachineStricker::startObjects(){
+    Serial.begin(115200);
+    unsigned long currentTime = millis();
+    robotPid.setKp(0.2);
+    robotPid.setMinToMove(40);
+    bno.InitializeBNO();
+    unsigned long current_time = millis();
+    robotIrRing.Init(&current_time);
+    robotIrRing.UpdateData();
+    motorsRobot.InitializeMotors();
 
+    pinMode(ConstantsStricker::analogReadPin, INPUT);
+    //pinMode(ConstantsStricker::trigPin, OUTPUT); Cuando se incluya ultrasónico
+    //pinMode(ConstantsStricker::echoPin, INPUT);
+} //está sos ver si se puede quitar 
 //-------------------------------------IR Ring
 //Search and move according to the position of the ball
 void stateMachineStricker::searchBall(){
-    int change= getCorrectionsImu();
+    Serial.println("iniciando searchBall function");
+    bno.GetBNOData();
+    double yaw=bno.GetYaw();
+    Serial.begin(115200);
+    unsigned long currentTime = millis();
+    robotIrRing.Init(&currentTime);
+    robotIrRing.SetOffset(0.0);
+    translation_angle = 0;
+    adjust_angle = translation_angle - 90;
+    double speed_w = robotPid.Calculate(setpoint, yaw);
+    if(speed_w != 0){
+        motorsRobot.StopAllMotors();
+        motorsRobot.MoveBaseWithImu(0, 0, speed_w);
+    }
+
     robotIrRing.UpdateData();
     double angle=robotIrRing.GetAngle();
-    double str=robotIrRing.GetStrength();
-    if(str==0){
-        motorsRobot.StopAllMotors();
-        return;
-    }else if(str>80 && abs(angle)<=90){
-        motorsRobot.upper_right_motor_.MoveForward();
-        motorsRobot.upper_left_motor_.MoveForward();
-        motorsRobot.lower_right_motor_.MoveForward();
-        motorsRobot.lower_left_motor_.MoveForward();
+    double newAngle=(angle<0 ? 360+angle:angle);
+    newAngle=360-newAngle;
+    double strength=robotIrRing.GetStrength();
 
-        motorsRobot.upper_right_motor_.SetSpeed(motorsRobot.upper_right_motor_.GetSpeed(), 50);
-        motorsRobot.upper_left_motor_.SetSpeed(motorsRobot.upper_left_motor_.GetSpeed(), 50);
-        motorsRobot.lower_right_motor_.SetSpeed(motorsRobot.lower_right_motor_.GetSpeed(), 50);
-        motorsRobot.lower_left_motor_.SetSpeed(motorsRobot.lower_left_motor_.GetSpeed(), 50);
-
-    }else{
-        motorsRobot.StopAllMotors();
+    // Added this condition to have control of the robot during the test
+    if (newAngle > 45 && newAngle < 315) {
+        motorsRobot.MoveBaseWithImu(newAngle,150,0);
+        Serial.println("fuera de rango");
     }
-
-    int result= -1000;
-
-        if (abs(angle)<=20){
-            result=0;
-        }else if (abs(angle)<=50){
-            result=(angle>0)?90:-90;
-        }else if (abs(angle)<=75){
-            result=(angle>0)?120:-120;
-        }else if (abs(angle)<=90){
-            result=(angle>0)?135:-135;
-        }else if (abs(angle)<=140){
-            result=180;
-        }else{
-            result=(angle>0)?-140:140;
-        }
-
-        if (str<30){
-            if (result<=90)
-            result= result*0.7;
-        }else if (str<50){
-            if (result<=90)
-            result= result*0.7;
-        }
-
-        if (result== -1000){
-            motorsRobot.StopAllMotors();
-        }else{
-            motorsRobot.MoveBaseWithImu(result-gyro.GetYaw(),ConstantsStricker::velocities, change);
-            
-        }
-        if (angle>0){
-            last=1;
-        }else{
-            last=-1;
-        }
+    else if (newAngle < 45 || newAngle > 315) {
+        motorsRobot.StopAllMotors();
+        Serial.println("dentro de rango");
     }
+    Serial.print("Angle: ");
+    Serial.print(newAngle);
+    Serial.print("\tradio: ");
+    Serial.println(strength);
+    delay(50);
+}
+
 //Goalposts
 //Incluir si se agrega ultrasonico o IR
-void stateMachineStricker::gol(int xPosition, int y1){
+/*void stateMachineStricker::gol(int xPosition, int y1){
     int change= getCorrectionsImu();
     if (xPosition == -1){
         motorsRobot.MoveBaseWithImu(170*lastP,ConstantsStricker::velocities, change);
@@ -148,9 +141,9 @@ int stateMachineStricker::getCorrectionsImuTarget(int target){
     error = map(error, 0, 255, robotPid.getMinToMove(), 255);
     // Serial.println(error);
     return error;
-}
+}*/
 
-void stateMachineStricker::goOutOfLine(int angleC){
+/*void stateMachineStricker::goOutOfLine(int angleC){
     int change= getCorrectionsImu();
     unsigned long ms2=millis();
 
@@ -166,7 +159,7 @@ bool stateMachineStricker::hasPosesion(){
     double angle=robotIrRing.GetAngle();
     double str=robotIrRing.GetStrength();
     return (str>80 && abs(angle)<=40);
-}
+}*/
 /*int stateMachineStricker::detector(){
     int pulseWidth=0;
     int deltaPulseWidth=5;
@@ -181,39 +174,28 @@ bool stateMachineStricker::hasPosesion(){
     
 }*/
 //Obtain and store the data of the camera
-void stateMachineStricker::updateGoalData(){
+/*void stateMachineStricker::updateGoalData(){
     Pixy.DetectGoals();
-}
-void stateMachineStricker::startObjects(){
-    Serial3.begin(115200);
-    Serial3.setTimeout(100);
-    Serial.begin(9600);
-    Serial2.begin(9600);
-    Serial2.setTimeout(100);
+}*/
 
-    robotPid.setKp(0.2);
-    robotPid.setMinToMove(40);
-    gyro.InitializeBNO();
-    unsigned long current_time = millis();
-    robotIrRing.Init(&current_time);
-    robotIrRing.UpdateData();
-    motorsRobot.InitializeMotors();
+void goToGoal(){
+    Serial.println("atack function");
+    bno.GetBNOData();
+    double yaw=bno.GetYaw();
+    Serial.begin(115200);
+    unsigned long currentTime = millis();
+    float x= Pixy.DetectGoals()[0].x;
+    int setpoint= Pixy.angle(x);
+    double speed_w = robotPid.Calculate(setpoint, yaw);
+    motorsRobot.MoveBaseWithImu(setpoint,ConstantsStricker::velocityAtack, speed_w);
 
-    pinMode(ConstantsStricker::analogReadPin, INPUT);
-    //pinMode(ConstantsStricker::trigPin, OUTPUT); Cuando se incluya ultrasónico
-    //pinMode(ConstantsStricker::echoPin, INPUT);
-    if (ConstantsStricker::velocities>120){
-        robotPid.setKp(0.09);
-        robotPid.setAngle(120);
-    }
 
 }
-bool stateMachineStricker::detectLeftLine(){
-    return robotPthototransistors.CheckPhotoLeft();
-}
-bool stateMachineStricker::detectRightLine(){
-    return robotPthototransistors.CheckPhotoRight();
-}
-bool stateMachineStricker::detectFrontLine(){
-    return robotPthototransistors.CheckPhotoFront();
+void avoidLine(int angle){
+    Serial.println("avoid line function");
+    bno.GetBNOData();
+    double yaw=bno.GetYaw();
+    double speed_w = robotPid.Calculate(0, yaw);
+    motorsRobot.MoveBaseWithImu(angle,ConstantsStricker::velocityCorrectionLine , speed_w);
+
 }

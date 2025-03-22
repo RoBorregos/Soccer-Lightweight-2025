@@ -22,33 +22,40 @@ class stateMachineStricker
 	private:
 	IRRing robotIrRing;
 	PID robotPid;
-	Bno gyro;
+	//Bno gyro;
 	PixyCam Pixy;
 	Motors motorsRobot;
 	Photo robotPthototransistors;
-
+	Bno bno;
+	unsigned long current_time = millis();
 	int last=1;
 	int lastP=1;
 	ConstantsStricker:: stateMachine state;
 	ConstantsStricker:: sides atack=ConstantsStricker::sides::yellow;
+	int setpoint = 0;
+	int translation_angle = 0;
+	int adjust_angle = 0;
+	float x=0;
+	int angle=0;
 
 
 	public:
 
-		stateMachineStricker() : robotIrRing(), robotPid(), gyro(), Pixy(), motorsRobot(), robotPthototransistors(), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow) {}
-		void searchBall();
-		void gol(int xPosition, int y1);
-		void attackGoal(int xPosition, int y1);
+	stateMachineStricker() : robotIrRing(), robotPid(1.5, 0.00735, 45, 200), bno(), Pixy(), motorsRobot(9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11, 10), robotPthototransistors(), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow) {}
+		// void searchBall(); // Duplicate declaration removed
+		/*void gol(int xPosition, int y1);
 		int getCorrectionsImu();
 		int getCorrectionsImuTarget(int target);
 		void goOutOfLine(int angleC);
 		bool hasPosesion();
 		int detector();
-		void updateGoalData();
+		void attackGoal(int xPosition, int y1);
+		void updateGoalData();*/
 		void startObjects();
-		bool detectLeftLine();
-		bool detectRightLine();
-		bool detectFrontLine();
+		void searchBall();
+		void goToGoAL();
+		void avoidLine(int angle);
+
 	
 		
 

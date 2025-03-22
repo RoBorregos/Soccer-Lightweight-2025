@@ -9,21 +9,21 @@ class ConstantsStricker
 	public:
 
 		ConstantsStricker();
-		static const int velocities = 110;
-    	static const int velMin = 80;
-    	static const int velMax = 150;
+		static const int velocityCorrectionLine = 255;
+    	static const int velocitySearchBall = 150;
+    	static const int velocityAtack=150;
 		static const int analogReadPin = A4;
 		//static const int trigPin = 36; para ultrasónico
 		//static const int echoPin = 38;
 	
 		enum stateMachine{
-			ballDetected,
+			/*ballDetected,*/ //por el momento no es necesario 
 			line,
 			searchBall,
 			scoreGoal,
-			nothing,
+			nothing
 		};
-		enum sides{
+		enum sides{ //son necesarias?? 
 			yellow=0,
 			blue=1,
 		};
