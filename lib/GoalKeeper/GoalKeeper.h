@@ -14,20 +14,35 @@
 #include "Photo.h"
 #include <Pixy2I2C.h>
 #include <Pixy2.h>
+#include "constantsGoalKeeper.h"
 
 class stateMachineGoalKeeper {
 
 public:
-    stateMachineGoalKeeper();
-    void update();
-    void changeState(State newState);
+    stateMachineGoalKeeper() : robotIrRing(), robotPid(1.5, 0.00735, 45, 200), bno(), Pixy(), motorsRobot(9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11, 10), robotPthototransistors(), last(1), lastP(1), state(), {}
+    void initializeStateMachineGoalKeeper();
+    void getInsideLimits();
+    void moveToIntercept();
+    void passToTeammate();
 
 private:
-    State currentState;
-    void handleIdleState();
-    void handleMoveToPositionState();
-    void handleBlockShotState();
-    void handleClearBallState();
+    IRRing robotIrRing;
+	PID robotPid;
+	//Bno gyro;
+	PixyCam Pixy;
+	Motors motorsRobot;
+	Photo robotPthototransistors;
+	Bno bno;
+	unsigned long current_time = millis();
+	int last=1;
+	int lastP=1;
+	ConstantsGoalKeeper:: stateMachine state;
+	ConstantsGoalKeeper:: sides defend = ConstantsGoalKeeper::sides::yellow;
+	int setpoint = 0;
+	int translation_angle = 0;
+	int adjust_angle = 0;
+	float x=0;
+	int angle=0;
 };
 
 #endif // GOALKEEPER_H
