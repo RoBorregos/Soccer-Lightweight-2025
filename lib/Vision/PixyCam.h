@@ -17,12 +17,22 @@ class PixyCam
 {
 	private:
 	Pixy2I2C pixy_;
+	uint8_t block;
 
 	public:
 	PixyCam();
 	void Init();
 	std::vector<GoalData> DetectGoals();
+	void updateData();
 	float angleGoal(float x);
+	int numBlocks();
+	int getSignature();
+	int getX(uint8_t block);
+	int getY(uint8_t block);
+	int getWidth(uint8_t block);
+	int getHeight(uint8_t block);
+	
+
 };
 
 #endif 

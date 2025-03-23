@@ -10,7 +10,7 @@ void stateMachineStricker::startObjects(){
     robotIrRing.UpdateData();
     motorsRobot.InitializeMotors();
 
-    pinMode(ConstantsStricker::analogReadPin, INPUT);
+    pinMode(ConstantsStricker::kAnalogReadPin, INPUT);
     //pinMode(ConstantsStricker::trigPin, OUTPUT); Cuando se incluya ultrasónico
     //pinMode(ConstantsStricker::echoPin, INPUT);
 } //está sos ver si se puede quitar 
@@ -20,7 +20,6 @@ void stateMachineStricker::searchBall(){
     Serial.println("iniciando searchBall function");
     bno.GetBNOData();
     double yaw=bno.GetYaw();
-    Serial.begin(115200);
     unsigned long currentTime = millis();
     robotIrRing.Init(&currentTime);
     robotIrRing.SetOffset(0.0);
@@ -35,11 +34,11 @@ void stateMachineStricker::searchBall(){
     robotIrRing.UpdateData();
     double angle=robotIrRing.GetAngle();
     double newAngle=(angle<0 ? 360+angle:angle);
-    newAngle=360-newAngle;
+    //newAngle=360-newAngle;
     double strength=robotIrRing.GetStrength();
 
     // Added this condition to have control of the robot during the test
-    if (newAngle > 45 && newAngle < 315) {
+    if (newAngle >= 45 && newAngle <= 315) {
         motorsRobot.MoveBaseWithImu(newAngle,150,0);
         Serial.println("fuera de rango");
     }
@@ -178,24 +177,48 @@ bool stateMachineStricker::hasPosesion(){
     Pixy.DetectGoals();
 }*/
 
-void goToGoal(){
+void stateMachineStricker::goToGoal(){
     Serial.println("atack function");
     bno.GetBNOData();
     double yaw=bno.GetYaw();
-    Serial.begin(115200);
     unsigned long currentTime = millis();
-    float x= Pixy.DetectGoals()[0].x;
-    int setpoint= Pixy.angle(x);
+    static unsigned long lastMoveTime=0;
+    robotIrRing.Init(&currentTime);
+    Pixy.updateData();
+    int numberObjects=Pixy.numBlocks();
+    int bestBlock=-1;
+    int maxWidth=0;
+    for(int i=0;i<numberObjects;i++){
+        if (Pixy.getHeight(i)>heightGoalMax){
+        int width=Pixy.getWidth(i);
+        if(width>maxWidth){
+            maxWidth=width;
+            bestBlock=i;
+        }
+    }
+}
+    float x= Pixy.getX(bestBlock);
+    int setpoint= Pixy.angleGoal(x);
     double speed_w = robotPid.Calculate(setpoint, yaw);
-    motorsRobot.MoveBaseWithImu(setpoint,ConstantsStricker::velocityAtack, speed_w);
-
+    if(millis()-lastMoveTime>1000){
+            motorsRobot.MoveBaseWithImu(setpoint,ConstantsStricker::kVelocityAtack, speed_w);
+            lastMoveTime=millis();
+    }
+    if (millis()-lastMoveTime>2000){
+        motorsRobot.StopAllMotors();
 
 }
-void avoidLine(int angle){
+}
+
+void stateMachineStricker::avoidLine(int angle){
     Serial.println("avoid line function");
     bno.GetBNOData();
     double yaw=bno.GetYaw();
     double speed_w = robotPid.Calculate(0, yaw);
-    motorsRobot.MoveBaseWithImu(angle,ConstantsStricker::velocityCorrectionLine , speed_w);
+    unsigned long currentTime = millis();
+    while(millis()-currentTime<1000){
+        motorsRobot.MoveBaseWithImu(angle,ConstantsStricker::kVelocityCorrectionLine, speed_w);
+    }
+    motorsRobot.StopAllMotors();
 
 }

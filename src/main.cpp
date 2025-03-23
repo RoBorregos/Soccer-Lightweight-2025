@@ -9,15 +9,17 @@ stateMachineStricker robotStricker;
 
 ConstantsStricker:: stateMachine state;
 ConstantsStricker:: sides atackSide=ConstantsStricker::sides::yellow;
-bool leftLine=robotPthototransistors.CheckPhotoLeft();
-bool rightLine=robotPthototransistors.CheckPhotoRight();
-bool frontLine=robotPthototransistors.CheckPhotoFront();
 
 void setup(){
+    Serial.begin(115200);
     robotStricker.startObjects();
     delay(1600);
 }
 void loop(){
+    bool leftLine=robotPthototransistors.CheckPhotoLeft();
+    bool rightLine=robotPthototransistors.CheckPhotoRight();
+    bool frontLine=robotPthototransistors.CheckPhotoFront();
+
     state=ConstantsStricker::nothing;
     if((leftLine== false)||(rightLine== false)||(frontLine== false)){
         state=ConstantsStricker::line;
@@ -52,28 +54,12 @@ void loop(){
   if(state==ConstantsStricker::searchBall){
     Serial.println("search");
     robotStricker.searchBall();
+    state=ConstantsStricker::scoreGoal;
 
   }
   //Go to the goal with the ball
   if(state==ConstantsStricker::scoreGoal){
     Serial.println("gol");
-    robotStricker.goToGoAL();
-    if(leftLine== false){
-        state=ConstantsStricker::line;
-        robotStricker.avoidLine(-45);
-        state=ConstantsStricker::scoreGoal;
-        Serial.println("scoreGoal left");
-
-    }else if(rightLine== false){
-        state=ConstantsStricker::line;
-        robotStricker.avoidLine(45);
-        state=ConstantsStricker::scoreGoal;
-        Serial.println("scoreGoal right");
-    }else if (frontLine== false){
-        state=ConstantsStricker::line;
-        robotStricker.avoidLine(-90);
-        state=ConstantsStricker::scoreGoal;
-        Serial.println("scoreGoal front");
-  }
+    robotStricker.goToGoal();
 }
 }

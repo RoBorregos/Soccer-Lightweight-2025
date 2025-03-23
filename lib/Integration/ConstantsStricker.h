@@ -9,10 +9,10 @@ class ConstantsStricker
 	public:
 
 		ConstantsStricker();
-		static const int velocityCorrectionLine = 255;
-    	static const int velocitySearchBall = 150;
-    	static const int velocityAtack=150;
-		static const int analogReadPin = A4;
+		static const uint8_t kVelocityCorrectionLine = 255;
+    	static const uint8_t kVelocitySearchBall = 150;
+    	static const uint8_t kVelocityAtack=150;
+		static const uint8_t kAnalogReadPin = A4;
 		//static const int trigPin = 36; para ultrasónico
 		//static const int echoPin = 38;
 	

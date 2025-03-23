@@ -37,11 +37,18 @@ class stateMachineStricker
 	int adjust_angle = 0;
 	float x=0;
 	int angle=0;
+	int numberObjects=0;
+	int heightGoal=10;
+	const int heightGoalMax=20;
+	uint8_t block;
+	float weidthBlock1=0;
+	float weidthBlock2=0;
+	float weidthBlock3=0;
 
 
 	public:
 
-	stateMachineStricker() : robotIrRing(), robotPid(1.5, 0.00735, 45, 200), bno(), Pixy(), motorsRobot(9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11, 10), robotPthototransistors(), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow) {}
+	stateMachineStricker() : robotIrRing(), robotPid(1.5, 0.00735, 45, 200), Pixy(), motorsRobot(9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11, 10), robotPthototransistors(), bno(), current_time(millis()), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow), setpoint(0), translation_angle(0), adjust_angle(0), x(0), angle(0), numberObjects(0), heightGoal(10), block(0), weidthBlock1(0), weidthBlock2(0), weidthBlock3(0) {}
 		// void searchBall(); // Duplicate declaration removed
 		/*void gol(int xPosition, int y1);
 		int getCorrectionsImu();
@@ -53,7 +60,7 @@ class stateMachineStricker
 		void updateGoalData();*/
 		void startObjects();
 		void searchBall();
-		void goToGoAL();
+		void goToGoal();
 		void avoidLine(int angle);
 
 	
