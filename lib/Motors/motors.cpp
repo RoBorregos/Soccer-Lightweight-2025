@@ -115,4 +115,8 @@ void Motors::MoveBaseWithImu(double degree, uint8_t speed, double speed_w)
     analogWrite(lower_right_motor_.GetSpeed(), speedC);
     analogWrite(lower_left_motor_.GetSpeed(), speedD);
 
+    if (m1 >= 0) upper_right_motor_.MoveForward(); else upper_right_motor_.MoveBackward();
+    if (m2 >= 0) upper_left_motor_.MoveForward(); else upper_left_motor_.MoveBackward();
+    if (m3 >= 0) lower_right_motor_.MoveForward(); else lower_right_motor_.MoveBackward();
+    if (m4 >= 0) lower_left_motor_.MoveForward(); else lower_left_motor_.MoveBackward();
 };
