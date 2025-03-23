@@ -1,8 +1,9 @@
 #include "motors.h"
-#include<Wire.h>
+#include <Wire.h>
 #include "BNO.h"
 #include <PID.h>
 #include "Photo.h"
+#include "constants.h"
 
 // Definir PID con parámetros (ajústalos según tu caso)
 PID pid(6.0, 0.000, 30, 200);
@@ -17,6 +18,8 @@ Motors motors(
   kMotor4Pwm, kMotor4In1, kMotor4In2
 );
 
+Motor motor(kMotor1Pwm, kMotor1In1, kMotor1In2);
+
 void setup() {
     Serial.begin(9600);
 
@@ -25,7 +28,9 @@ void setup() {
 void loop() {
 
     bno.GetBNOData();
+    motors.MoveBaseWithImu(15, 150, 0);
     
+
     /*
     Serial.println("Mover hacia adelante");
     motors.SetAllSpeeds(90);
