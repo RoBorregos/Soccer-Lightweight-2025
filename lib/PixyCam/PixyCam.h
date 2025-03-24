@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 // #include <Pixy2.h>
-#include <Pixy2UART.h>
+#include "Pixy2UART.h"
 
 
 struct GoalData{
