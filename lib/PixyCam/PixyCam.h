@@ -3,8 +3,8 @@
 #define ARDUINO_PIXYCAM_H
 #include <Arduino.h>
 #include <Wire.h>
-#include <Pixy2.h>
-#include <Pixy2I2C.h>
+// #include <Pixy2.h>
+#include <Pixy2UART.h>
 
 
 struct GoalData{
