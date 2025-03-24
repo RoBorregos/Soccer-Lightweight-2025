@@ -16,7 +16,7 @@ struct GoalData{
 class PixyCam 
 {
 	private:
-	Pixy2I2C pixy_;
+	Pixy2UART pixy_;
 	uint8_t block;
 
 	public:
