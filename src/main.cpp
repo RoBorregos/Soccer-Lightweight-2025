@@ -4,6 +4,8 @@
 #include "motors.h"
 #include "ConstantsStricker.h"
 #include "Photo.h"
+#include "constants.h"
+
 Photo robotPthototransistors;
 stateMachineStricker robotStricker;
 
@@ -12,16 +14,21 @@ ConstantsStricker:: sides atackSide=ConstantsStricker::sides::yellow;
 
 void setup(){
     Serial.begin(115200);
+    Serial.println("Start");
     robotStricker.startObjects();
     delay(1600);
 }
 void loop(){
     bool leftLine=robotPthototransistors.CheckPhotoLeft();
+    Serial.println("frontLine check");
     bool rightLine=robotPthototransistors.CheckPhotoRight();
+    Serial.println("frontLine check");
     bool frontLine=robotPthototransistors.CheckPhotoFront();
+    Serial.println("frontLine check");
 
     state=ConstantsStricker::nothing;
     if((leftLine== false)||(rightLine== false)||(frontLine== false)){
+        Serial.println("entrando a line");
         state=ConstantsStricker::line;
     }else{
         state=ConstantsStricker::searchBall;

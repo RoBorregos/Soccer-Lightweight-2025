@@ -49,14 +49,12 @@ std::vector<GoalData> PixyCam::DetectGoals() {
   }
   int PixyCam::getY(uint8_t block){
   return pixy_.ccc.blocks[block].m_y;
-  
+
 }
   int PixyCam::getWidth(uint8_t block){
   return pixy_.ccc.blocks[block].m_width;
   }
-  
+
   int PixyCam::getHeight(uint8_t block){
   return pixy_.ccc.blocks[block].m_height;
-  
-}
-
+  }
