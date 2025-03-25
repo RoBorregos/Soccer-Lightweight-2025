@@ -12,16 +12,13 @@ int adjust_angle = 0;
 Motors motors(
     kMotor1In1, kMotor2In2, kMotor1Pwm,
     kMotor2In1, kMotor2In2, kMotor2Pwm,
-    kMotor3In1, kMotor3In2, kMotor3Pwm,
-    kMotor4In1, kMotor4In2, kMotor4Pwm 
-);
+    kMotor3In1, kMotor3In2, kMotor3Pwm);
 
 Bno bno;
 PID pid(1.5, 0.00735, 45, 200); // parametros para correccion angular (1.5, 0.00735, 45, 200)
 
 void setup() {
     Serial.begin(9600);
-    analogReadResolution(12);
     //ads.initializeAds();
     motors.InitializeMotors();  // Inicializar los motores
     Serial.println("Prueba de motores iniciada.");
