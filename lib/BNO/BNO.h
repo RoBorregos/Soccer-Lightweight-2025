@@ -18,7 +18,7 @@ class Bno
     bool GetisRight();
   
   private:
-    Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
+    Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
     double yaw;
     double target_yaw;
     double current_yaw;

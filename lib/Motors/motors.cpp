@@ -3,10 +3,11 @@
 #include "constants.h"
 
 Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uint8_t in1_2, uint8_t in2_2, uint8_t speed3, uint8_t in1_3, uint8_t in2_3) :
-upper_right_motor_(speed1, in1_1, in2_1),
-  upper_left_motor_(speed2, in1_2, in2_2),
-  lower_right_motor_(speed3, in1_3, in2_3),
-{};
+    upper_right_motor_(speed1, in1_1, in2_1),
+    upper_left_motor_(speed2, in1_2, in2_2),
+lower_right_motor_(speed3, in1_3, in2_3)
+{
+};
 
 void Motors::InitializeMotors()
 {
