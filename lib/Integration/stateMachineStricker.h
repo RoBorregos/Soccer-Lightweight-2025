@@ -48,7 +48,7 @@ class stateMachineStricker
 
 	public:
 
-	stateMachineStricker() : robotIrRing(), robotPid(1.5, 0.00735, 45, 200), Pixy(), motorsRobot(9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11, 10), robotPthototransistors(), bno(), current_time(millis()), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow), setpoint(0), translation_angle(0), adjust_angle(0), x(0), angle(0), numberObjects(0), heightGoal(10), block(0), weidthBlock1(0), weidthBlock2(0), weidthBlock3(0) {}
+	stateMachineStricker() : robotIrRing(), robotPid(1.5, 0.00735, 45, 200), Pixy(), motorsRobot(4,22,23,5,24,25,6,26,27), robotPthototransistors(), bno(), current_time(millis()), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow), setpoint(0), translation_angle(0), adjust_angle(0), x(0), angle(0), numberObjects(0), heightGoal(10), block(0), weidthBlock1(0), weidthBlock2(0), weidthBlock3(0) {}
 		// void searchBall(); // Duplicate declaration removed
 		/*void gol(int xPosition, int y1);
 		int getCorrectionsImu();

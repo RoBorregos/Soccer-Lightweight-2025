@@ -22,7 +22,6 @@ class PixyCam
 	public:
 	PixyCam();
 	void Init();
-	std::vector<GoalData> DetectGoals();
 	void updateData();
 	float angleGoal(float x);
 	int numBlocks();

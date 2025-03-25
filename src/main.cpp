@@ -13,7 +13,7 @@ ConstantsStricker:: stateMachine state;
 ConstantsStricker:: sides atackSide=ConstantsStricker::sides::yellow;
 
 void setup(){
-    Serial.begin(115200);
+    Serial.begin(19200);
     Serial.println("Start");
     robotStricker.startObjects();
     delay(1600);

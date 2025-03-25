@@ -22,17 +22,19 @@ const uint8_t MOTOR4_PWM = 10;*/
 const uint8_t MOTOR1_IN2 = 11;
 const uint8_t MOTOR1_PWM = 21;*/
 
-const uint8_t kMotor3In1 = 26; 
-const uint8_t kMotor3In2 = 27;
-const uint8_t kMotor3Pwm = 6; 
-
-const uint8_t kMotor2In1 = 24;
-const uint8_t kMotor2In2 = 25;
-const uint8_t kMotor2Pwm = 5; 
-
+const uint8_t kMotor1Pwm = 4;
 const uint8_t kMotor1In1 = 22;
 const uint8_t kMotor1In2 = 23;
-const uint8_t kMotor1Pwm = 4;
+
+const uint8_t kMotor3Pwm = 6; 
+const uint8_t kMotor3In1 = 26; 
+const uint8_t kMotor3In2 = 27;
+
+
+const uint8_t kMotor2Pwm = 5; 
+const uint8_t kMotor2In1 = 24;
+const uint8_t kMotor2In2 = 25;
+
 
 // Photo Left
 const uint8_t kPhotoLeftElements = 4;
@@ -44,9 +46,8 @@ const uint8_t kPhotoRightPins[kPhotoRightElements] = {A3}; // These are the pins
 
 // No photo front abailable on test
 // Photo Front
-const uint8_t kPhotoFrontElements = 3;
-const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A14, A15, A16};
-
+const uint8_t kPhotoFrontElements = 4;
+const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A9, A13,A14};
 
 
 // Photo Treshold
