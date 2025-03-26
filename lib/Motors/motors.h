@@ -17,6 +17,9 @@ public:
     void InitializeMotors();
     void SetAllSpeeds(uint8_t speed);
     void StopAllMotors();
+    void MoveMotor1();
+    void MoveMotor2();
+    void MoveMotor3();
     void MoveBaseForward();
     void MoveBaseBackward();
     void MoveBaseRight();

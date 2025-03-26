@@ -42,6 +42,21 @@ void Motors::StopAllMotors()
     upper_left_motor_.StopMotor();
     lower_center_motor_.StopMotor();
 };
+
+void Motors::MoveMotor1()
+{
+    upper_right_motor_.MoveForward();
+};
+
+void Motors::MoveMotor2()
+{
+    upper_left_motor_.MoveForward();
+};
+
+void Motors::MoveMotor3()
+{
+    lower_center_motor_.MoveForward();
+};
 /*
 void Motors::MoveBaseForward()
 {
