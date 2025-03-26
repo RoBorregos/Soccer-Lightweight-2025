@@ -37,17 +37,17 @@ const uint8_t kMotor2In2 = 25;
 
 
 // Photo Left
-const uint8_t kPhotoLeftElements = 2;
-const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1}; // These are the pins abailable on robot where test was done
+const uint8_t kPhotoLeftElements = 5;
+const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1,A2,A3,A4}; // These are the pins abailable on robot where test was done
 
 // Photo Right
-const uint8_t kPhotoRightElements = 1;
-const uint8_t kPhotoRightPins[kPhotoRightElements] = {A3}; // These are the pins abailable on robot where test was done
+const uint8_t kPhotoRightElements = 5;
+const uint8_t kPhotoRightPins[kPhotoRightElements] = {A5,A6,A7,A8,A9}; // These are the pins abailable on robot where test was done
 
 // No photo front abailable on test
 // Photo Front
-const uint8_t kPhotoFrontElements = 4;
-const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A9, A13,A14};
+const uint8_t kPhotoFrontElements = 2;
+const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 
 
 // Photo Treshold
