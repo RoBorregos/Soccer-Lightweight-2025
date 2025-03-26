@@ -37,8 +37,8 @@ const uint8_t kMotor2In2 = 25;
 
 
 // Photo Left
-const uint8_t kPhotoLeftElements = 4;
-const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1,}; // These are the pins abailable on robot where test was done
+const uint8_t kPhotoLeftElements = 2;
+const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1}; // These are the pins abailable on robot where test was done
 
 // Photo Right
 const uint8_t kPhotoRightElements = 1;
@@ -51,7 +51,9 @@ const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A9, A13,A14};
 
 
 // Photo Treshold
-const int kPhotoTreshold = 2500;
+const int kPhotoTresholdLeft = 113;
+const int kPhotoTresholdRight=387;
+const int kPhotoTresholdFront=77;
 
 // Receive signals
 const uint8_t kReceiveBno = 's';
