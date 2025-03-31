@@ -23,14 +23,14 @@ void Motor::SetSpeed(const uint8_t pwm, const uint8_t speed)
 void Motor::MoveForward()
 {
 
-    digitalWrite(in1_, HIGH);
-    digitalWrite(in2_, LOW);
+    digitalWrite(in1_, LOW);
+    digitalWrite(in2_, HIGH);
 };
 
 void Motor::MoveBackward()
 {
-    digitalWrite(in1_, LOW);
-    digitalWrite(in2_, HIGH);
+    digitalWrite(in1_, HIGH);
+    digitalWrite(in2_, LOW);
 };
 
 void Motor::StopMotor()

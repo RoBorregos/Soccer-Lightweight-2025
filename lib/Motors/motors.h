@@ -10,8 +10,7 @@ class Motors
 public:
     Motor upper_right_motor_;
     Motor upper_left_motor_;
-    Motor lower_right_motor_;
-    Motor lower_left_motor_;
+    Motor lower_center_motor_;
     Motors(){};
     Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1,
            uint8_t speed2, uint8_t in1_2, uint8_t in2_2,
@@ -19,16 +18,19 @@ public:
       // Getters
     Motor getUpperRightMotor() const { return upper_right_motor_; }
     Motor getUpperLeftMotor() const { return upper_left_motor_; }
-    Motor getLowerRightMotor() const { return lower_right_motor_; }
+    Motor getLowerRightMotor() const { return lower_center_motor_; }
   
       // Setters
     void setUpperRightMotor(const Motor& motor) { upper_right_motor_ = motor; }
     void setUpperLeftMotor(const Motor& motor) { upper_left_motor_ = motor; }
-    void setLowerRightMotor(const Motor& motor) { lower_right_motor_ = motor; }
+    void setLowerRightMotor(const Motor& motor) { lower_center_motor_ = motor; }
   
     void InitializeMotors();
     void SetAllSpeeds(uint8_t speed);
     void StopAllMotors();
+    void MoveMotor1();
+    void MoveMotor2();
+    void MoveMotor3();
     void MoveBaseForward();
     void MoveBaseBackward();
     void MoveBaseRight();

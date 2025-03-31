@@ -8,6 +8,7 @@
 
 Photo robotPthototransistors;
 stateMachineStricker robotStricker;
+PID pidrobot(0.2,0.0735,45,200);
 
 ConstantsStricker:: stateMachine state;
 ConstantsStricker:: sides atackSide=ConstantsStricker::sides::yellow;
