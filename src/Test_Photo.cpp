@@ -10,7 +10,6 @@ Photo photo;
 
 void setup() {
     Serial.begin(9600);
-    analogReadResolution(12);
 }
 
 void loop() {
