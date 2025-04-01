@@ -49,6 +49,7 @@ void loop() {
     if (PhotoLeftOnLine) {
         Serial.println("Photo Left on line");
         motor_start_millis = currentTime;
+        // motors.MoveBaseWithImu(270, 255, 0);
         if (currentTime - motor_start_millis >= motor_photo_correction)
         {
         motors.StopAllMotors();
@@ -58,6 +59,7 @@ void loop() {
     if (PhotoRightOnLine) {
         Serial.println("Photo Right on line");
         motor_start_millis = currentTime;
+        // motors.MoveBaseWithImu(90, 255, 0);
         if (currentTime - motor_start_millis >= motor_photo_correction)
         {
         motors.StopAllMotors();
@@ -67,6 +69,7 @@ void loop() {
     if (PhotoFrontOnLine) {
         Serial.println("Photo Front on line");
         motor_start_millis = currentTime;
+        // motors.MoveBaseWithImu(180, 255, 0);
         if (currentTime - motor_start_millis >= motor_photo_correction)
         {
         motors.StopAllMotors();

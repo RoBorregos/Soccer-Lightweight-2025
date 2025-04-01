@@ -42,12 +42,9 @@ const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1, A4, A5}; // These ar
 const uint8_t kPhotoRightElements = 4;
 const uint8_t kPhotoRightPins[kPhotoRightElements] = {A6, A7, A10, A11}; // These are the pins abailable on robot where test was done
 
-// No photo front abailable on test
 // Photo Front
 const uint8_t kPhotoFrontElements = 4;
 const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A9, A13, A14};
-
-
 
 // Photo Treshold
 const int kPhotoTreshold = 2500;
