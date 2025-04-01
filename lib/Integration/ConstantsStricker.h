@@ -12,7 +12,7 @@ class ConstantsStricker
 		static const uint8_t kVelocityCorrectionLine = 255;
     	static const uint8_t kVelocitySearchBall = 150;
     	static const uint8_t kVelocityAtack=150;
-		static const uint8_t kAnalogReadPin = A4;
+
 		//static const int trigPin = 36; para ultrasónico
 		//static const int echoPin = 38;
 	

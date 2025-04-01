@@ -6,9 +6,14 @@
 #include "Photo.h"
 #include "constants.h"
 
+//Photo &robotPthototransistors;
+stateMachineStricker *robot = nullptr;
+Bno bno;
+IRRing robotIrRing;
+Motors motorsRobot(4, 22,23,5,24,25,6,26,27);
+PixyCam Pixy;
+PID robotPid(0.2, 0.0735,45,200);
 Photo robotPthototransistors;
-stateMachineStricker robotStricker;
-PID pidrobot(0.2,0.0735,45,200);
 
 ConstantsStricker:: stateMachine state;
 ConstantsStricker:: sides atackSide=ConstantsStricker::sides::yellow;
@@ -16,15 +21,18 @@ ConstantsStricker:: sides atackSide=ConstantsStricker::sides::yellow;
 void setup(){
     Serial.begin(19200);
     Serial.println("Start");
-    robotStricker.startObjects();
+    stateMachineStricker robotStricker(&robotIrRing,&robotPid,&Pixy, &motorsRobot, &robotPthototransistors,&bno);
+    robot = &robotStricker;
+    robot->startObjects();
     delay(1600);
 }
+
 void loop(){
-    bool leftLine=robotPthototransistors.CheckPhotoLeft();
+    bool leftLine=robot->robotPthototransistors->CheckPhotoLeft();
     Serial.println("frontLine check");
-    bool rightLine=robotPthototransistors.CheckPhotoRight();
+    bool rightLine=robot->robotPthototransistors->CheckPhotoRight();
     Serial.println("frontLine check");
-    bool frontLine=robotPthototransistors.CheckPhotoFront();
+    bool frontLine=robot->robotPthototransistors->CheckPhotoFront();
     Serial.println("frontLine check");
 
     state=ConstantsStricker::nothing;
@@ -37,16 +45,16 @@ void loop(){
     //Line
    if(state==ConstantsStricker::stateMachine::line){
         if(leftLine== false){
-            robotStricker.avoidLine(-45);
+            robot->avoidLine(-45);
             state=ConstantsStricker::searchBall;
             Serial.println("searchBall left");
     
         }else if(rightLine== false){
-            robotStricker.avoidLine(45);
+            robot->avoidLine(45);
             state=ConstantsStricker::searchBall;
             Serial.println("searchBall right");
         }else if (frontLine== false){
-            robotStricker.avoidLine(-90);
+            robot->avoidLine(-90);
             state=ConstantsStricker::searchBall;
             Serial.println("searchBall front");
    }}
@@ -61,13 +69,13 @@ void loop(){
   //Search ball
   if(state==ConstantsStricker::searchBall){
     Serial.println("search");
-    robotStricker.searchBall();
+    robot->searchBall();
     state=ConstantsStricker::scoreGoal;
 
   }
   //Go to the goal with the ball
   if(state==ConstantsStricker::scoreGoal){
     Serial.println("gol");
-    robotStricker.goToGoal();
+    robot->goToGoal();
 }
 }

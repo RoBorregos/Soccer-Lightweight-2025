@@ -29,9 +29,9 @@ public:
   int8_t open(uint32_t arg)
   {
 	if (arg==PIXY_DEFAULT_ARGVAL)
-      Serial1.begin(PIXY_UART_BAUDRATE);
+      Serial3.begin(PIXY_UART_BAUDRATE);
     else
-      Serial1.begin(arg);      
+      Serial3.begin(arg);      
     return 0;
   }
 	

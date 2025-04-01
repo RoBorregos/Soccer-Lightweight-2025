@@ -1,23 +1,21 @@
 #include "stateMachineStricker.h"
-void stateMachineStricker::startObjects(){
-    Serial.begin(9600);
-    this->current_time = millis();
-    
-    robotPid=new PID(0.2, 0.0735,45,200);
-    bno= new Bno();
-    robotIrRing= new IRRing();
-    motorsRobot=new Motors(4, 22,23,5,24,25,6,26,27);
-    Pixy= new PixyCam();
-    robotPthototransistors=new Photo();
 
-    this->robotPid->setKp(0.2);
-    this->robotPid->setMinToMove(40);
+stateMachineStricker::stateMachineStricker(IRRing *ir, PID *pidRobot, PixyCam *pixy, Motors *Robotmotors, Photo *phot, Bno *bnoRobot){
+    this->robotIrRing = ir;
+    this->robotPid;
+    this->Pixy = pixy;
+    this->motorsRobot= Robotmotors;
+    this->robotPthototransistors=phot;
+    this->bno=bnoRobot;
+
+
+}
+void stateMachineStricker::startObjects(){
+    this->current_time = millis();
     this->bno->InitializeBNO();
     this->robotIrRing->Init(&current_time);
     this->robotIrRing->UpdateData();
     this->motorsRobot->InitializeMotors();
-
-    pinMode(ConstantsStricker::kAnalogReadPin, INPUT);
     //pinMode(ConstantsStricker::trigPin, OUTPUT); Cuando se incluya ultrasónico
     //pinMode(ConstantsStricker::echoPin, INPUT);
 } //está sos ver si se puede quitar 

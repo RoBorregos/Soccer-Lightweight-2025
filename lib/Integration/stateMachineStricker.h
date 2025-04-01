@@ -20,26 +20,20 @@
 class stateMachineStricker  
 {
 	private:
-	IRRing *robotIrRing;
-	PID *robotPid;
-	//Bno gyro;
-	PixyCam *Pixy;
-	Motors *motorsRobot;
-	Photo *robotPthototransistors;
-	Bno *bno;
+
 	unsigned long current_time;
-	int last=1;
-	int lastP=1;
+	uint8_t last=1;
+	uint8_t lastP=1;
 	ConstantsStricker:: stateMachine state;
 	ConstantsStricker:: sides atack=ConstantsStricker::sides::yellow;
-	int setpoint = 0;
-	int translation_angle = 0;
-	int adjust_angle = 0;
+	uint8_t setpoint = 0;
+	uint8_t translation_angle = 0;
+	uint8_t adjust_angle = 0;
 	float x=0;
-	int angle=0;
-	int numberObjects=0;
-	int heightGoal=10;
-	const int heightGoalMax=20;
+	uint8_t angle=0;
+	uint8_t numberObjects=0;
+	uint8_t heightGoal=10;
+	const uint8_t heightGoalMax=20;
 	uint8_t block;
 	float weidthBlock1=0;
 	float weidthBlock2=0;
@@ -48,8 +42,9 @@ class stateMachineStricker
 
 	public:
 
-	stateMachineStricker() : robotIrRing(nullptr), robotPid(nullptr), Pixy(nullptr),motorsRobot(nullptr),robotPthototransistors(nullptr),bno(nullptr), current_time(0), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow), setpoint(0), translation_angle(0), adjust_angle(0), x(0), angle(0), numberObjects(0), heightGoal(10), block(0), weidthBlock1(0), weidthBlock2(0), weidthBlock3(0) {}
-		// void searchBall(); // Duplicate declaration removed
+	//stateMachineStricker() : robotIrRing(nullptr), pidRobot(nullptr), Pixy(nullptr),motorsRobot(nullptr),robotPthototransistors(nullptr),bno(nullptr), current_time(0), last(1), lastP(1), state(), atack(ConstantsStricker::sides::yellow), setpoint(0), translation_angle(0), adjust_angle(0), x(0), angle(0), numberObjects(0), heightGoal(10), block(0), weidthBlock1(0), weidthBlock2(0), weidthBlock3(0) {}
+	stateMachineStricker(IRRing *ir, PID *pidRobot, PixyCam *pixy, Motors *robotMotors, Photo *phot, Bno *bnoRobot);	
+	// void searchBall(); // Duplicate declaration removed
 		/*void gol(int xPosition, int y1);
 		int getCorrectionsImu();
 		int getCorrectionsImuTarget(int target);
@@ -62,6 +57,13 @@ class stateMachineStricker
 		void searchBall();
 		void goToGoal();
 		void avoidLine(int angle);
+		IRRing *robotIrRing;
+		PID *robotPid;
+	//Bno gyro;
+		PixyCam *Pixy;
+		Motors *motorsRobot;
+		Photo *robotPthototransistors;
+		Bno *bno;
 
 	
 		
