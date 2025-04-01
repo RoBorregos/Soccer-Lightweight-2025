@@ -38,7 +38,7 @@ void loop() {
     irring.UpdateData();
     double angle=irring.GetAngle();
     double newAngle=(angle<0 ? 360+angle:angle);
-    // newAngle=360-newAngle;
+    newAngle=360-newAngle;
     double strength=irring.GetStrength();
     
     // Added this condition to have control of the robot during the test

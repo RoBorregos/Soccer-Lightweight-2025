@@ -25,12 +25,4 @@ void loop() {
     delay(6000);
     motors.StopAllMotors();
     */
-/*
-    for (i = 0; i < 360; i++) {
-        motors.MoveBaseWithImu(i, 120, 0);
-        delay(500);
-        motors.StopAllMotors();
-        delay(50);
-    }
-        */
 }

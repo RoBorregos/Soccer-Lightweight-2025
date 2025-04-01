@@ -94,9 +94,9 @@ void Motors::MoveBaseBackward()
 
 void Motors::MoveBaseInDirection(int degree, uint8_t speed)
 {
-    float m1 = cos(((60 + degree) * PI / 180));
-    float m2 = cos(((180 + degree) * PI / 180));
-    float m3 = cos(((300 + degree) * PI / 180));
+    float m1 = cos(((30 - degree) * PI / 180));
+    float m2 = cos(((150 - degree) * PI / 180));
+    float m3 = cos(((270 - degree) * PI / 180));
     int speedA = abs(int(m1 * speed));
     int speedB = abs(int(m2 * speed));
     int speedC = abs(int(m3 * speed));
@@ -104,13 +104,17 @@ void Motors::MoveBaseInDirection(int degree, uint8_t speed)
     analogWrite(upper_right_motor_.GetSpeed(), speedA);
     analogWrite(upper_left_motor_.GetSpeed(), speedB);
     analogWrite(lower_center_motor_.GetSpeed(), speedC);
+
+    if (m1 >= 0) upper_right_motor_.MoveForward(); else upper_right_motor_.MoveBackward();
+    if (m2 >= 0) upper_left_motor_.MoveForward(); else upper_left_motor_.MoveBackward();
+    if (m3 >= 0) lower_center_motor_.MoveForward(); else lower_center_motor_.MoveBackward();
 };
 
 void Motors::MoveBaseWithImu(double degree, uint8_t speed, double speed_w)
 {
-    float m2 = cos(((60 + degree) * PI / 180)) * speed + speed_w;
-    float m3 = cos(((180 + degree) * PI / 180)) * speed + speed_w;
-    float m1 = cos(((300 + degree) * PI / 180)) * speed + speed_w;
+    float m1 = cos(((30 - degree) * PI / 180)) * speed + speed_w;
+    float m2 = cos(((150 - degree) * PI / 180)) * speed + speed_w;
+    float m3 = cos(((270 - degree) * PI / 180)) * speed + speed_w;
     int speedA = abs(int(m1));
     int speedB = abs(int(m2));
     int speedC = abs(int(m3));
