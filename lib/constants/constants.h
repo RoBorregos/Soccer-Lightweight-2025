@@ -24,30 +24,32 @@ const uint8_t MOTOR1_PWM = 21;*/
 
 const uint8_t kMotor3In1 = 53; // Back center motor
 const uint8_t kMotor3In2 = 52;
-const uint8_t kMotor3Pwm = 8; 
+const uint8_t kMotor3Pwm = 5; 
 
 const uint8_t kMotor2In1 = 50; // Derecha
 const uint8_t kMotor2In2 = 51;
-const uint8_t kMotor2Pwm = 9; 
+const uint8_t kMotor2Pwm = 6; 
 
 const uint8_t kMotor1In1 = 48; // Izquierda
 const uint8_t kMotor1In2 = 49;
-const uint8_t kMotor1Pwm = 10;
+const uint8_t kMotor1Pwm = 7;
 
 // Photo Left
-const uint8_t kPhotoLeftElements = 4;
-const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1, A4, A5}; // These are the pins abailable on robot where test was done
+const uint8_t kPhotoLeftElements = 5;
+const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1,A2,A3,A4}; // These are the pins abailable on robot where test was done
 
 // Photo Right
-const uint8_t kPhotoRightElements = 4;
-const uint8_t kPhotoRightPins[kPhotoRightElements] = {A6, A7, A10, A11}; // These are the pins abailable on robot where test was done
+const uint8_t kPhotoRightElements = 5;
+const uint8_t kPhotoRightPins[kPhotoRightElements] = {A5,A6,A7,A8,A9}; // These are the pins abailable on robot where test was done
 
 // Photo Front
-const uint8_t kPhotoFrontElements = 4;
-const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A9, A13, A14};
+const uint8_t kPhotoFrontElements = 2;
+const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 
 // Photo Treshold
-const int kPhotoTreshold = 2500;
+const int kPhotoTresholdLeft = 113;
+const int kPhotoTresholdRight = 387;
+const int kPhotoTresholdFront = 77;
 
 // Receive signals
 const uint8_t kReceiveBno = 's';
