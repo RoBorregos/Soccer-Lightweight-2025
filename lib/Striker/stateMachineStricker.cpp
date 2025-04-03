@@ -1,0 +1,130 @@
+#include "stateMachineStricker.h"
+
+stateMachineStricker::stateMachineStricker(IRRing *ir, PID *pidRobot, PixyCam *pixy, Motors *Robotmotors, Photo *phot, Bno *bnoRobot){
+    this->robotIrRing = ir;
+    this->robotPid;
+    this->Pixy = pixy;
+    this->motorsRobot= Robotmotors;
+    this->robotPthototransistors=phot;
+    this->bno=bnoRobot;
+
+
+}
+void stateMachineStricker::startObjects(){
+    this->current_time = millis();
+    this->bno->InitializeBNO();
+    this->robotIrRing->Init(&current_time);
+    this->robotIrRing->UpdateData();
+    this->motorsRobot->InitializeMotors();
+    //pinMode(ConstantsStricker::trigPin, OUTPUT); Cuando se incluya ultrasónico
+    //pinMode(ConstantsStricker::echoPin, INPUT);
+} //está sos ver si se puede quitar 
+//-------------------------------------IR Ring
+//Search and move according to the position of the ball
+void stateMachineStricker::searchBall(){
+    Serial.println("iniciando searchBall function");
+    this->bno->GetBNOData();
+    double yaw=this->bno->GetYaw();
+   this ->current_time = millis();
+    this->robotIrRing->Init(&this->current_time);
+    this->robotIrRing->SetOffset(0.0);
+    translation_angle = 0;
+    adjust_angle = translation_angle - 90;
+    double speed_w = this->robotPid->Calculate(setpoint, yaw);
+    if(speed_w != 0){
+        this->motorsRobot->StopAllMotors();
+        this->motorsRobot->MoveBaseWithImu(0, 0, speed_w);
+    }
+
+    this->robotIrRing->UpdateData();
+    double angle=this->robotIrRing->GetAngle();
+    double newAngle=(angle<0 ? 360+angle:angle);
+    //newAngle=360-newAngle;
+    double strength=this->robotIrRing->GetStrength();
+
+    // Added this condition to have control of the robot during the test
+    if (newAngle >= 45 && newAngle <= 315) {
+        this->motorsRobot->MoveBaseWithImu(newAngle,150,0);
+        Serial.println("fuera de rango");
+    }
+    else if (newAngle < 45 || newAngle > 315) {
+        this->motorsRobot->StopAllMotors();
+        Serial.println("dentro de rango");
+    }
+    Serial.print("Angle: ");
+    Serial.print(newAngle);
+    Serial.print("\tradio: ");
+    Serial.println(strength);
+    delay(50);
+}
+void stateMachineStricker::goToGoal(){
+    Serial.println("atack function");
+    this->bno->GetBNOData();
+    double yaw=this->bno->GetYaw();
+    unsigned long currentTime = millis();
+    static unsigned long lastMoveTime=0;
+    this->robotIrRing->Init(&currentTime);
+    this->Pixy->updateData();
+    int numberObjects=this->Pixy->numBlocks();
+
+    int bestBlock=-1;
+    int maxWidth=0;
+    int bestHeight=0;
+
+    for(int i=0;i<numberObjects;i++){
+        int height= this->Pixy->getHeight(i);
+        int width= this->Pixy->getWidth(i);
+
+        if (height> heightGoalMax){
+            if(width>maxWidth){
+                maxWidth=width;
+                bestBlock=i;
+                bestHeight=height;
+        }
+    }
+}
+    float x= this->Pixy->getX(bestBlock);
+    int setpoint= this->Pixy->angleGoal(x);
+    double speed_w = this->robotPid->Calculate(setpoint, yaw);
+
+    if (bestHeight>= heightGoalMax){
+        this->motorsRobot->StopAllMotors();
+        delay(500);
+        this->motorsRobot->MoveBaseWithImu(180,255,0);
+        delay(1000);
+        this->motorsRobot->StopAllMotors();
+        return;
+    }
+
+
+    if(millis()-lastMoveTime>1000){
+            this->motorsRobot->MoveBaseWithImu(setpoint,ConstantsStricker::kVelocityAtack, speed_w);
+            lastMoveTime=millis();
+    }
+    if (millis()-lastMoveTime>2000){
+        this->motorsRobot->StopAllMotors();
+
+}
+}
+
+void stateMachineStricker::avoidLine(int angle){
+    this ->bno->InitializeBNO();
+    Serial.println("avoid line function");
+    this->bno->GetBNOData();
+    Serial.println("Getting BNO data");
+    double yaw=this ->bno->GetYaw();
+    Serial.println("Getting yaw");
+    double speed_w = this->robotPid->Calculate(0, yaw);
+    Serial.println("getting w speed");
+    unsigned long currentTime = millis();
+    while(millis()-currentTime<1000){
+        Serial.println("Starting movement");
+        Serial.print("MoveBaseWithImu - Angle: "); Serial.print(angle);
+        Serial.print(" Velocity: "); Serial.print(ConstantsStricker::kVelocityCorrectionLine);
+        Serial.print(" Speed_W: "); Serial.println(speed_w);
+        this->motorsRobot->MoveBaseWithImu(angle,ConstantsStricker::kVelocityCorrectionLine, speed_w);
+        delay(100);
+    }
+    this->motorsRobot->StopAllMotors();
+
+}
