@@ -37,6 +37,6 @@ Serial.println(yaw);
 
 if(speed_w != 0){
     motors.StopAllMotors();
-    motors.MoveBaseWithImu(0, 0, speed_w);
+    motors.MoveOmnidirectionalBase(0, 0, speed_w);
 }
 }

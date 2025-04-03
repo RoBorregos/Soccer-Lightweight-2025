@@ -32,7 +32,7 @@ void loop() {
    
     if(speed_w != 0){
         motors.StopAllMotors();
-        motors.MoveBaseWithImu(0, 0, speed_w);
+        motors.MoveOmnidirectionalBase(0, 0, speed_w);
     }
 
     irring.UpdateData();
@@ -43,7 +43,7 @@ void loop() {
     
     // Added this condition to have control of the robot during the test
     if (newAngle > 45 && newAngle < 315) {
-        motors.MoveBaseWithImu(newAngle,150,0);
+        motors.MoveOmnidirectionalBase(newAngle,150,0);
         Serial.println("fuera de rango");
     }
     else if (newAngle < 45 || newAngle > 315) {

@@ -2,10 +2,10 @@
 #include "Arduino.h"
 #include "constants.h"
 
-Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uint8_t in1_2, uint8_t in2_2, uint8_t speed3, uint8_t in1_3, uint8_t in2_3) 
-:upper_right_motor_(speed2, in1_2, in2_2),
-  upper_left_motor_(speed1, in1_1, in2_1),
-  lower_center_motor_(speed3, in1_3, in2_3)
+Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uint8_t in1_2, uint8_t in2_2, uint8_t speed3, uint8_t in1_3, uint8_t in2_3) :
+    upper_right_motor_(speed2, in1_2, in2_2),
+    upper_left_motor_(speed1, in1_1, in2_1),
+    lower_center_motor_(speed3, in1_3, in2_3)
 {};
 
 void Motors::InitializeMotors()
@@ -16,15 +16,15 @@ void Motors::InitializeMotors()
 };
 // Sets the speed for all motors simultaneously.
 
-void Motors::SetAllSpeeds(uint8_t speed)
+void Motors::SetAllSpeeds(uint8_t pwm)
 {
-    upper_right_motor_.SetSpeed(kMotor1Pwm, speed);
-    upper_left_motor_.SetSpeed(kMotor2Pwm, speed);
-    lower_center_motor_.SetSpeed(kMotor3Pwm, speed);
+    upper_right_motor_.SetPWM(pwm);
+    upper_left_motor_.SetPWM(pwm);
+    lower_center_motor_.SetPWM(pwm);
 };
 
 // Prints the current speed of all motors to the serial monitor.
-void Motors::GetAllSpeeds()
+/*void Motors::GetAllSpeeds()
 {
     Serial.print("Motor 1: ");
     Serial.println(upper_right_motor_.GetSpeed());
@@ -32,10 +32,8 @@ void Motors::GetAllSpeeds()
     Serial.println(upper_left_motor_.GetSpeed());
     Serial.print("Motor 3: ");
     Serial.println(lower_center_motor_.GetSpeed());
-};
+};*/
 
-
-// Stops all motors by setting their speed to zero.
 void Motors::StopAllMotors()
 {
     upper_right_motor_.StopMotor();
@@ -43,87 +41,12 @@ void Motors::StopAllMotors()
     lower_center_motor_.StopMotor();
 };
 
-void Motors::MoveMotor1()
+void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w)
 {
-    upper_left_motor_.MovePositive();
-};
-
-void Motors::MoveMotor2()
-{
-    lower_center_motor_.MovePositive();
-};
-
-void Motors::MoveMotor3()
-{
-    upper_right_motor_.MovePositive();
-};
-/*
-void Motors::MoveBaseForward()
-{
-    upper_right_motor_.MoveForward();
-    upper_left_motor_.MoveForward();
-    lower_right_motor_.MoveForward();
-    lower_left_motor_.MoveForward();
-};
-
-void Motors::MoveBaseRight()
-{
-    StopAllMotors();
-    upper_right_motor_.MoveForward();
-    upper_left_motor_.MoveBackward();
-    lower_right_motor_.MoveBackward();
-    lower_left_motor_.MoveBackward();
-};
-
-void Motors::MoveBaseLeft()
-{
-    StopAllMotors();
-    upper_right_motor_.MoveBackward();
-    upper_left_motor_.MoveForward();
-    lower_right_motor_.MoveForward();
-    lower_left_motor_.MoveForward();
-};
-
-void Motors::MoveBaseBackward()
-{
-    StopAllMotors();
-    upper_left_motor_.MoveBackward();
-    lower_right_motor_.MoveForward();
-};
-*/
-
-void Motors::MoveBaseInDirection(int degree, uint8_t speed)
-{
-    float m1 = cos(((degree - 150) * PI / 180));
-    float m2 = cos(((degree - 270) * PI / 180));
-    float m3 = cos(((degree - 30) * PI / 180));
-    int speedA = abs(int(m1 * speed));
-    int speedB = abs(int(m2 * speed));
-    int speedC = abs(int(m3 * speed));
-
-    analogWrite(upper_left_motor_.GetSpeed(), speedA);
-    analogWrite(lower_center_motor_.GetSpeed(), speedB);
-    analogWrite(upper_right_motor_.GetSpeed(), speedC);
-
-    if (m1 >= 0) upper_left_motor_.MovePositive(); else upper_left_motor_.MoveNegative();
-    if (m2 >= 0) lower_center_motor_.MovePositive(); else lower_center_motor_.MoveNegative();
-    if (m3 >= 0) upper_right_motor_.MovePositive(); else upper_right_motor_.MoveNegative();
-};
-
-void Motors::MoveBaseWithImu(double degree, uint8_t speed, double speed_w)
-{
-    float m1 = cos(((degree - 150) * PI / 180)) * speed + speed_w;
-    float m2 = cos(((degree - 270) * PI / 180)) * speed + speed_w;
-    float m3 = cos(((degree - 30) * PI / 180)) * speed + speed_w;
-    int speedA = abs(int(m1));
-    int speedB = abs(int(m2));
-    int speedC = abs(int(m3));
-
-    analogWrite(upper_left_motor_.GetSpeed(), speedA);
-    analogWrite(lower_center_motor_.GetSpeed(), speedB);
-    analogWrite(upper_right_motor_.GetSpeed(), speedC);
-
-    if (m1 >= 0) upper_left_motor_.MovePositive(); else upper_left_motor_.MoveNegative();
-    if (m2 >= 0) lower_center_motor_.MovePositive(); else lower_center_motor_.MoveNegative();
-    if (m3 >= 0) upper_right_motor_.MovePositive(); else upper_right_motor_.MoveNegative();
+    float upper_left_speed = cos(((degree - 150) * PI / 180)) * speed + speed_w;
+    float lower_center_speed = cos(((degree - 270) * PI / 180)) * speed + speed_w;
+    float upper_right_speed = cos(((degree - 30) * PI / 180)) * speed + speed_w;
+    upper_left_motor_.SetSpeed(upper_left_speed);
+    lower_center_motor_.SetSpeed(lower_center_speed);
+    upper_right_motor_.SetSpeed( upper_right_speed);
 };

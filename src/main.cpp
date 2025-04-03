@@ -27,7 +27,7 @@ void setup() {
 void loop() {
 
     bno.GetBNOData();
-    motors.MoveBaseWithImu(15, 150, 0);
+    motors.MoveOmnidirectionalBase(15, 150, 0);
     
 
     /*
