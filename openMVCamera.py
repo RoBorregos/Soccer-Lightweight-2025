@@ -9,8 +9,8 @@ import sensor
 import pyb
 from pyb import UART
 uart = UART(3, 115200, timeout_char=0)
-treshold_yellowgoal=(42, 99, -33, 40, 10, 72)
-treshold_bluegoal=(13, 80, 47, -36, -78, -14)
+THRESHOLD_YELLOW_GOAL=(42, 99, -33, 40, 10, 72)
+THRESHOLD_BLUE_GOAL=(13, 80, 47, -36, -78, -14)
 
 blue_led=pyb.LED(3)
 red_led=pyb.LED(1)
