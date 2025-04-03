@@ -1,4 +1,4 @@
-/*#include <Arduino.h>
+#include <Arduino.h>
 #include "PixyCam.h"
 #include <Pixy2UART.h>
 
@@ -23,8 +23,8 @@ void loop(){
     Serial.println(pixyCamRobot.getSignature());
     Serial.println("Weidth:");
     Serial.println(pixyCamRobot.getWidth(1));
-}*/
-#include <Arduino.h>
+}
+/*#include <Arduino.h>
 #include "PixyCam.h"
 #include <Pixy2UART.h>
 
@@ -79,4 +79,4 @@ void loop() {
     }
 
     delay(500);  // Pausa antes de la siguiente lectura
-}
+}*/

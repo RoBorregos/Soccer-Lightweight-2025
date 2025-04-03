@@ -14,14 +14,13 @@ PID pid(1.5, 0.00735, 45, 200);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
-    kMotor3Pwm, kMotor3In1, kMotor3In2,
-    kMotor4Pwm, kMotor4In1, kMotor4In2
+    kMotor3Pwm, kMotor3In1, kMotor3In2
 );
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
     unsigned long currentTime = millis();
-    irring.init(&currentTime);
+    irring.Init(&currentTime);
     irring.SetOffset(0.0);
 }
 void loop() {

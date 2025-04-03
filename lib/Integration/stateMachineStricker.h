@@ -32,8 +32,9 @@ class stateMachineStricker
 	float x=0;
 	uint8_t angle=0;
 	uint8_t numberObjects=0;
-	uint8_t heightGoal=10;
-	const uint8_t heightGoalMax=20;
+	uint8_t heightGoal=0;
+	const uint8_t heightGoalMax=3;
+	uint8_t bestHeight=0;
 	uint8_t block;
 	float weidthBlock1=0;
 	float weidthBlock2=0;

@@ -22,7 +22,7 @@ sensor.set_auto_whitebal(False)
 clock=time.clock()
 detected_goals=[]
 
-def Init();
+def Init():
     pass
 def updateData():
     global detected_goals

@@ -2,7 +2,7 @@
 #define ARDUINO_PIXYCAM_H
 #include <Arduino.h>
 #include <Wire.h>
-//#include <Pixy2.h>
+#include <Pixy2.h>
 #include <Pixy2UART.h>
 
 
@@ -16,7 +16,7 @@ struct GoalData{
 class PixyCam 
 {
 	private:
-	Pixy2UART pixy_;
+	Pixy2 pixy_;
 	uint8_t block;
 
 	public:

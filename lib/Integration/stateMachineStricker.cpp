@@ -66,20 +66,37 @@ void stateMachineStricker::goToGoal(){
     this->robotIrRing->Init(&currentTime);
     this->Pixy->updateData();
     int numberObjects=this->Pixy->numBlocks();
+    
     int bestBlock=-1;
     int maxWidth=0;
+    int bestHeight=0;
+
     for(int i=0;i<numberObjects;i++){
-        if (this->Pixy->getHeight(i)>heightGoalMax){
-        int width=this->Pixy->getWidth(i);
-        if(width>maxWidth){
-            maxWidth=width;
-            bestBlock=i;
+        int height= this->Pixy->getHeight(i);
+        int width= this->Pixy->getWidth(i);
+
+        if (height> heightGoalMax){
+            if(width>maxWidth){
+                maxWidth=width;
+                bestBlock=i;
+                bestHeight=height;
         }
     }
 }
     float x= this->Pixy->getX(bestBlock);
     int setpoint= this->Pixy->angleGoal(x);
     double speed_w = this->robotPid->Calculate(setpoint, yaw);
+    
+    if (bestHeight>= heightGoalMax){
+        this->motorsRobot->StopAllMotors();
+        delay(500);
+        this->motorsRobot->MoveBaseWithImu(180,255,0);
+        delay(1000);
+        this->motorsRobot->StopAllMotors();
+        return;
+    }
+    
+    
     if(millis()-lastMoveTime>1000){
             this->motorsRobot->MoveBaseWithImu(setpoint,ConstantsStricker::kVelocityAtack, speed_w);
             lastMoveTime=millis();

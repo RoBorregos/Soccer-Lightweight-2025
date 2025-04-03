@@ -22,18 +22,18 @@ const uint8_t MOTOR4_PWM = 10;*/
 const uint8_t MOTOR1_IN2 = 11;
 const uint8_t MOTOR1_PWM = 21;*/
 
-const uint8_t kMotor1Pwm = 9;
-const uint8_t kMotor1In1 = 50;
-const uint8_t kMotor1In2 = 51;
+const uint8_t kMotor1Pwm = 7;
+const uint8_t kMotor1In1 = 48;
+const uint8_t kMotor1In2 = 49;
 
-const uint8_t kMotor3Pwm = 8; 
-const uint8_t kMotor3In1 = 52; 
-const uint8_t kMotor3In2 = 53;
+const uint8_t kMotor3Pwm = 5; 
+const uint8_t kMotor3In1 = 53; 
+const uint8_t kMotor3In2 = 52;
 
 
-const uint8_t kMotor2Pwm = 10; 
-const uint8_t kMotor2In1 = 48;
-const uint8_t kMotor2In2 = 49;
+const uint8_t kMotor2Pwm = 6; 
+const uint8_t kMotor2In1 = 50;
+const uint8_t kMotor2In2 = 51;
 
 
 // Photo Left
