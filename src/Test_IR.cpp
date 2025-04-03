@@ -40,7 +40,7 @@ void loop() {
     double newAngle=(angle<0 ? 360+angle:angle);
     newAngle=360-newAngle;
     double strength=irring.GetStrength();
-    
+    /*
     // Added this condition to have control of the robot during the test
     if (newAngle > 45 && newAngle < 315) {
         motors.MoveBaseWithImu(newAngle,150,0);
@@ -50,11 +50,11 @@ void loop() {
         motors.StopAllMotors();
         Serial.println("dentro de rango");
     }
+        */
     Serial.print("Angle: ");
     Serial.print(newAngle);
     Serial.print("\tradio: ");
     Serial.println(strength);
-    delay(50);
 }
 
 /*PixyCam pixy;

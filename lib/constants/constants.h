@@ -26,12 +26,12 @@ const uint8_t kMotor3In1 = 53; // Back center motor
 const uint8_t kMotor3In2 = 52;
 const uint8_t kMotor3Pwm = 5; 
 
-const uint8_t kMotor2In1 = 50; // Derecha
-const uint8_t kMotor2In2 = 51;
+const uint8_t kMotor2In1 = 51; // Derecha
+const uint8_t kMotor2In2 = 50;
 const uint8_t kMotor2Pwm = 6; 
 
-const uint8_t kMotor1In1 = 48; // Izquierda
-const uint8_t kMotor1In2 = 49;
+const uint8_t kMotor1In1 = 49; // Izquierda
+const uint8_t kMotor1In2 = 48;
 const uint8_t kMotor1Pwm = 7;
 
 // Photo Left

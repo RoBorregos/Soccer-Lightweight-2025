@@ -36,17 +36,17 @@ int Photo::ReadPhotoFront() {
 
 bool Photo::CheckPhotoFront() {
     int front = ReadPhotoFront();
-    return front < kPhotoTresholdFront;
+    return front > kPhotoTresholdFront;
 }
 
 bool Photo::CheckPhotoLeft() {
     int left = ReadPhotoLeft();
-    return left < kPhotoTresholdLeft;
+    return left > kPhotoTresholdLeft;
 }
 
 bool Photo::CheckPhotoRight() {
     int right = ReadPhotoRight();
-    return right < kPhotoTresholdRight;
+    return right > kPhotoTresholdRight;
 }
 
 
