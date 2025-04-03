@@ -20,14 +20,14 @@ void Motor::SetSpeed(const uint8_t pwm, const uint8_t speed)
     analogWrite(pwm, speed);
 };
 
-void Motor::MoveForward()
+void Motor::MovePositive()
 {
 
     digitalWrite(in1_, HIGH);
     digitalWrite(in2_, LOW);
 };
 
-void Motor::MoveBackward()
+void Motor::MoveNegative()
 {
     digitalWrite(in1_, LOW);
     digitalWrite(in2_, HIGH);
@@ -55,15 +55,15 @@ uint8_t Motor::GetIn2()
 };
 void Motor::SetDirectionAndMove(float value) {
     if (value >= 0) {
-        MoveForward();
+        MovePositive();
     } else {
-        MoveBackward();
+        MoveNegative();
     }
 }
 void Motor::SetDirectionAndMoveWithImu(float value) {
     if (value >= 0) {
-        MoveForward();
+        MovePositive();
     } else {
-        MoveBackward();
+        MoveNegative();
     }
 }

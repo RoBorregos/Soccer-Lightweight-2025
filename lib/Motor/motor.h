@@ -9,8 +9,8 @@ class Motor
 public:
     Motor(const uint8_t speed,const  uint8_t in1, const uint8_t in2);
     void InitializeMotor();
-    void MoveForward();
-    void MoveBackward();
+    void MovePositive();
+    void MoveNegative();
     void StopMotor();
     void SetSpeed(const uint8_t pwm, const  uint8_t speed);
     uint8_t GetSpeed();

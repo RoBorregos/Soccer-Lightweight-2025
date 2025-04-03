@@ -14,8 +14,7 @@ Photo photo;
 Motors motors(
   kMotor1Pwm, kMotor1In1, kMotor1In2,
   kMotor2Pwm, kMotor2In1, kMotor2In2,
-  kMotor3Pwm, kMotor3In1, kMotor3In2,
-  kMotor4Pwm, kMotor4In1, kMotor4In2
+  kMotor3Pwm, kMotor3In1, kMotor3In2
 );
 
 Motor motor(kMotor1Pwm, kMotor1In1, kMotor1In2);

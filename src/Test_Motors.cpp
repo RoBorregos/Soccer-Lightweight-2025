@@ -13,24 +13,16 @@ void setup() {
 }
 
 void loop() {
-    motors.MoveBaseWithImu(0, 120, 0);
-    /*
+    // motors.MoveBaseWithImu(0, 120, 0);
+    
+    motors.SetAllSpeeds(120);
     motors.MoveMotor1();
-    delay(6000);
+    delay(2000);
     motors.StopAllMotors();
     motors.MoveMotor2();
-    delay(6000);
+    delay(2000);
     motors.StopAllMotors();
     motors.MoveMotor3();
-    delay(6000);
+    delay(2000);
     motors.StopAllMotors();
-    */
-/*
-    for (i = 0; i < 360; i++) {
-        motors.MoveBaseWithImu(i, 120, 0);
-        delay(500);
-        motors.StopAllMotors();
-        delay(50);
-    }
-        */
 }
