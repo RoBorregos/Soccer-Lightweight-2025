@@ -17,15 +17,8 @@ public:
     void InitializeMotors();
     void SetAllSpeeds(uint8_t pwm);
     void StopAllMotors();
-    void MoveBaseForward();
-    void MoveBaseBackward();
-    void MoveBaseRight();
-    void MoveBaseLeft();
-    void IndividualMotor(uint8_t motor, uint8_t speed);
     void GetAllSpeeds();
-    void MoveOneMotor(uint8_t motor, uint8_t speed);
     void MoveOmnidirectionalBase(double target_angle, float speed, double speed_w);
-    void MoveMotorsProportional(double target_angle, uint8_t setpoint);
 };
 
 #endif

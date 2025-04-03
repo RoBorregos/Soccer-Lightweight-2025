@@ -14,7 +14,6 @@ void Motors::InitializeMotors()
     upper_left_motor_.InitializeMotor();
     lower_center_motor_.InitializeMotor();
 };
-// Sets the speed for all motors simultaneously.
 
 void Motors::SetAllSpeeds(uint8_t pwm)
 {
@@ -22,17 +21,6 @@ void Motors::SetAllSpeeds(uint8_t pwm)
     upper_left_motor_.SetPWM(pwm);
     lower_center_motor_.SetPWM(pwm);
 };
-
-// Prints the current speed of all motors to the serial monitor.
-/*void Motors::GetAllSpeeds()
-{
-    Serial.print("Motor 1: ");
-    Serial.println(upper_right_motor_.GetSpeed());
-    Serial.print("Motor 2: ");
-    Serial.println(upper_left_motor_.GetSpeed());
-    Serial.print("Motor 3: ");
-    Serial.println(lower_center_motor_.GetSpeed());
-};*/
 
 void Motors::StopAllMotors()
 {

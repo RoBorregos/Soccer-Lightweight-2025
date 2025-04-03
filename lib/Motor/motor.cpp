@@ -38,7 +38,7 @@ void Motor::StopMotor()
     digitalWrite(in2_, LOW);
 };
 
-uint8_t Motor::GetInPWM()
+/*uint8_t Motor::GetInPWM()
 {
     return inPWM_;
 };
@@ -52,7 +52,7 @@ uint8_t Motor::GetIn2()
 {
     return in2_;
 };
-
+*/
 void Motor::SetSpeed(float speed) {
     if (speed >= 0) { 
         MovePositive();

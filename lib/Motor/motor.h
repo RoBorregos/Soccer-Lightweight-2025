@@ -16,10 +16,6 @@ public:
     uint8_t GetInPWM();
     uint8_t GetIn1();
     uint8_t GetIn2();
-    float GetRPM();
-    float GetAngularVelocity();
-    float GetDegree();
-    void SetDirection(float value);
     void SetSpeed(float speed);
 
 private:
