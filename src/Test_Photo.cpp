@@ -1,16 +1,30 @@
 #include "Photo.h"
 #include "Arduino.h"
+#include "motors.h"
+#include "constants.h"
+#include "BNO.h"
+#include "PID.h"
 
 int PhotoLeft;
 int PhotoRight;
+int PhotoFront;
 bool PhotoLeftOnLine;
 bool PhotoRightOnLine;
+bool PhotoFrontOnLine;
+int currentTime;
+unsigned long motor_start_millis = 0;
+unsigned long motor_photo_correction = 90;
 
 Photo photo;
+Motors motors(
+    kMotor1Pwm, kMotor1In1, kMotor1In2,
+    kMotor2Pwm, kMotor2In1, kMotor2In2,
+    kMotor3Pwm, kMotor3In1, kMotor3In2);
+
 
 void setup() {
     Serial.begin(9600);
-    analogReadResolution(12);
+    currentTime = millis();
 }
 
 void loop() {
@@ -31,4 +45,34 @@ void loop() {
     Serial.print("   Photo Right on line: ");
     Serial.println(PhotoRightOnLine);
     delay(1000);
+
+    if (PhotoLeftOnLine) {
+        Serial.println("Photo Left true");
+        motor_start_millis = currentTime;
+        motors.MoveOmnidirectionalBase(270, 255, 0);
+        if (currentTime - motor_start_millis >= motor_photo_correction)
+        {
+        motors.StopAllMotors();
+        }
+    }
+
+    if (PhotoRightOnLine) {
+        Serial.println("Photo Right on line");
+        motor_start_millis = currentTime;
+        motors.MoveOmnidirectionalBase(90, 255, 0);
+        if (currentTime - motor_start_millis >= motor_photo_correction)
+        {
+        motors.StopAllMotors();
+        }
+    }
+
+    if (PhotoFrontOnLine) {
+        Serial.println("Photo Front on line");
+        motor_start_millis = currentTime;
+        motors.MoveOmnidirectionalBase(180, 255, 0);
+        if (currentTime - motor_start_millis >= motor_photo_correction)
+        {
+        motors.StopAllMotors();
+        }
+    }
 }

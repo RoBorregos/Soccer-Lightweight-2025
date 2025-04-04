@@ -1,9 +1,9 @@
 #include "Arduino.h"
 #include "motor.h"
 
-Motor::Motor(const uint8_t speed, const uint8_t in1,const  uint8_t in2)
+Motor::Motor(const uint8_t inPWM, const uint8_t in1,const  uint8_t in2)
 {
-    speed_ = speed;
+    inPWM_ = inPWM;
     in1_ = in1;
     in2_ = in2;
 }
@@ -12,22 +12,21 @@ void Motor::InitializeMotor()
 {
     pinMode(in1_, OUTPUT);
     pinMode(in2_, OUTPUT);
-    pinMode(speed_, OUTPUT);
+    pinMode(inPWM_, OUTPUT);
 };
 
-void Motor::SetSpeed(const uint8_t pwm, const uint8_t speed)
+void Motor::SetPWM(const uint8_t pwm)
 {
-    analogWrite(pwm, speed);
+    analogWrite(inPWM_, pwm);
 };
 
-void Motor::MoveForward()
+void Motor::MovePositive()
 {
-
     digitalWrite(in1_, HIGH);
     digitalWrite(in2_, LOW);
 };
 
-void Motor::MoveBackward()
+void Motor::MoveNegative()
 {
     digitalWrite(in1_, LOW);
     digitalWrite(in2_, HIGH);
@@ -39,9 +38,9 @@ void Motor::StopMotor()
     digitalWrite(in2_, LOW);
 };
 
-uint8_t Motor::GetSpeed()
+/*uint8_t Motor::GetInPWM()
 {
-    return speed_;
+    return inPWM_;
 };
 
 uint8_t Motor::GetIn1()
@@ -53,17 +52,14 @@ uint8_t Motor::GetIn2()
 {
     return in2_;
 };
-void Motor::SetDirectionAndMove(float value) {
-    if (value >= 0) {
-        MoveForward();
+*/
+void Motor::SetSpeed(float speed) {
+    if (speed >= 0) { 
+        MovePositive();
     } else {
-        MoveBackward();
+        MoveNegative();
     }
-}
-void Motor::SetDirectionAndMoveWithImu(float value) {
-    if (value >= 0) {
-        MoveForward();
-    } else {
-        MoveBackward();
-    }
+    speed = abs(speed);
+    speed = speed * 255;
+    analogWrite(inPWM_, speed);
 }
