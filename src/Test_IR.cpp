@@ -23,33 +23,33 @@ void setup() {
     irring.SetOffset(0.0);
 }
 void loop() {
-    bno.GetBNOData();
-    double yaw = bno.GetYaw();    
-    translation_angle = 0;
-    adjust_angle = translation_angle - 90;
-    double speed_w = pid.Calculate(setpoint, yaw);
+    //bno.GetBNOData();
+    //double yaw = bno.GetYaw();    
+    //translation_angle = 0;
+    //adjust_angle = translation_angle - 90;
+    //double speed_w = pid.Calculate(setpoint, yaw);
     // motors.MoveMotorsImu(setpoint, 150, 0);
    
-    if(speed_w != 0){
+    /*if(speed_w != 0){
         motors.StopAllMotors();
         motors.MoveOmnidirectionalBase(0, 0, speed_w);
-    }
+    }*/
 
     irring.UpdateData();
-    double angle=irring.GetAngle();
+    double angle=irring.GetRowAngle();
     double newAngle=(angle<0 ? 360+angle:angle);
     // newAngle=360-newAngle;
     double strength=irring.GetStrength();
     
     // Added this condition to have control of the robot during the test
-    if (newAngle > 45 && newAngle < 315) {
+    /*if (newAngle > 45 && newAngle < 315) {
         motors.MoveOmnidirectionalBase(newAngle,150,0);
         Serial.println("fuera de rango");
     }
     else if (newAngle < 45 || newAngle > 315) {
         motors.StopAllMotors();
         Serial.println("dentro de rango");
-    }
+    }*/
     Serial.print("Angle: ");
     Serial.print(newAngle);
     Serial.print("\tradio: ");

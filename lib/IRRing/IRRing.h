@@ -17,8 +17,9 @@ class IRRing
 	void init(unsigned long* current_time);
 	void UpdateData();
 	void SetOffset(double offset);
-	double GetAngle();
+	double GetRowAngle();
 	double GetStrength();
+	double GetAngle(double rowAngle);
 
 };
 #endif
