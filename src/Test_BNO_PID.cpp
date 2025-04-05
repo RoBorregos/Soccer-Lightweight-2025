@@ -15,7 +15,7 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(1, 0, 0.9, 100); // PID parameters: kp, ki, kd, max_error update for demo robot on april 4 2025
+PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100); // PID parameters: kp, ki, kd, max_error update for demo robot on april 5 2025
 
 void setup() {
     Serial.begin(9600);
@@ -27,10 +27,10 @@ void setup() {
 void loop() {
     yaw = bno.GetBNOData();
     speed_w = pid.Calculate(setpoint, yaw);
-    // Serial.print("Yaw: ");
-    // Serial.println(yaw);
-    // Serial.print("   Speed_w: ");
-    // Serial.println(speed_w);
+    Serial.print("Yaw: ");
+    Serial.println(yaw);
+    Serial.print("   Speed_w: ");
+    Serial.println(speed_w);
     motors.MoveOmnidirectionalBase(0, 0.65, 0);
     if (speed_w > 0.1 || speed_w < -0.1) {
         motors.StopAllMotors();

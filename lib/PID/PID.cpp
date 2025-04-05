@@ -3,7 +3,12 @@
 #include "constants.h"
 
 PID::PID(double kp, double ki, double kd, double max_error)
-    : kp_(kp), ki_(ki), kd_(kd), max_error_(max_error), last_error_(0), last_time_(millis()) {}
+    : kp_(kp), ki_(ki), kd_(kd), max_error_(max_error), last_error_(0), last_time_(millis()) {
+        // Local variables
+        delta_error = 0;
+        error = 0;
+        sum_error = 0;
+    }
 
 // Note that the sampling time for our PID controller is 20ms
 double PID::Calculate(double setpoint, double input)
@@ -22,13 +27,6 @@ double PID::Calculate(double setpoint, double input)
     double derivative = kd_ * delta_error;
     // calculate the control signal using PID
     double control = (proportional) + (integral) + (derivative);
-    // Normalize the control signal
-    control = control / kMaxPWM;
-    if (control > 1) {
-        control = 1;
-    } else if (control < -1) {
-        control = -1;
-    }
 
     // Serial.print("Error: ");
     // Serial.print(error);

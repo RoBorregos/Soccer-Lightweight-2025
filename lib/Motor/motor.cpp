@@ -56,16 +56,14 @@ uint8_t Motor::GetIn2()
 */
 void Motor::SetSpeed(float speed) {
     if (speed >= 0) { 
-        MoveNegative();
-    } else {
         MovePositive();
+    } else {
+        MoveNegative();
     }
     speed = abs(speed);
     speed = speed * kMaxPWM;
     if (speed > kMaxPWM) {
         speed = kMaxPWM;
-    } else if (speed < kMinPWM) {
-        speed = kMinPWM;
-    }
+    } 
     analogWrite(inPWM_, speed);
 }

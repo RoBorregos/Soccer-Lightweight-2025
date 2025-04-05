@@ -14,8 +14,8 @@ const uint8_t kMotor1In1 = 49; // Izquierda
 const uint8_t kMotor1In2 = 48;
 const uint8_t kMotor1Pwm = 7;
 
-const uint8_t kMaxPWM = 200; // We set a max PWM to limit the motors movement for better performance and control
-const uint8_t kMinPWM = 50; // We set the minimum PWM that the robot needs to move
+const double kMaxPWM = 255.0; // We set a max PWM to limit the motors movement for better performance and control
+const double kMinPWM = 40.0; // We set the minimum PWM that the robot needs to move
 
 // Photo Left
 const uint8_t kPhotoLeftElements = 5;

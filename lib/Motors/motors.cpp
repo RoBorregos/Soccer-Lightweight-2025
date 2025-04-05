@@ -31,7 +31,6 @@ void Motors::StopAllMotors()
 
 void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w)
 {
-    degree = degree - 180;
     float upper_left_speed = cos(((degree - 150) * PI / 180)) * speed + speed_w;
     float lower_center_speed = cos(((degree - 270) * PI / 180)) * speed + speed_w;
     float upper_right_speed = cos(((degree - 30) * PI / 180)) * speed + speed_w;

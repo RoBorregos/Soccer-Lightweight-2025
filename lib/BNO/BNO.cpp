@@ -31,6 +31,6 @@ if (yaw > 180)
 {
   yaw = -1*(360 - yaw);
 }
-
+yaw = -yaw; // Change sign to match the robot motion function
 return yaw;
 }

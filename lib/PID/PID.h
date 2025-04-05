@@ -16,12 +16,9 @@ class PID {
         double max_error_;
         double last_error_;
         double last_time_;
-        double delta_error = 0;
-        double error = 0;
-        double sum_error = 0;
-        double previous_time = 0;
-        double previous_error = 0;
-        double control_error = 0;   
+        double delta_error;
+        double error;
+        double sum_error;  
 };
 
 #endif
