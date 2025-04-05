@@ -60,6 +60,6 @@ double IRRing::GetAngle(double rowAngle){
     if(rowAngle>180){
         rowAngle-=360;
     }
-    return rowAngle;
+    return rowAngle*-1;
     
 }

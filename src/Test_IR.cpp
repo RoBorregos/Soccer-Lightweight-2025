@@ -41,8 +41,8 @@ void loop() {
     //double newAngle=(angle<0 ? 360+angle:angle);
     // newAngle=360-newAngle;
     double strength=irring.GetStrength();
-    motors.MoveOmnidirectionalBase(angle+10, 0.57, 0);
-    motors.StopAllMotors();
+    motors.MoveOmnidirectionalBase(angle*1.1, 0.5, 0);
+   // motors.StopAllMotors();
     // Added this condition to have control of the robot during the test
     /*if (newAngle > 45 && newAngle < 315) {
         motors.MoveOmnidirectionalBase(newAngle,150,0);
