@@ -68,4 +68,6 @@ void Motor::SetSpeed(float speed) {
         speed = kMinPWM;
     }
     analogWrite(inPWM_, speed);
+    Serial.println("Speed: ");
+    Serial.println(speed);
 }
