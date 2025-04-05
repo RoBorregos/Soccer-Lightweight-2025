@@ -57,8 +57,7 @@ double IRRing::GetStrength(){
     return filterStr.GetLowPass();
 }
 double IRRing::GetAngle(double rowAngle){
-    rowAngle+=7;
-    if(rowAngle>360){
+    if(rowAngle>180){
         rowAngle-=360;
     }
     return rowAngle;
