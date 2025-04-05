@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "motor.h"
+#include "constants.h"
 
 Motor::Motor(const uint8_t inPWM, const uint8_t in1,const  uint8_t in2)
 {
@@ -55,11 +56,16 @@ uint8_t Motor::GetIn2()
 */
 void Motor::SetSpeed(float speed) {
     if (speed >= 0) { 
-        MovePositive();
-    } else {
         MoveNegative();
+    } else {
+        MovePositive();
     }
     speed = abs(speed);
-    speed = speed * 255;
+    speed = speed * kMaxPWM;
+    if (speed > kMaxPWM) {
+        speed = kMaxPWM;
+    } else if (speed < kMinPWM) {
+        speed = kMinPWM;
+    }
     analogWrite(inPWM_, speed);
 }

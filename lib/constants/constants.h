@@ -14,6 +14,9 @@ const uint8_t kMotor1In1 = 49; // Izquierda
 const uint8_t kMotor1In2 = 48;
 const uint8_t kMotor1Pwm = 7;
 
+const uint8_t kMaxPWM = 200;
+const uint8_t kMinPWM = 50;
+
 // Photo Left
 const uint8_t kPhotoLeftElements = 5;
 const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1,A2,A3,A4}; // These are the pins abailable on robot where test was done
