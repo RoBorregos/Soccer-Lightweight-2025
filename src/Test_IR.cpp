@@ -36,7 +36,7 @@ void loop() {
     }*/
 
     irring.UpdateData();
-    double Rowangle=irring.GetRowAngle();
+    double Rowangle=irring.GetRawAngle();
     double angle=irring.GetAngle(Rowangle);
     //double newAngle=(angle<0 ? 360+angle:angle);
     // newAngle=360-newAngle;
