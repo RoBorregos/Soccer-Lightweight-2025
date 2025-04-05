@@ -5,8 +5,6 @@
 Bno::Bno()
 {
   yaw = 0;
-  target_yaw = 0;
-  current_yaw = 0;
 }
 
 void Bno::InitializeBNO()
@@ -27,7 +25,6 @@ double Bno::GetBNOData()
 {
 imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
 yaw = euler.x();
-current_yaw = yaw;
 
 // Convert yaw to -180 to 180
 if (yaw > 180)

@@ -17,9 +17,6 @@ class Bno
   private:
     Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
     double yaw;
-    double target_yaw;
-    volatile double current_yaw;
-
 };
 
 # endif
