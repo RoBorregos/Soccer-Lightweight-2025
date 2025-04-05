@@ -62,4 +62,6 @@ void Motor::SetSpeed(float speed) {
     speed = abs(speed);
     speed = speed * 255;
     analogWrite(inPWM_, speed);
+    Serial.println("Speed: ");
+    Serial.println(speed);
 }

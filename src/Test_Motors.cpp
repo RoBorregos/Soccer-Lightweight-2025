@@ -33,4 +33,11 @@ void loop() {
     upper_right_motor.MovePositive();
     delay(2000);
     motors.StopAllMotors();
+    upper_left_motor.MoveNegative();
+    delay(2000);
+    lower_center_motor.MoveNegative();
+    delay(2000);
+    upper_right_motor.MoveNegative();
+    delay(2000);
+    motors.StopAllMotors();
 }

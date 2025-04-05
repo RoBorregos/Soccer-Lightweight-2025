@@ -50,9 +50,16 @@ void IRRing::UpdateData() {
 void IRRing::SetOffset(double offset){
     this->offset=offset;
 }
-double IRRing::GetAngle(){
+double IRRing::GetRawAngle(){
     return angle;
 }
 double IRRing::GetStrength(){
     return filterStr.GetLowPass();
+}
+double IRRing::GetAngle(double rawAngle){
+    if(rawAngle>180){
+        rawAngle-=360;
+    }
+    return rawAngle*-1;
+    
 }
