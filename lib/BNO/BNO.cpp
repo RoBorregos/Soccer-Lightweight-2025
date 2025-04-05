@@ -1,12 +1,10 @@
 
-# include "Bno.h"
+# include "BNO.h"
 
 
 Bno::Bno()
 {
   yaw = 0;
-  target_yaw = 0;
-  current_yaw = 0;
 }
 
 void Bno::InitializeBNO()
@@ -23,23 +21,16 @@ Serial.println("Orientation Sensor Test"); Serial.println("");
   bno.setExtCrystalUse(true);
 }
 
-void Bno::GetBNOData()
+double Bno::GetBNOData()
 {
 imu::Vector<3> euler = bno.getVector(Adafruit_BNO055::VECTOR_EULER);
 yaw = euler.x();
-current_yaw = yaw;
 
 // Convert yaw to -180 to 180
 if (yaw > 180)
 {
-yaw = -1*(360 - yaw);
+  yaw = -1*(360 - yaw);
 }
-Serial.print("X: ");
-Serial.print(yaw);
-Serial.println("");
-}
-
-double Bno::GetYaw()
-{
+yaw = -yaw; // Change sign to match the robot motion function
 return yaw;
 }

@@ -16,6 +16,9 @@ class PID {
         double max_error_;
         double last_error_;
         double last_time_;
+        double delta_error;
+        double error;
+        double sum_error;  
 };
 
 #endif
