@@ -56,10 +56,10 @@ double IRRing::GetRawAngle(){
 double IRRing::GetStrength(){
     return filterStr.GetLowPass();
 }
-double IRRing::GetAngle(double rawAngle){
-    if(rawAngle>180){
-        rawAngle-=360;
+double IRRing::GetAngle(){
+    if(angle>180){
+        angle-=360;
     }
-    return rawAngle*-1;
+    return angle*-1;
     
 }
