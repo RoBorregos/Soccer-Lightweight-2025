@@ -30,7 +30,7 @@ const uint8_t kPhotoFrontElements = 2;
 const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 
 // Photo Treshold
-const int kPhotoTresholdLeft = 113;
+const int kPhotoTresholdLeft = 53;
 const int kPhotoTresholdRight = 387;
 const int kPhotoTresholdFront = 77;
 
