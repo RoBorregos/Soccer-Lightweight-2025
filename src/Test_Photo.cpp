@@ -34,18 +34,24 @@ void setup() {
 
 void loop() {
     currentTime = millis();
+    //---------------------------------Reading data for PID and IR---------------------------------
     // irring.UpdateData();
     // double ballAngle = irring.GetAngle();
     // double yaw = bno.GetBNOData();
     // double speed_w = pid.Calculate(setpoint, yaw);
+
+    //-------------------------------Initial robot movement instruction-----------------------------
     if (!is_correcting_line) {
-        motors.MoveOmnidirectionalBase(90, 0.47, 0);
+        motors.MoveOmnidirectionalBase(90, 0.47, 0); // cahnge angol to ball Angle
     }
+
+    //-----------------------------------------------PID correction--------------------------------
     // if (speed_w > 0.1 || speed_w < -0.1) {
     //     motors.StopAllMotors();
     //     motors.MoveOmnidirectionalBase(0, 0, speed_w);
     // }
 
+    //---------------------------------Reading and checking phototransistors--------------------------------
     Serial.println("Reading photos");
     PhotoLeft = photo.ReadPhotoLeft();
     PhotoRight = photo.ReadPhotoRight();
@@ -62,6 +68,7 @@ void loop() {
     // Serial.print("   Photo Right on line: ");
     // Serial.println(PhotoRightOnLine);
 
+    //-------------------------------------------------Line correction--------------------------------
     if (!is_correcting_line && PhotoLeftOnLine) {
         is_correcting_line = true; // Activar el estado de corrección
         motor_start_millis = currentTime; // Registrar el tiempo de inicio
