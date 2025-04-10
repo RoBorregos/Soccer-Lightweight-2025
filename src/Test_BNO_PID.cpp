@@ -32,11 +32,11 @@ void loop() {
     Serial.print("   Speed_w: ");
     Serial.println(speed_w);
     //----------------Correction with linear movement---------------------
-    motors.MoveOmnidirectionalBase(90, 0.65, 0);
-    if (speed_w > 0.1 || speed_w < -0.1) {
-        motors.StopAllMotors();
-        motors.MoveOmnidirectionalBase(0, 0, speed_w);
-    }
+    // motors.MoveOmnidirectionalBase(90, 0.65, 0);
+    // if (speed_w > 0.1 || speed_w < -0.1) {
+    //     motors.StopAllMotors();
+    //     motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    // }
 
     //--------------------------Correction on ist axis--------------------
     // if(abs(yaw) > 5){
