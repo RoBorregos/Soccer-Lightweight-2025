@@ -31,7 +31,7 @@ const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 
 // Photo Treshold
 const int kPhotoTresholdLeft = 67; // threshold adjusted with motors turned on with daylight
-const int kPhotoTresholdRight = 387;
+const int kPhotoTresholdRight = 490;
 const int kPhotoTresholdFront = 30; // threshold adjusted with motors turned on with daylight
 
 // Receive signals
