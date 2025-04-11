@@ -38,3 +38,12 @@ void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w)
     lower_center_motor_.SetSpeed(lower_center_speed);
     upper_right_motor_.SetSpeed( upper_right_speed);
 };
+
+void Motors::LineCorrection(double degree, float speed, int correction_time) {
+    unsigned long start_time = millis(); // Registrar el tiempo de inicio
+    MoveOmnidirectionalBase(degree, speed, 0); // Moverse en la dirección especificada
+    while (millis() - start_time < correction_time) {
+    // Mantener el movimiento hasta que pase el tiempo de corrección    
+    }
+    StopAllMotors(); 
+}

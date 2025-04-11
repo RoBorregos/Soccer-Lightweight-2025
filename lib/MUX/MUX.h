@@ -10,7 +10,7 @@ public:
     float readChannel(uint8_t channel);
 
 private:
-    uint8_t signalPin_;
+    uint8_t signal_pin_;
     uint8_t s0_, s1_, s2_;
 
 };

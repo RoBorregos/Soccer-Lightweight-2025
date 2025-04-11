@@ -4,11 +4,10 @@
 // The commented line is for the individual reading of the photoresistors
 
 
-// Photo::Photo() {}
-Photo::Photo(uint8_t MUXSignalPin1, uint8_t MUXPin1, uint8_t MUXPin2, uint8_t MUXPin3, uint8_t MUXSignalPin2, uint8_t MUXPin1_2, uint8_t MUXPin2_2, uint8_t MUXPin3_2, uint8_t MUXSignalPin3, uint8_t MUXPin1_3, uint8_t MUXPin2_3, uint8_t MUXPin3_3):
-        left_MUX(MUXSignalPin1, MUXPin1, MUXPin2, MUXPin3),
-        right_MUX(MUXSignalPin2, MUXPin1, MUXPin2, MUXPin3),
-        front_MUX(MUXSignalPin3, MUXPin1, MUXPin2, MUXPin3) 
+Photo::Photo(uint8_t mux_signal_pin1, uint8_t mux_pin1, uint8_t mux_pin2, uint8_t mux_pin3, uint8_t mux_signal_pin2, uint8_t mux_pin1_2, uint8_t mux_pin2_2, uint8_t mux_pin3_2, uint8_t mux_signal_pin3, uint8_t mux_pin1_3, uint8_t mux_pin2_3, uint8_t mux_pin3_3):
+    left_mux_(mux_signal_pin1, mux_pin1, mux_pin2, mux_pin3),
+    right_mux_(mux_signal_pin2, mux_pin1_2, mux_pin2_2, mux_pin3_2),
+    front_mux_(mux_signal_pin3, mux_pin1_3, mux_pin2_3, mux_pin3_3)
         {}
 
 int Photo::ReadPhotoLeft() {
@@ -59,5 +58,95 @@ bool Photo::CheckPhotoRight() {
     return right > kPhotoTresholdRight;
 }
 
+uint16_t Photo::ReadPhoto(Side side) {
+    int sum = 0;
+    int* photo_array;
+    int elements;
+    MUX* mux;
+
+    switch (side) {
+        case Side::Left:
+            photo_array = photo_left;
+            elements = kPhotoLeftElements;
+            this->mux = mux = &left_mux_;
+            break;
+        case Side::Right:
+            photo_array = photo_right;
+            elements = kPhotoRightElements;
+            this->mux = mux = &right_mux_;
+            break;
+        case Side::Front:
+            photo_array = photo_front;
+            elements = kPhotoFrontElements;
+            this->mux = mux = &front_mux_;
+            break;
+        default:
+            return 0; // Invalid side
+    }
+
+    for (int i = 0; i < elements; i++) {
+        photo_array[i] = mux->readChannel(i);
+        sum += photo_array[i];
+    }
+
+    return sum / elements;
+}
+
+bool Photo::CheckPhoto(Side side) {
+    int average = ReadPhoto(side);
+    switch (side) {
+        case Side::Left:
+            return average > kPhotoTresholdLeft;
+        case Side::Right:
+            return average > kPhotoTresholdRight;
+        case Side::Front:
+            return average > kPhotoTresholdFront;
+        default:
+            return false; // Invalid side
+    }
+}
+
+
+
+std::pair<uint16_t, bool> Photo::GetPhotoData(Side side) {
+    uint8_t sum = 0;
+    int* photo_array;
+    uint8_t elements;
+    MUX* mux;
+    uint16_t threshold;
+
+    switch (side) {
+        case Side::Left:
+            photo_array = photo_left;
+            elements = kPhotoLeftElements;
+            this->mux = mux = &left_mux_;
+            threshold = kPhotoTresholdLeft;
+            break;
+        case Side::Right:
+            photo_array = photo_right;
+            elements = kPhotoRightElements;
+            this->mux = mux = &right_mux_;
+            threshold = kPhotoTresholdRight;
+            break;
+        case Side::Front:
+            photo_array = photo_front;
+            elements = kPhotoFrontElements;
+            this->mux = mux = &front_mux_;
+            threshold = kPhotoTresholdFront;
+            break;
+        default:
+            return {0, false}; // Invalid side
+    }
+
+    for (int i = 0; i < elements; i++) {
+        photo_array[i] = mux->readChannel(i);
+        sum += photo_array[i];
+    }
+
+    uint16_t average = sum / elements;
+    bool exceeds_threshold = average > threshold;
+
+    return {average, exceeds_threshold};
+}
 
 
