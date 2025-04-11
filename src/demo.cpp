@@ -30,8 +30,11 @@ Motors motors(
 
 void setup() {
     Serial.begin(9600);
+    unsigned long currentTime = millis();
     motors.InitializeMotors();
     bno.InitializeBNO();
+    irring.init(&currentTime);
+
 }
 
 void loop() {
@@ -39,22 +42,26 @@ void loop() {
     //---------------------------------Reading data for PID and IR---------------------------------
     irring.UpdateData();
     double ballAngle = irring.GetAngle(1.1);
+    
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
+    motors.MoveOmnidirectionalBase(ballAngle, 0.55, 0);
+    Serial.print("Angle: ");
+    Serial.println(ballAngle);
     // Serial.print("Yaw: ");
     // Serial.print(yaw);
     // Serial.print("   PID: ");
     // Serial.println(speed_w);
 
     //-------------------------------Initial robot movement instruction-----------------------------
-    if (!is_correcting_line) {
-        motors.MoveOmnidirectionalBase(ballAngle, 0.55, 0); // cahnge angol to ball Angle
-        //-----------------------------------------------PID correction--------------------------------
+    // if (!is_correcting_line) {
+    //     motors.MoveOmnidirectionalBase(ballAngle, 0.55, 0); // cahnge angol to ball Angle
+    //     //-----------------------------------------------PID correction--------------------------------
         if (speed_w > 0.1 || speed_w < -0.1) {
             motors.StopAllMotors();
             motors.MoveOmnidirectionalBase(0, 0, speed_w);
         }
-    }
+    // }
 
     //---------------------------------Reading and checking phototransistors--------------------------------
     // Serial.println("Reading photos");
@@ -95,20 +102,20 @@ void loop() {
     // //     // Serial.println("Photo Left true, starting correction...");
     // // }
 
-    if (!is_correcting_line && PhotoFrontOnLine) {
-        is_correcting_line = true; // Activar el estado de corrección
-        motor_start_millis = currentTime; // Registrar el tiempo de inicio
-        motors.MoveOmnidirectionalBase(180, 1, 0); // Moverse a la derecha
-        // Serial.println("Photo Left true, starting correction...");
-    }
+    // if (!is_correcting_line && PhotoFrontOnLine) {
+    //     is_correcting_line = true; // Activar el estado de corrección
+    //     motor_start_millis = currentTime; // Registrar el tiempo de inicio
+    //     motors.MoveOmnidirectionalBase(180, 1, 0); // Moverse a la derecha
+    //     // Serial.println("Photo Left true, starting correction...");
+    // }
 
-    // Si está corrigiendo, verificar si ya pasó el tiempo de corrección
-    if (is_correcting_line) {
-        if (currentTime - motor_start_millis >= motor_photo_correction) {
-            motors.StopAllMotors(); // Detener motores después del tiempo de corrección
-            is_correcting_line = false; // Desactivar el estado de corrección
-        }
-    } 
+    // // Si está corrigiendo, verificar si ya pasó el tiempo de corrección
+    // if (is_correcting_line) {
+    //     if (currentTime - motor_start_millis >= motor_photo_correction) {
+    //         motors.StopAllMotors(); // Detener motores después del tiempo de corrección
+    //         is_correcting_line = false; // Desactivar el estado de corrección
+    //     }
+    // } 
     
 
     // if (PhotoLeftOnLine) {
