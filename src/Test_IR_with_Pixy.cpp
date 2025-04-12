@@ -52,18 +52,15 @@ void loop() {
             int y=pixy.getY(i);
             Serial.println("y");
             Serial.println(y);
-            int height=pixy.getHeight(i);
-            int width= pixy.getWidth(i);
-            Serial.println("height");
-            Serial.println(height);
-            Serial.println("width");
-            Serial.println(width);
             float angleX = (x - 158) * (60.0 / 316); 
             Serial.println("angleX");
             Serial.println(angleX);
-            float angleForRobot = angleX * 6;
-            Serial.println("angleForRobot");
-            Serial.println(angleForRobot);
+            motors.MoveOmnidirectionalBase(angleX, 0.5, 0);
+            double speed_w = pid.Calculate(setpoint, yaw);
+            if (speed_w > 0.1 || speed_w < -0.1) {
+                motors.StopAllMotors();
+                motors.MoveOmnidirectionalBase(0, 0, speed_w);
+            delay(1000);
         }
     }
     //Step 1 -Searching for the ball
