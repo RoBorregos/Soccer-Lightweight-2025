@@ -58,7 +58,7 @@ void loop() {
             Serial.println(height);
             Serial.println("width");
             Serial.println(width);
-            float angleX = (x - 648) * (60.0 / 1296); 
+            float angleX = (x - 158) * (60.0 / 316); 
             Serial.println("angleX");
             Serial.println(angleX);
             float angleForRobot = angleX * 6;
