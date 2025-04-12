@@ -2,14 +2,12 @@
 #include <Wire.h>
 #include "BNO.h"
 #include <PID.h>
-#include "Photo.h"
 #include "constants.h"
 
 // Definir PID con parámetros (ajústalos según tu caso)
 PID pid(6.0, 0.000, 30, 200);
 
 Bno bno;
-Photo photo;
 /*PID pid(0.6, 0.00735, 45, 200);*/
 Motors motors(
   kMotor1Pwm, kMotor1In1, kMotor1In2,

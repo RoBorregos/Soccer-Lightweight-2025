@@ -34,6 +34,7 @@ const int kPhotoTresholdLeft = 53;
 const int kPhotoTresholdRight = 387;
 const int kPhotoTresholdFront = 77;
 
+
 // Receive signals
 const uint8_t kReceiveBno = 's';
 const uint8_t kReceiveBallAngle = 'c';
