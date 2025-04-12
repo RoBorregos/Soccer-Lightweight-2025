@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Pixy2.h>
-#include <PixySPI.h>
+
 
 
 
@@ -16,7 +16,7 @@ struct GoalData{
 class PixyCam 
 {
 	private:
-	Pixy2SPI pixy_;
+	Pixy2 pixy_;
 	uint8_t block;
 
 	public:
