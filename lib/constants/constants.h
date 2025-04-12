@@ -2,16 +2,16 @@
 #define constants_h
 #include <stdint.h>
 
-const uint8_t kMotor3In1 = 53; // Back center motor
-const uint8_t kMotor3In2 = 52;
+const uint8_t kMotor3In1 = 35; // Back center motor
+const uint8_t kMotor3In2 = 34;
 const uint8_t kMotor3Pwm = 5; 
 
-const uint8_t kMotor2In1 = 51; // Derecha
-const uint8_t kMotor2In2 = 50;
+const uint8_t kMotor2In1 = 33; // Derecha
+const uint8_t kMotor2In2 = 32;
 const uint8_t kMotor2Pwm = 6; 
 
-const uint8_t kMotor1In1 = 49; // Izquierda
-const uint8_t kMotor1In2 = 48;
+const uint8_t kMotor1In1 = 31; // Izquierda
+const uint8_t kMotor1In2 = 30;
 const uint8_t kMotor1Pwm = 7;
 
 const double kMaxPWM = 255.0; // We set a max PWM to limit the motors movement for better performance and control

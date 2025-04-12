@@ -3,8 +3,8 @@
 PixyCam::PixyCam() {}
 
 void PixyCam::Init() {
-  Wire.begin();
-  pixy_.init();
+  //Wire.begin();
+  pixy_.init(SPI_MODE0);
 }
  void PixyCam::updateData(){
   pixy_.ccc.getBlocks();
