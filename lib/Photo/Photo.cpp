@@ -60,28 +60,32 @@ bool Photo::CheckPhotoRight() {
 
 int Photo::ReadPhoto(Side side) {
     int sum = 0;
-    int* photo_array;
+    uint16_t* photo_array;
     int elements;
+    const uint8_t* pins;
 
     switch (side) {
         case Side::Left:
             photo_array = photo_left;
             elements = kPhotoLeftElements;
+            pins = kPhotoLeftPins;
             break;
         case Side::Right:
             photo_array = photo_right;
             elements = kPhotoRightElements;
+            pins = kPhotoRightPins;
             break;
         case Side::Front:
             photo_array = photo_front;
             elements = kPhotoFrontElements;
+            pins = kPhotoFrontPins;
             break;
         default:
             return 0; // Invalid side
     }
 
     for (int i = 0; i < elements; i++) {
-        photo_array[i] = analogRead(kPhotoPins[side][i]);
+        photo_array[i] = analogRead(pins[i]);
         sum += photo_array[i];
     }
 

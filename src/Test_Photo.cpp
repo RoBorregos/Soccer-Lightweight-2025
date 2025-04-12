@@ -34,6 +34,29 @@ void setup() {
 
 void loop() {
     currentTime = millis();
+    PhotoLeft = photo.ReadPhotoLeft();
+    PhotoRight = photo.ReadPhotoRight();
+    PhotoFront = photo.ReadPhotoFront();
+    Serial.println("Reading photos");
+    Serial.print("Photo Left: ");
+    Serial.print(PhotoLeft);
+    Serial.print("   Photo Right: ");
+    Serial.print(PhotoRight);
+    Serial.print("   Photo Front: ");
+    Serial.println(PhotoFront);
+
+    delay (500);
+    PhotoLeft = photo.ReadPhoto(Side::Left);
+    PhotoRight = photo.ReadPhoto(Side::Right);
+    PhotoFront = photo.ReadPhoto(Side::Front);
+    Serial.println("Reading photos new function");
+    Serial.print("Photo Left: ");
+    Serial.print(PhotoLeft);
+    Serial.print("   Photo Right: ");
+    Serial.print(PhotoRight);
+    Serial.print("   Photo Front: ");
+    Serial.println(PhotoFront);
+    delay (500);
     //---------------------------------Reading data for PID and IR---------------------------------
     // irring.UpdateData();
     // double ballAngle = irring.GetAngle();
@@ -41,9 +64,9 @@ void loop() {
     // double speed_w = pid.Calculate(setpoint, yaw);
 
     //-------------------------------Initial robot movement instruction-----------------------------
-    if (!is_correcting_line) {
-        motors.MoveOmnidirectionalBase(90, 0.47, 0); // cahnge angol to ball Angle
-    }
+    // if (!is_correcting_line) {
+    //     motors.MoveOmnidirectionalBase(90, 0.47, 0); // cahnge angol to ball Angle
+    // }
 
     //-----------------------------------------------PID correction--------------------------------
     // if (speed_w > 0.1 || speed_w < -0.1) {
@@ -52,38 +75,38 @@ void loop() {
     // }
 
     //---------------------------------Reading and checking phototransistors--------------------------------
-    Serial.println("Reading photos");
-    PhotoLeft = photo.ReadPhotoLeft();
-    PhotoRight = photo.ReadPhotoRight();
-    Serial.print("Photo Left: ");
-    Serial.println(PhotoLeft);
+    // Serial.println("Reading photos");
+    // PhotoLeft = photo.ReadPhotoLeft();
+    // PhotoRight = photo.ReadPhotoRight();
+    // Serial.print("Photo Left: ");
+    // Serial.println(PhotoLeft);
     // Serial.print("   Photo Right: ");
     // Serial.println(PhotoRight);
 
-    Serial.println("Checking photos");
-    PhotoLeftOnLine = photo.CheckPhotoLeft();
-    PhotoRightOnLine = photo.CheckPhotoRight();
-    Serial.print("Photo Left on line: ");
-    Serial.println(PhotoLeftOnLine);
+    // Serial.println("Checking photos");
+    // PhotoLeftOnLine = photo.CheckPhotoLeft();
+    // PhotoRightOnLine = photo.CheckPhotoRight();
+    // Serial.print("Photo Left on line: ");
+    // Serial.println(PhotoLeftOnLine);
     // Serial.print("   Photo Right on line: ");
     // Serial.println(PhotoRightOnLine);
 
     //-------------------------------------------------Line correction--------------------------------
-    if (!is_correcting_line && PhotoLeftOnLine) {
-        is_correcting_line = true; // Activar el estado de corrección
-        motor_start_millis = currentTime; // Registrar el tiempo de inicio
-        motors.MoveOmnidirectionalBase(-90, 1, 0); // Moverse a la derecha
-        Serial.println("Photo Left true, starting correction...");
-    }
+    // if (!is_correcting_line && PhotoLeftOnLine) {
+    //     is_correcting_line = true; // Activar el estado de corrección
+    //     motor_start_millis = currentTime; // Registrar el tiempo de inicio
+    //     motors.MoveOmnidirectionalBase(-90, 1, 0); // Moverse a la derecha
+    //     Serial.println("Photo Left true, starting correction...");
+    // }
 
     // Si está corrigiendo, verificar si ya pasó el tiempo de corrección
-    if (is_correcting_line) {
-        if (currentTime - motor_start_millis >= motor_photo_correction) {
-            motors.StopAllMotors(); // Detener motores después del tiempo de corrección
-            is_correcting_line = false; // Desactivar el estado de corrección
-            Serial.println("Correction complete, stopping motors.");
-        }
-    } 
+    // if (is_correcting_line) {
+    //     if (currentTime - motor_start_millis >= motor_photo_correction) {
+    //         motors.StopAllMotors(); // Detener motores después del tiempo de corrección
+    //         is_correcting_line = false; // Desactivar el estado de corrección
+    //         Serial.println("Correction complete, stopping motors.");
+    //     }
+    // } 
     
 
     // if (PhotoLeftOnLine) {
