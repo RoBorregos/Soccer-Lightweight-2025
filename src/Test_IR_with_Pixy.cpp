@@ -63,6 +63,8 @@ void loop() {
             delay(1000);
         }
     }
+}
+}
     //Step 1 -Searching for the ball
     // if (abs(ballAngle) > 10) {
     //     Serial.println("Searching ball");
