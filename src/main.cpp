@@ -5,6 +5,9 @@
 #include "Photo.h"
 #include "constants.h"
 
+// HOLA LUPITAAAAA (CLASE DE VSCODE Y GITHUB)
+// LUPITAAAAAAAAAA
+
 // Definir PID con parámetros (ajústalos según tu caso)
 PID pid(6.0, 0.000, 30, 200);
 
