@@ -46,6 +46,12 @@ void loop() {
         Serial.println("signature");
         Serial.println(signature);
         if (signature==targetSignature){
+            int x=pixy.getX(i);
+            Serial.println("x");
+            Serial.println(x);
+            int y=pixy.getY(i);
+            Serial.println("y");
+            Serial.println(y);
             int height=pixy.getHeight(i);
             int width= pixy.getWidth(i);
             Serial.println("height");
