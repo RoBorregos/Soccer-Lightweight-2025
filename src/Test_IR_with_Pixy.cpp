@@ -58,6 +58,12 @@ void loop() {
             Serial.println(height);
             Serial.println("width");
             Serial.println(width);
+            float angleX = (x - 648) * (60.0 / 1296); 
+            Serial.println("angleX");
+            Serial.println(angleX);
+            float angleForRobot = angleX * 6;
+            Serial.println("angleForRobot");
+            Serial.println(angleForRobot);
         }
     }
     //Step 1 -Searching for the ball
