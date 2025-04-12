@@ -26,7 +26,6 @@ Motors motors(
 
 void setup() {
     Serial.begin(9600);
-    Serial3.begin(19200);
     irring.init(&currentTime);
     irring.SetOffset(0.0);
     pixy.Init();
@@ -41,10 +40,11 @@ void loop() {
     int numberObjects=pixy.numBlocks();
     Serial.println("Number of objects");
     Serial.println(numberObjects);
+
     for (int i=0;i<numberObjects;i++){
-        int signature=pixy.getSignature();
-        Serial.println("signature");
-        Serial.println(signature);
+        int signature=pixy.getSignature(i);
+        Serial.print("signature:        ");
+        Serial.print(signature);
         if (signature==targetSignature){
             int x=pixy.getX(i);
             Serial.println("x");
@@ -52,10 +52,13 @@ void loop() {
             int y=pixy.getY(i);
             Serial.println("y");
             Serial.println(y);
-            float angleX = (x - 158) * (60.0 / 316); 
+
+            float angleX = (x - 158) * (180.0 / 158.0); 
             Serial.println("angleX");
             Serial.println(angleX);
+
             motors.MoveOmnidirectionalBase(angleX, 0.5, 0);
+            
             double speed_w = pid.Calculate(setpoint, yaw);
             if (speed_w > 0.1 || speed_w < -0.1) {
                 motors.StopAllMotors();
