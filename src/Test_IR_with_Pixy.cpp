@@ -29,44 +29,55 @@ void setup() {
     irring.init(&currentTime);
     irring.SetOffset(0.0);
     pixy.Init();
+    motors.InitializeMotors();
 }
 void loop() {
-    currentTime = millis();
-    irring.UpdateData();
-    double ballAngle = irring.GetAngle();
-    double yaw = bno.GetBNOData();
-
     pixy.updateData();
     int numberObjects=pixy.numBlocks();
-    Serial.println("Number of objects");
-    Serial.println(numberObjects);
-
-    for (int i=0;i<numberObjects;i++){
-        int signature=pixy.getSignature(i);
-        Serial.print("signature:        ");
-        Serial.print(signature);
-        if (signature==targetSignature){
-            int x=pixy.getX(i);
-            Serial.println("x");
-            Serial.println(x);
-            int y=pixy.getY(i);
-            Serial.println("y");
-            Serial.println(y);
-
-            float angleX = (x - 158) * (180.0 / 158.0); 
-            Serial.println("angleX");
-            Serial.println(angleX);
-
-            motors.MoveOmnidirectionalBase(angleX, 0.5, 0);
-            
-            double speed_w = pid.Calculate(setpoint, yaw);
-            if (speed_w > 0.1 || speed_w < -0.1) {
-                motors.StopAllMotors();
-                motors.MoveOmnidirectionalBase(0, 0, speed_w);
-            delay(1000);
-        }
+    if (numberObjects>0){
+        motors.MoveOmnidirectionalBase(0,0.5,0);
+    }else{
+        motors.StopAllMotors();
     }
-}
+    delay(200);
+//     currentTime = millis();
+//     irring.UpdateData();
+//     double ballAngle = irring.GetAngle();
+//     double yaw = bno.GetBNOData();
+
+//     pixy.updateData();
+//     int numberObjects=pixy.numBlocks();
+//     Serial.println("Number of objects");
+//     Serial.println(numberObjects);
+
+//     for (int i=0;i<numberObjects;i++){
+//         int signature=pixy.getSignature(i);
+//         Serial.print("signature:        ");
+//         Serial.print(signature);
+//         if (signature==targetSignature){
+//             int x=pixy.getX(i);
+//             Serial.println("x");
+//             Serial.println(x);
+//             int y=pixy.getY(i);
+//             Serial.println("y");
+//             Serial.println(y);
+//             float angle =(x-158)*(60.0/316.0)
+//             //float angleX = (x - 158) * (180.0 / 158.0); Esta por probarse
+//             Serial.println("angleX");
+//             Serial.println(angleX);
+
+//             motors.MoveOmnidirectionalBase(angleX, 0.5, 0);
+            
+//             double speed_w = pid.Calculate(setpoint, yaw);
+//             if (speed_w > 0.1 || speed_w < -0.1) {
+//                 motors.StopAllMotors();
+//                 motors.MoveOmnidirectionalBase(0, 0, speed_w);
+//             delay(1000);
+//         }
+//     }
+// }
+
+
 }
     //Step 1 -Searching for the ball
     // if (abs(ballAngle) > 10) {
