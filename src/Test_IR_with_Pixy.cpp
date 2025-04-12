@@ -5,6 +5,8 @@
 #include "PID.h"
 #include "constants.h"
 #include "PixyCam.h" 
+#include <Wire.h>
+#include <Pixy2I2C.h>
 
 int setpoint = 0;
 const int kBallFollowOffset=1.1;
@@ -29,6 +31,7 @@ void setup() {
     irring.init(&currentTime);
     irring.SetOffset(0.0);
     pixy.Init();
+    Wire.begin();
     motors.InitializeMotors();
 }
 void loop() {
@@ -196,4 +199,4 @@ void loop() {
     delay(50);*/    
 
     //}
-}
+
