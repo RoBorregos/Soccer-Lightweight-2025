@@ -8,7 +8,6 @@
 
 int setpoint = 0;
 const int kBallFollowOffset=1.1;
-const int HeightGoalMax= 3;
 unsigned long currentTime = millis();
 float lastKnownGoalX=0;
 float lastKnownGoalY=0;
@@ -38,76 +37,84 @@ void loop() {
     double ballAngle = irring.GetAngle();
     double yaw = bno.GetBNOData();
 
-    //Step 1 -Searching for the ball
-    if (abs(ballAngle) > 10) {
-        Serial.println("Searching ball");
-        motors.MoveOmnidirectionalBase(ballAngle*kBallFollowOffset, 0.5, 0);
-        double speed_w = pid.Calculate(setpoint, yaw);
-        if (speed_w > 0.1 || speed_w < -0.1) {
-            motors.StopAllMotors();
-            motors.MoveOmnidirectionalBase(0, 0, speed_w);
-        }
-    }else{
-        Serial.println("Ball found");
-        ballControlled=true;
-    }
-    //Step 2-Searching for the goal
-    if (ballControlled){
-        pixy.updateData();
-        int numberObjects=pixy.numBlocks();
-        int bestBlock=-1;
-        int maxWidth=0;
-        int bestHeight=0;
-        for(int i=0;i<numberObjects;i++){
+    pixy.updateData();
+    int numberObjects=pixy.numBlocks();
+    Serial.println("Number of objects");
+    Serial.println(numberObjects);
+    for (int i=0;i<numberObjects;i++){
+        int signature=pixy.getSignature();
+        Serial.println("signature");
+        Serial.println(signature);
+        if (signature==targetSignature){
             int height=pixy.getHeight(i);
-            Serial.println(height);
             int width= pixy.getWidth(i);
+            Serial.println("height");
+            Serial.println(height);
+            Serial.println("width");
             Serial.println(width);
-            int signature=pixy.getSignature();
-
-            if (signature==targetSignature){
-                if (height> HeightGoalMax){
-                    if(width>maxWidth){
-                        maxWidth=width;
-                        bestBlock=i;
-                        bestHeight=height;
-                    }
-                }
-            }
-        }
-        //Step 3-Checking if the goal is detected, and go to it
-        if (bestBlock!= -1 ){
-            float x=pixy.getX(bestBlock);
-            Serial.println("best x");
-            Serial.println(x);
-            float y=pixy.getY(bestBlock);
-            Serial.println("best y");
-            Serial.println(y);
-            lastKnownGoalX=x;
-            lastKnownGoalY=y;
-            goalDetected=true;
-            float setpointGoal= x-160;
-            motors.MoveOmnidirectionalBase(setpointGoal,0.7, 0);
-            delay(1000);
-            motors.StopAllMotors();
-            Serial.println("Goal reached");
-        }
-        //Step 4-Checking if the goal is lost
-        else{
-            if(goalDetected){
-                float setpointGoal= lastKnownGoalX-160;
-                motors.MoveOmnidirectionalBase(setpointGoal,0.7, 0);
-            }else{
-                motors.MoveOmnidirectionalBase(ballAngle*kBallFollowOffset, 0.5, 0);
-                double speed_w = pid.Calculate(setpointGoal, yaw);
-                if (speed_w > 0.1 || speed_w < -0.1) {
-                    motors.StopAllMotors();
-                    motors.MoveOmnidirectionalBase(0, 0, speed_w);
-                }
-            }
-        }
         }
     }
+    //Step 1 -Searching for the ball
+    // if (abs(ballAngle) > 10) {
+    //     Serial.println("Searching ball");
+    //     motors.MoveOmnidirectionalBase(ballAngle*kBallFollowOffset, 0.5, 0);
+    //     double speed_w = pid.Calculate(setpoint, yaw);
+    //     if (speed_w > 0.1 || speed_w < -0.1) {
+    //         motors.StopAllMotors();
+    //         motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    //     }
+    // }else{
+    //     Serial.println("Ball found");
+    //     ballControlled=true;
+    // }
+    //Step 2-Searching for the goal
+   // if (ballControlled){
+        // pixy.updateData();
+        // int numberObjects=pixy.numBlocks();
+        // Serial.println("Number of objects");
+        // Serial.println(numberObjects);
+        // int bestBlock=-1;
+        // for(int i=0;i<numberObjects;i++){
+        //     int signature=pixy.getSignature();
+
+        //     if (signature==targetSignature){
+        //                 bestBlock=i;
+                    
+        //     }
+        // }
+        
+        // //Step 3-Checking if the goal is detected, and go to it
+        // if (bestBlock!= -1 ){
+        //     float x=pixy.getX(bestBlock);
+        //     Serial.println("best x");
+        //     Serial.println(x);
+        //     float y=pixy.getY(bestBlock);
+        //     Serial.println("best y");
+        //     Serial.println(y);
+        //     lastKnownGoalX=x;
+        //     lastKnownGoalY=y;
+        //     goalDetected=true;
+        //     float setpointGoal= x-160;
+        //     motors.MoveOmnidirectionalBase(setpointGoal,0.7, 0);
+        //     delay(1000);
+        //     motors.StopAllMotors();
+        //     Serial.println("Goal reached");
+        // }
+        // //Step 4-Checking if the goal is lost
+        // else{
+        //     if(goalDetected){
+        //         float setpointGoal= lastKnownGoalX-160;
+        //         motors.MoveOmnidirectionalBase(setpointGoal,0.7, 0);
+        //     }else{
+        //         motors.MoveOmnidirectionalBase(ballAngle*kBallFollowOffset, 0.5, 0);
+        //         double speed_w = pid.Calculate(setpointGoal, yaw);
+        //         if (speed_w > 0.1 || speed_w < -0.1) {
+        //             motors.StopAllMotors();
+        //             motors.MoveOmnidirectionalBase(0, 0, speed_w);
+        //         }
+        //     }
+        // }
+        
 
         
     /*double speed_w = pid.Calculate(setpoint, yaw);
@@ -163,5 +170,5 @@ void loop() {
     Serial.println(strength);
     delay(50);*/    
 
-    }
+    //}
 }
