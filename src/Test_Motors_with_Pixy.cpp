@@ -15,7 +15,7 @@ float lastKnownGoalY=0;
 int targetSignature=1;
 bool goalDetected=false;
 bool ballControlled=false;
-
+const uint32_t kCommunicationMode= SPI_MODE0; //This mode is used because we are using the SPI communication
 Bno bno;
 PixyCam pixy;
 IRRing irring;
@@ -29,7 +29,7 @@ void setup() {
     Serial.begin(9600);
     irring.init(&currentTime);
     irring.SetOffset(0.0);
-    pixy.Init();
+    pixy.Init(kCommunicationMode);
     motors.InitializeMotors();
     
 }
