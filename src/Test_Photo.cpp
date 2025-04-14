@@ -34,29 +34,51 @@ void setup() {
 
 void loop() {
     currentTime = millis();
-    PhotoLeft = photo.ReadPhotoLeft();
-    PhotoRight = photo.ReadPhotoRight();
-    PhotoFront = photo.ReadPhotoFront();
-    Serial.println("Reading photos");
-    Serial.print("Photo Left: ");
-    Serial.print(PhotoLeft);
-    Serial.print("   Photo Right: ");
-    Serial.print(PhotoRight);
-    Serial.print("   Photo Front: ");
-    Serial.println(PhotoFront);
+    
+    // int calibrationLeft = photo.PhotoCalibrationOnLine(Side::Left);
+    // int calinrationRight = photo.PhotoCalibrationOnLine(Side::Right);
+    // int calibrationFrontt = photo.PhotoCalibrationOnLine(Side::Front);
+    // Serial.println("Calibration photos");
+    // Serial.print("Calibration Left: ");
+    // Serial.print(calibrationLeft);
+    // Serial.print("   Calibration Right: ");
+    // Serial.print(calinrationRight);
+    // Serial.print("   Calibration Front: ");
+    // Serial.println(calibrationFrontt);
+    // delay (500);
 
-    delay (500);
-    PhotoLeft = photo.ReadPhoto(Side::Left);
-    PhotoRight = photo.ReadPhoto(Side::Right);
-    PhotoFront = photo.ReadPhoto(Side::Front);
-    Serial.println("Reading photos new function");
-    Serial.print("Photo Left: ");
-    Serial.print(PhotoLeft);
-    Serial.print("   Photo Right: ");
-    Serial.print(PhotoRight);
-    Serial.print("   Photo Front: ");
-    Serial.println(PhotoFront);
-    delay (500);
+    bool calibrationFieldLeft = photo.PhotoCalibrationOnField(Side::Left);
+    bool calinrationFieldRight = photo.PhotoCalibrationOnField(Side::Right);
+    bool calibrationFieldFrontt = photo.PhotoCalibrationOnField(Side::Front);
+    Serial.println("Calibration photos");
+    Serial.print("Calibration Left: ");
+    Serial.print(calibrationFieldLeft);
+    Serial.print("   Calibration Right: ");
+    Serial.print(calinrationFieldRight);
+    Serial.print("   Calibration Front: ");
+    Serial.println(calibrationFieldFrontt);
+
+    // PhotoLeft = photo.ReadPhoto(Side::Left);
+    // PhotoRight = photo.ReadPhoto(Side::Right);
+    // PhotoFront = photo.ReadPhoto(Side::Front);
+    // Serial.println("Reading photos new function");
+    // Serial.print("Photo Left: ");
+    // Serial.print(PhotoLeft);
+    // Serial.print("   Photo Right: ");
+    // Serial.print(PhotoRight);
+    // Serial.print("   Photo Front: ");
+    // Serial.println(PhotoFront);
+
+    // Serial.println("Checking photos");
+    // PhotoLeftOnLine = photo.CheckPhoto(Side::Left);
+    // PhotoRightOnLine = photo.CheckPhoto(Side::Right);
+    // PhotoFrontOnLine = photo.CheckPhoto(Side::Front);
+    // Serial.print("Photo Left on line: ");
+    // Serial.print(PhotoLeftOnLine);
+    // Serial.print("   Photo Right on line: ");
+    // Serial.print(PhotoRightOnLine);
+    // Serial.print("   Photo Front on line: ");
+    // Serial.println(PhotoFrontOnLine);
     //---------------------------------Reading data for PID and IR---------------------------------
     // irring.UpdateData();
     // double ballAngle = irring.GetAngle();

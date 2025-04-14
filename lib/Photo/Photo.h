@@ -21,18 +21,11 @@ public:
     // Photo(uint8_t signal_pin1, uint8_t mux_pin1_1, uint8_t mux_pin2_1, uint8_t mux_pin3_1,
     //     uint8_t signal_pin2, uint8_t mux_pin1_2, uint8_t mux_pin2_2, uint8_t mux_pin3_2,
     //     uint8_t signal_pin3, uint8_t mux_pin1_3, uint8_t mux_pin2_3, uint8_t mux_pin3_3);
-    int PhotoCalibrationOnField();
-    int PhotoCalibrationOnLine(Side side);
-    int ReadPhotoLeft();
-    int ReadPhotoRight();
-    int ReadPhotoFront();
-    bool CheckPhotoLeft();
-    bool CheckPhotoRight();
-    bool CheckPhotoFront();
-    int ReadPhoto(Side side);
+    uint16_t ReadPhoto(Side side);
     uint16_t ReadPhotoWithMUX(Side side);
     bool CheckPhoto(Side side);
-    bool CalibratePhotosOnField(Side side);
+    bool PhotoCalibrationOnField(Side side);
+    uint16_t PhotoCalibrationOnLine(Side side);
     // std::pair<uint16_t, bool> GetPhotoData(Side side);
 
 private:
@@ -53,9 +46,9 @@ private:
     int left_index = 0; // Índice actual para el lado izquierdo
     int right_index = 0; // Índice actual para el lado derecho
     int front_index = 0; // Índice actual para el lado frontal
-    uint16_t calibration_line_left = 0; // Valor calibrado sobre la línea (izquierda)
-    uint16_t calibration_line_right = 0; // Valor calibrado sobre la línea (derecha)
-    uint16_t calibration_line_front = 0; // Valor calibrado sobre la línea (frontal)
+    uint16_t calibration_line_left = 74; // Valor calibrado sobre la línea (izquierda)
+    uint16_t calibration_line_right = 338; // Valor calibrado sobre la línea (derecha)
+    uint16_t calibration_line_front = 51; // Valor calibrado sobre la línea (frontal)
 };
 
 #endif // PHOTO_H

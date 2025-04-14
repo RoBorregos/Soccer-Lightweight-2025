@@ -10,55 +10,7 @@ Photo::Photo()
 //     front_mux_(mux_signal_pin3, mux_pin1_3, mux_pin2_3, mux_pin3_3)
         {}
 
-int Photo::ReadPhotoLeft() {
-    int sum = 0;
-    for (int i = 0; i < kPhotoLeftElements; i++) {
-        photo_left[i] = analogRead(kPhotoLeftPins[i]);
-        // photo_left[i] = left_MUX.readChannel(i);
-        sum += photo_left[i];
-    }
-    average_photo_left = sum / kPhotoLeftElements;
-    return average_photo_left;
-}
-
-int Photo::ReadPhotoRight() {
-    int sum = 0;
-    for (int i = 0; i < kPhotoRightElements; i++) {
-        photo_right[i] = analogRead(kPhotoRightPins[i]);
-        // photo_right[i] = right_MUX.readChannel(i);
-        sum += photo_right[i];
-    }
-    average_photo_right = sum / kPhotoRightElements;
-    return average_photo_right;
-}
-
-int Photo::ReadPhotoFront() {
-    int sum = 0;
-    for (int i = 0; i < kPhotoFrontElements; i++) {
-        photo_front[i] = analogRead(kPhotoFrontPins[i]);
-        // photo_front[i] = front_MUX.readChannel(i);
-        sum += photo_front[i];
-    }
-    average_photo_front = sum / kPhotoFrontElements;
-    return average_photo_front;
-}
-
-bool Photo::CheckPhotoFront() {
-    int front = ReadPhotoFront();
-    return front > kPhotoTresholdFront;
-}
-
-bool Photo::CheckPhotoLeft() {
-    int left = ReadPhotoLeft();
-    return left > kPhotoTresholdLeft;
-}
-
-bool Photo::CheckPhotoRight() {
-    int right = ReadPhotoRight();
-    return right > kPhotoTresholdRight;
-}
-
-int Photo::ReadPhoto(Side side) {
+uint16_t Photo::ReadPhoto(Side side) {
     int sum = 0;
     uint16_t* photo_array;
     int elements;
@@ -186,7 +138,7 @@ bool Photo::CheckPhoto(Side side) {
 //     return {average, exceeds_threshold};
 // }
 
-int Photo::PhotoCalibrationOnLine(Side side) {
+uint16_t Photo::PhotoCalibrationOnLine(Side side) {
     unsigned long start_time = millis(); // Registrar el tiempo de inicio
     unsigned long duration = 10000; // Duración de 10 segundos en milisegundos
     uint32_t sum = 0; // Suma acumulada de los valores leídos
@@ -197,34 +149,39 @@ int Photo::PhotoCalibrationOnLine(Side side) {
         uint16_t value = ReadPhoto(side);
         sum += value;
         count++;
+        Serial.println(count);
         delay(30); // Esperar un poco entre lecturas
     }
 
     return sum / count;
 }
 
-bool Photo::CalibratePhotosOnField(Side side) {
+bool Photo::PhotoCalibrationOnField(Side side) {
     uint16_t value = ReadPhoto(side); // Leer el valor actual del lado especificado
     uint16_t* values_array;
     int* index;
     uint16_t calibration_line;
+    int correctionDegree;
 
     // Seleccionar el array y el índice correspondiente al lado
     switch (side) {
         case Side::Left:
             values_array = left_values;
             index = &left_index;
-            calibration_line = calibration_line_left;
+            calibration_line = kPhotoTresholdLeft;
+            correctionDegree = -90;
             break;
         case Side::Right:
             values_array = right_values;
             index = &right_index;
-            calibration_line = calibration_line_right;
+            calibration_line = kPhotoTresholdRight;
+            correctionDegree = 90;
             break;
         case Side::Front:
             values_array = front_values;
             index = &front_index;
-            calibration_line = calibration_line_front;
+            calibration_line = kPhotoTresholdFront;
+            correctionDegree = 180;
             break;
         default:
             return false; // Lado inválido
@@ -240,7 +197,17 @@ bool Photo::CalibratePhotosOnField(Side side) {
         sum += values_array[i];
     }
     uint16_t moving_average = sum / kMovingAverageSize;
-
+    Serial.print("Moving average: ");
+    Serial.print(moving_average);
+    Serial.print("  Calibration line: ");
+    Serial.println(calibration_line);
+    return value > (moving_average + calibration_line) / 2
     // Comparar el último valor con el promedio calibrado
-    return value > (moving_average + calibration_line) / 2;
+    // if ( value > (moving_average + calibration_line) / 2){;
+    //     return correctionDegree;
+    // }
+    // else {
+    //     return 0; // No se detectó la línea
+    // }
+
 }
