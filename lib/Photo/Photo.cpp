@@ -201,7 +201,7 @@ bool Photo::PhotoCalibrationOnField(Side side) {
     Serial.print(moving_average);
     Serial.print("  Calibration line: ");
     Serial.println(calibration_line);
-    return value > (moving_average + calibration_line) / 2
+    return value > (moving_average + calibration_line) / 2;
     // Comparar el último valor con el promedio calibrado
     // if ( value > (moving_average + calibration_line) / 2){;
     //     return correctionDegree;
