@@ -53,7 +53,7 @@ void loop() {
     Serial.println(numberObjects);
 
     for (int i=0;i<numberObjects;i++){
-        int signature=pixy.getSignature(i);
+        int signature=pixy.getSignature();
         Serial.print("signature:        ");
         Serial.print(signature);
         if (signature==targetSignature){
