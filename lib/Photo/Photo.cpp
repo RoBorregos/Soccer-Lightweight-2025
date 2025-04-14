@@ -10,7 +10,7 @@ Photo::Photo()
 //     front_mux_(mux_signal_pin3, mux_pin1_3, mux_pin2_3, mux_pin3_3)
         {}
 
-uint16_t Photo::ReadPhoto(Side side) {
+uint16_t Photo::ReadPhoto(Side side) { // Este método devuelve el promedio de los valores leídos
     int sum = 0;
     uint16_t* photo_array;
     int elements;
@@ -156,7 +156,7 @@ uint16_t Photo::PhotoCalibrationOnLine(Side side) {
     return sum / count;
 }
 
-bool Photo::PhotoCalibrationOnField(Side side) {
+PhotoData Photo::CheckPhotosOnField(Side side) {
     uint16_t value = ReadPhoto(side); // Leer el valor actual del lado especificado
     uint16_t* values_array;
     int* index;
@@ -183,8 +183,6 @@ bool Photo::PhotoCalibrationOnField(Side side) {
             calibration_line = kPhotoTresholdFront;
             correctionDegree = 180;
             break;
-        default:
-            return false; // Lado inválido
     }
 
     // Actualizar el array circular
@@ -197,17 +195,13 @@ bool Photo::PhotoCalibrationOnField(Side side) {
         sum += values_array[i];
     }
     uint16_t moving_average = sum / kMovingAverageSize;
+    bool is_on_line = value > (moving_average + calibration_line) / 2;
     Serial.print("Moving average: ");
     Serial.print(moving_average);
     Serial.print("  Calibration line: ");
-    Serial.println(calibration_line);
-    return value > (moving_average + calibration_line) / 2;
+    Serial.print(calibration_line);
+    Serial.print("Is on line: ");
+    Serial.println(is_on_line);
     // Comparar el último valor con el promedio calibrado
-    // if ( value > (moving_average + calibration_line) / 2){;
-    //     return correctionDegree;
-    // }
-    // else {
-    //     return 0; // No se detectó la línea
-    // }
-
+    return {is_on_line, correctionDegree};
 }

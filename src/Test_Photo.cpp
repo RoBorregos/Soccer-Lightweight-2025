@@ -6,17 +6,9 @@
 #include "PID.h"
 #include "IRRing.h"
 
-int PhotoLeft;
-int PhotoRight;
-int PhotoFront;
-bool PhotoLeftOnLine;
-bool PhotoRightOnLine;
-bool PhotoFrontOnLine;
 int currentTime;
-unsigned long motor_start_millis = 0;
-unsigned long motor_photo_correction = 200;
 int setpoint = 0;
-bool is_correcting_line = false;
+int kLineCorrectionTime = 200; // Tiempo de corrección en milisegundos
 
 Photo photo;
 IRRing irring;
@@ -35,6 +27,25 @@ void setup() {
 void loop() {
     currentTime = millis();
     
+    PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
+    PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
+    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+
+    if (photoDataLeft.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
+    }
+    else if (photoDataRight.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
+    }
+    else if (photoDataFront.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
+    }
     // int calibrationLeft = photo.PhotoCalibrationOnLine(Side::Left);
     // int calinrationRight = photo.PhotoCalibrationOnLine(Side::Right);
     // int calibrationFrontt = photo.PhotoCalibrationOnLine(Side::Front);
@@ -47,16 +58,16 @@ void loop() {
     // Serial.println(calibrationFrontt);
     // delay (500);
 
-    bool calibrationFieldLeft = photo.PhotoCalibrationOnField(Side::Left);
-    bool calinrationFieldRight = photo.PhotoCalibrationOnField(Side::Right);
-    bool calibrationFieldFrontt = photo.PhotoCalibrationOnField(Side::Front);
-    Serial.println("Calibration photos");
-    Serial.print("Calibration Left: ");
-    Serial.print(calibrationFieldLeft);
-    Serial.print("   Calibration Right: ");
-    Serial.print(calinrationFieldRight);
-    Serial.print("   Calibration Front: ");
-    Serial.println(calibrationFieldFrontt);
+    // bool calibrationFieldLeft = photo.PhotoCalibrationOnField(Side::Left);
+    // bool calinrationFieldRight = photo.PhotoCalibrationOnField(Side::Right);
+    // bool calibrationFieldFrontt = photo.PhotoCalibrationOnField(Side::Front);
+    // Serial.println("Calibration photos");
+    // Serial.print("Calibration Left: ");
+    // Serial.print(calibrationFieldLeft);
+    // Serial.print("   Calibration Right: ");
+    // Serial.print(calinrationFieldRight);
+    // Serial.print("   Calibration Front: ");
+    // Serial.println(calibrationFieldFrontt);
 
     // PhotoLeft = photo.ReadPhoto(Side::Left);
     // PhotoRight = photo.ReadPhoto(Side::Right);
@@ -96,23 +107,6 @@ void loop() {
     //     motors.MoveOmnidirectionalBase(0, 0, speed_w);
     // }
 
-    //---------------------------------Reading and checking phototransistors--------------------------------
-    // Serial.println("Reading photos");
-    // PhotoLeft = photo.ReadPhotoLeft();
-    // PhotoRight = photo.ReadPhotoRight();
-    // Serial.print("Photo Left: ");
-    // Serial.println(PhotoLeft);
-    // Serial.print("   Photo Right: ");
-    // Serial.println(PhotoRight);
-
-    // Serial.println("Checking photos");
-    // PhotoLeftOnLine = photo.CheckPhotoLeft();
-    // PhotoRightOnLine = photo.CheckPhotoRight();
-    // Serial.print("Photo Left on line: ");
-    // Serial.println(PhotoLeftOnLine);
-    // Serial.print("   Photo Right on line: ");
-    // Serial.println(PhotoRightOnLine);
-
     //-------------------------------------------------Line correction--------------------------------
     // if (!is_correcting_line && PhotoLeftOnLine) {
     //     is_correcting_line = true; // Activar el estado de corrección
@@ -121,7 +115,7 @@ void loop() {
     //     Serial.println("Photo Left true, starting correction...");
     // }
 
-    // Si está corrigiendo, verificar si ya pasó el tiempo de corrección
+    // // Si está corrigiendo, verificar si ya pasó el tiempo de corrección
     // if (is_correcting_line) {
     //     if (currentTime - motor_start_millis >= motor_photo_correction) {
     //         motors.StopAllMotors(); // Detener motores después del tiempo de corrección

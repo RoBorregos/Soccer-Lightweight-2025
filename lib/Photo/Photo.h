@@ -12,6 +12,11 @@ enum class Side {
     Front
 };
 
+struct PhotoData {
+    bool is_on_line;          // Indicador de si se detectó una línea
+    int correction_degree;    // Grado de corrección
+};
+
 class Photo {
 public:
     Photo();
@@ -24,7 +29,7 @@ public:
     uint16_t ReadPhoto(Side side);
     uint16_t ReadPhotoWithMUX(Side side);
     bool CheckPhoto(Side side);
-    bool PhotoCalibrationOnField(Side side);
+    PhotoData CheckPhotosOnField(Side side);
     uint16_t PhotoCalibrationOnLine(Side side);
     // std::pair<uint16_t, bool> GetPhotoData(Side side);
 

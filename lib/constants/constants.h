@@ -33,7 +33,6 @@ const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 const int kPhotoTresholdLeft = 175;
 const int kPhotoTresholdRight = 683;
 const int kPhotoTresholdFront = 78;
-unsigned int kLineCorrectionTime = 200; // Time in milliseconds for line correction
 
 // Receive signals
 const uint8_t kReceiveBno = 's';

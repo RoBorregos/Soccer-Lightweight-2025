@@ -1,6 +1,4 @@
 #include "motors.h"
-#include "Arduino.h"
-#include "constants.h"
 
 Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uint8_t in1_2, uint8_t in2_2, uint8_t speed3, uint8_t in1_3, uint8_t in2_3) :
     upper_right_motor_(speed2, in1_2, in2_2),
@@ -38,12 +36,3 @@ void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w)
     lower_center_motor_.SetSpeed(lower_center_speed);
     upper_right_motor_.SetSpeed( upper_right_speed);
 };
-
-void Motors::LineCorrection(double degree) {
-    unsigned long start_time = millis(); // Registrar el tiempo de inicio
-    MoveOmnidirectionalBase(degree, 1, 0); // Moverse en la dirección especificada
-    while (millis() - start_time < kLineCorrectionTime) {
-    // Mantener el movimiento hasta que pase el tiempo de corrección    
-    }
-    StopAllMotors(); 
-}
