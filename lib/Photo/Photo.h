@@ -31,7 +31,6 @@ public:
     bool CheckPhoto(Side side);
     PhotoData CheckPhotosOnField(Side side);
     uint16_t PhotoCalibrationOnLine(Side side);
-    // std::pair<uint16_t, bool> GetPhotoData(Side side);
 
 private:
     // Photo Left
@@ -51,9 +50,6 @@ private:
     int left_index = 0; // Índice actual para el lado izquierdo
     int right_index = 0; // Índice actual para el lado derecho
     int front_index = 0; // Índice actual para el lado frontal
-    uint16_t calibration_line_left = 74; // Valor calibrado sobre la línea (izquierda)
-    uint16_t calibration_line_right = 338; // Valor calibrado sobre la línea (derecha)
-    uint16_t calibration_line_front = 51; // Valor calibrado sobre la línea (frontal)
 };
 
 #endif // PHOTO_H

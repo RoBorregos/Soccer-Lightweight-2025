@@ -94,50 +94,6 @@ bool Photo::CheckPhoto(Side side) {
     }
 }
 
-// std is not avalable for arduino uno or mega boards.
-// This implementation could be used when we add esp32 to our robot. 
-
-// std::pair<uint16_t, bool> Photo::GetPhotoData(Side side) {
-//     uint8_t sum = 0;
-//     int* photo_array;
-//     uint8_t elements;
-//     MUX* mux;
-//     uint16_t threshold;
-
-//     switch (side) {
-//         case Side::Left:
-//             photo_array = photo_left;
-//             elements = kPhotoLeftElements;
-//             this->mux = mux = &left_mux_;
-//             threshold = kPhotoTresholdLeft;
-//             break;
-//         case Side::Right:
-//             photo_array = photo_right;
-//             elements = kPhotoRightElements;
-//             this->mux = mux = &right_mux_;
-//             threshold = kPhotoTresholdRight;
-//             break;
-//         case Side::Front:
-//             photo_array = photo_front;
-//             elements = kPhotoFrontElements;
-//             this->mux = mux = &front_mux_;
-//             threshold = kPhotoTresholdFront;
-//             break;
-//         default:
-//             return {0, false}; // Invalid side
-//     }
-
-//     for (int i = 0; i < elements; i++) {
-//         photo_array[i] = mux->readChannel(i);
-//         sum += photo_array[i];
-//     }
-
-//     uint16_t average = sum / elements;
-//     bool exceeds_threshold = average > threshold;
-
-//     return {average, exceeds_threshold};
-// }
-
 uint16_t Photo::PhotoCalibrationOnLine(Side side) {
     unsigned long start_time = millis(); // Registrar el tiempo de inicio
     unsigned long duration = 10000; // Duración de 10 segundos en milisegundos
@@ -202,6 +158,5 @@ PhotoData Photo::CheckPhotosOnField(Side side) {
     Serial.print(calibration_line);
     Serial.print("Is on line: ");
     Serial.println(is_on_line);
-    // Comparar el último valor con el promedio calibrado
     return {is_on_line, correctionDegree};
 }
