@@ -19,6 +19,7 @@ public:
     void StopAllMotors();
     void GetAllSpeeds();
     void MoveOmnidirectionalBase(double target_angle, float speed, double speed_w);
+    void LineCorrection(double degree);
 };
 
 #endif
