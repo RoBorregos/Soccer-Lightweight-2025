@@ -19,6 +19,13 @@ struct PhotoData {
 
 class Photo {
 public:
+    bool left_is_on_line = false;
+    bool right_is_on_line = false;
+    bool front_is_on_line = false;
+    int left_correction_degree = 0;
+    int right_correction_degree = 0;
+    int front_correction_degree = 0;
+
     Photo();
     // MUX left_mux_;
     // MUX right_mux_;
@@ -31,6 +38,7 @@ public:
     bool CheckPhoto(Side side);
     PhotoData CheckPhotosOnField(Side side);
     uint16_t PhotoCalibrationOnLine(Side side);
+    void ReceivePhotoData();
 
 private:
     // Photo Left

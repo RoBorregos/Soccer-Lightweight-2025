@@ -26,24 +26,21 @@ void setup() {
 
 void loop() {
     currentTime = millis();
-    
-    PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
-    PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
-    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+    // Llamar al método para recibir los datos
+    photo.ReceivePhotoData();
 
-    if (photoDataLeft.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
+    // Acceder a las variables miembro de la clase Photo
+    if (photo.left_is_on_line) {
+        motors.MoveOmnidirectionalBase(photo.left_correction_degree, 1, 0);
+        delay(kLineCorrectionTime);
         motors.StopAllMotors();
-    }
-    else if (photoDataRight.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
+    } else if (photo.right_is_on_line) {
+        motors.MoveOmnidirectionalBase(photo.right_correction_degree, 1, 0);
+        delay(kLineCorrectionTime);
         motors.StopAllMotors();
-    }
-    else if (photoDataFront.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
+    } else if (photo.front_is_on_line) {
+        motors.MoveOmnidirectionalBase(photo.front_correction_degree, 1, 0);
+        delay(kLineCorrectionTime);
         motors.StopAllMotors();
     }
     // int calibrationLeft = photo.PhotoCalibrationOnLine(Side::Left);

@@ -156,7 +156,29 @@ PhotoData Photo::CheckPhotosOnField(Side side) {
     Serial.print(moving_average);
     Serial.print("  Calibration line: ");
     Serial.print(calibration_line);
-    Serial.print("Is on line: ");
+    Serial.print("  Is on line: ");
     Serial.println(is_on_line);
     return {is_on_line, correctionDegree};
+}
+
+void Photo::ReceivePhotoData() {
+    if (Serial.available() > 0) {
+        // Leer la línea completa enviada por el emisor
+        String data = Serial.readStringUntil('\n');
+
+        // Separar los valores recibidos
+        int commaIndex1 = data.indexOf(',');
+        int commaIndex2 = data.indexOf(',', commaIndex1 + 1);
+        int commaIndex3 = data.indexOf(',', commaIndex2 + 1);
+        int commaIndex4 = data.indexOf(',', commaIndex3 + 1);
+        int commaIndex5 = data.indexOf(',', commaIndex4 + 1);
+
+        // Almacenar los valores recibidos en variables miembro
+        left_is_on_line = data.substring(0, commaIndex1).toInt();
+        left_correction_degree = data.substring(commaIndex1 + 1, commaIndex2).toInt();
+        right_is_on_line = data.substring(commaIndex2 + 1, commaIndex3).toInt();
+        right_correction_degree = data.substring(commaIndex3 + 1, commaIndex4).toInt();
+        front_is_on_line = data.substring(commaIndex4 + 1, commaIndex5).toInt();
+        front_correction_degree = data.substring(commaIndex5 + 1).toInt();
+    }
 }
