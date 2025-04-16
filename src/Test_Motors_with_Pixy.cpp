@@ -27,15 +27,9 @@ Motors motors(
 
 void setup() {
     Serial.begin(9600);
-<<<<<<< HEAD
-    irring.init(&currentTime);
-    irring.SetOffset(0.0);
-    pixy.Init(kCommunicationMode);
-=======
     Serial.println("Prueba de motores y cámara iniciada.");
-    pixy.Init();
+    pixy.Init(kCommunicationMode);
     Serial.println("PixyCam initialized");
->>>>>>> 5e284d99e80c8b1c1ebcadc01f168585c9ec822f
     motors.InitializeMotors();
     Serial.println("Motors initialized");
     bno.InitializeBNO();
@@ -60,22 +54,6 @@ void loop() {
     // Serial.print("Number of objects: ");
     // Serial.println(numberObjects);
 
-<<<<<<< HEAD
-    for (int i=0;i<numberObjects;i++){
-        int signature=pixy.getSignature();
-        Serial.print("signature:        ");
-        Serial.print(signature);
-        if (signature==targetSignature){
-            int x=pixy.getX(i);
-            Serial.println("x");
-            Serial.println(x);
-            int y=pixy.getY(i);
-            Serial.println("y");
-            Serial.println(y);
-            float angle =(x-158)*(60.0/316.0);
-            //float angleX = (x - 158) * (180.0 / 158.0); Esta por probarse
-            Serial.println("angleX");
-=======
     for (int i = 0; i < numberObjects; i++){
         int signature = pixy.getSignature();
         // Serial.print("signature: ");
@@ -90,7 +68,6 @@ void loop() {
             float angle = (x-158)*(60.0/316.0)*-1;
             // float angleX = (x - 158) * (180.0 / 158.0); Esta por probarse
             Serial.print("angleX: ");
->>>>>>> 5e284d99e80c8b1c1ebcadc01f168585c9ec822f
             Serial.println(angle);
 
             motors.MoveOmnidirectionalBase(angle, 0.5, 0);

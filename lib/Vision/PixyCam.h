@@ -17,10 +17,11 @@ class PixyCam
 	private:
 	Pixy2 pixy_;
 	uint8_t block;
+	uint32_t communicationMode;
 
 	public:
 	PixyCam();
-	void Init();
+	void Init(uint32_t communicationMode);
 	void updateData();
 	float angleGoal(float x);
 	int numBlocks();
