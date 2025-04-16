@@ -1,10 +1,20 @@
 #include "motors.h"
 #include "motor.h"
 #include "constants.h"
+#include "BNO.h"
+#include <Arduino.h>
+#include "IRRing.h"
+#include "PID.h"
+// #include "PixyCam.h" 
+
 
 Motor upper_left_motor(kMotor1Pwm, kMotor1In1, kMotor1In2);
 Motor lower_center_motor(kMotor2Pwm, kMotor2In1, kMotor2In2);
 Motor upper_right_motor(kMotor3Pwm, kMotor3In1, kMotor3In2);
+// Bno bno;
+// PixyCam pixy;
+// IRRing irring;
+// PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100);
 
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
@@ -14,6 +24,10 @@ int i = 0;
 
 void setup() {
     Serial.begin(9600);
+    // Serial3.begin(19200);
+    // irring.init(&currentTime);
+    // irring.SetOffset(0.0);
+    // pixy.Init();
     motors.InitializeMotors();
     Serial.println("Prueba de motores iniciada.");
 }

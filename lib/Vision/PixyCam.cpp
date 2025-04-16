@@ -2,9 +2,9 @@
 
 PixyCam::PixyCam() {}
 
-void PixyCam::Init() {
-  Wire.begin();
-  pixy_.init();
+void PixyCam::Init(uint32_t communicationMode) {
+  //Wire.begin();
+  pixy_.init(communicationMode);
 }
  void PixyCam::updateData(){
   pixy_.ccc.getBlocks();
