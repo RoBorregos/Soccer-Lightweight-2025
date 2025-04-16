@@ -47,10 +47,11 @@ def detect_goal(color,tag):
         #Centro
         print(f"Centro: ({center_x},{center_y},Ancho:{width}, Alto:{height}, Ángulo:{angle_from_center}°)")
         #Manda los datos al microcontrolador
-        uart.write(f"{tag},{center_x},{center_y},{width},{height},{angle_from_center}\n")
+        #uart.write(f"{tag},{center_x},{center_y},{width},{height},{angle_from_center}\n")
+        uart.write(f"{angle_from_center}\n")
 while True:
     clock.tick()
     img=sensor.snapshot()
     detect_goal(THRESHOLD_YELLOW_GOAL, 'y')#Detecta objetos amarillos
-    detect_goal(THRESHOLD_BLUE_GOAL,'b')#Detecta objetos azules
+    #detect_goal(THRESHOLD_BLUE_GOAL,'b')#Detecta objetos azules
 
