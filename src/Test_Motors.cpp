@@ -33,39 +33,7 @@ void setup() {
 }
 
 void loop() {
-    currentTime = millis();
-    irring.UpdateData();
-    double ballAngle = irring.GetAngle();
-    double yaw = bno.GetBNOData();
 
-    pixy.updateData();
-    int numberObjects=pixy.numBlocks();
-    Serial.print("Number of objects:         ");
-    Serial.print(numberObjects);
-    for (int i=0;i<numberObjects;i++){
-        int signature=pixy.getSignature();
-        Serial.print("signature:        ");
-        Serial.print(signature);
-        if (signature==targetSignature){
-            int x=pixy.getX(i);
-            Serial.print("x:   ");
-            Serial.print(x);
-            int y=pixy.getY(i);
-            Serial.print("y:    ");
-            Serial.print(y);
-            float angleX = (x - 158) * (60.0 / 316); 
-            Serial.print("angleX:       ");
-            Serial.print(angleX);
-            motors.MoveOmnidirectionalBase(angleX, 0.5, 0);
-            double speed_w = pid.Calculate(setpoint, yaw);
-            if (speed_w > 0.1 || speed_w < -0.1) {
-                motors.StopAllMotors();
-                motors.MoveOmnidirectionalBase(0, 0, speed_w);
-            delay(1000);
-            }
-        }
-    }
-}
     // motors.SetAllSpeeds(255);
     // motors.upper_left_motor_.MovePositive();
     // delay(2000);
