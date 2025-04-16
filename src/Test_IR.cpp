@@ -17,8 +17,10 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
     unsigned long currentTime = millis();
+    bno.InitializeBNO();
+    motors.InitializeMotors();
     irring.init(&currentTime);
     irring.SetOffset(0.0);
 }
@@ -35,4 +37,6 @@ void loop(){
     }
     Serial.print("Angle: ");
     Serial.print(ballAngle);
+    Serial.print(" Yaw: ");
+    Serial.println(yaw);
 }

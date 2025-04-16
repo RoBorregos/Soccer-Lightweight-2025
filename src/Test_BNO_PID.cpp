@@ -28,7 +28,7 @@ void loop() {
     yaw = bno.GetBNOData();
     speed_w = pid.Calculate(setpoint, yaw);
     Serial.print("Yaw: ");
-    Serial.println(yaw);
+    Serial.print(yaw);
     Serial.print("   Speed_w: ");
     Serial.println(speed_w);
     //----------------Correction with linear movement---------------------
