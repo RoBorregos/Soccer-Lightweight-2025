@@ -3,11 +3,13 @@
 #include <Pixy2UART.h>
 
 PixyCam pixyCamRobot;
+const uint32_t kCommunicationMode = SPI_MODE0; // UART communication mode
+
 void setup()
 {
     Serial.begin(9600);
     Serial3.begin(19200);
-    pixyCamRobot.Init();
+    pixyCamRobot.Init(kCommunicationMode);
 }
 void loop(){
     pixyCamRobot.updateData();
