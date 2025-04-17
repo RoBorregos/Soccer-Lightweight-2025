@@ -8,7 +8,7 @@
 #include "Photo.h"
 
 int setpoint = 0;
-const int kBallFollowOffset = 1.1;
+const int kBallFollowOffset1 = 1.5;
 unsigned long currentTime = millis();
 float lastKnownGoalX = 0;
 float lastKnownGoalY = 0;
@@ -33,12 +33,15 @@ void setup() {
     pixy.Init(kCommunicationMode);
     motors.InitializeMotors();
     bno.InitializeBNO();
+    irring.init(&currentTime);
+    irring.SetOffset(0.0);
+
 }
 void loop() {
     //--------------------------- Update data from sensors ---------------------------
     currentTime = millis();
     irring.UpdateData();
-    double ballAngle = irring.GetAngle(kBallFollowOffset);
+    double ballAngle = irring.GetAngle();
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
     pixy.updateData();
@@ -46,25 +49,29 @@ void loop() {
     // Serial.print("Number of objects: ");
     // Serial.println(numberObjects);
 
+    motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
+
+    Serial.print("Ball angle: ");
+    Serial.println(ballAngle);
     //--------------------------- Phototransistors reading and correction ---------------------------
 
-    PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
-    PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
-    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+    // PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
+    // PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
+    // PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
 
-    if (photoDataLeft.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    } else if (photoDataRight.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    } else if (photoDataFront.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    }
+    // if (photoDataLeft.is_on_line) {
+    //     motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
+    //     delay (kLineCorrectionTime);
+    //     motors.StopAllMotors();
+    // } else if (photoDataRight.is_on_line) {
+    //     motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
+    //     delay (kLineCorrectionTime);
+    //     motors.StopAllMotors();
+    // } else if (photoDataFront.is_on_line) {
+    //     motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
+    //     delay (kLineCorrectionTime);
+    //     motors.StopAllMotors();
+    // }
 
     //--------------------------- PID Correction ---------------------------
     if (speed_w > 0.1 || speed_w < -0.1) {
@@ -73,22 +80,22 @@ void loop() {
     }
 
     //--------------------------- Pixy with motion ---------------------------
-    for (int i = 0; i < numberObjects; i++){
-        int signature = pixy.getSignature();
-        // Serial.print("signature: ");
-        // Serial.print(signature);
-        if (signature == targetSignature){
-            int x = pixy.getX(i);
-            // Serial.println("x");
-            // Serial.println(x);
-            int y = pixy.getY(i);
-            // Serial.println("y");
-            // Serial.println(y);
-            float goalAngle = (x-158)*(60.0/316.0)*-1;
-            Serial.print("angleX: ");
-            Serial.println(goalAngle);
+    // for (int i = 0; i < numberObjects; i++){
+    //     int signature = pixy.getSignature();
+    //     // Serial.print("signature: ");
+    //     // Serial.print(signature);
+    //     if (signature == targetSignature){
+    //         int x = pixy.getX(i);
+    //         // Serial.println("x");
+    //         // Serial.println(x);
+    //         int y = pixy.getY(i);
+    //         // Serial.println("y");
+    //         // Serial.println(y);
+    //         float goalAngle = (x-158)*(60.0/316.0)*-1;
+    //         Serial.print("angleX: ");
+    //         Serial.println(goalAngle);
 
-            motors.MoveOmnidirectionalBase(goalAngle, 0.5, 0);
-        }
-    }
+    //         motors.MoveOmnidirectionalBase(goalAngle, 0.5, 0);
+    //     }
+    // }
 }

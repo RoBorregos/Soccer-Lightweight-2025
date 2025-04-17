@@ -21,7 +21,7 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
     unsigned long currentTime = millis();
     bno.InitializeBNO();
     motors.InitializeMotors();
@@ -31,7 +31,7 @@ void setup() {
 
 void loop(){
     irring.UpdateData();
-    double ballAngle = irring.GetAngle(kBallFollowOffset);
+    double ballAngle = irring.GetAngle();
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
     motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
@@ -40,23 +40,6 @@ void loop(){
         motors.MoveOmnidirectionalBase(0, 0, speed_w);
     }
 
-    PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
-    PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
-    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
-
-    if (photoDataLeft.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    } else if (photoDataRight.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    } else if (photoDataFront.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    }
     Serial.print("Ball angle: ");
     Serial.print(ballAngle);
     Serial.print(" Yaw: ");

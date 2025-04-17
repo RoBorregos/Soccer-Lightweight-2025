@@ -19,7 +19,7 @@ Motors motors(
 
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
     motors.InitializeMotors();
 }
 

@@ -19,7 +19,7 @@ class IRRing
 	void SetOffset(double offset);
 	double GetRawAngle();
 	double GetStrength();
-	double GetAngle(float ballFollowOffset);
+	double GetAngle();
 
 };
 #endif

@@ -2,13 +2,13 @@
 #define constants_h
 #include <stdint.h>
 
-const uint8_t kMotor3In1 = 35; // Back center motor
-const uint8_t kMotor3In2 = 34;
-const uint8_t kMotor3Pwm = 5; 
+const uint8_t kMotor2In1 = 35; // Back center motor
+const uint8_t kMotor2In2 = 34;
+const uint8_t kMotor2Pwm = 5; 
 
-const uint8_t kMotor2In1 = 33; // Derecha
-const uint8_t kMotor2In2 = 32;
-const uint8_t kMotor2Pwm = 6; 
+const uint8_t kMotor3In1 = 33; // Derecha
+const uint8_t kMotor3In2 = 32;
+const uint8_t kMotor3Pwm = 6; 
 
 const uint8_t kMotor1In1 = 31; // Izquierda
 const uint8_t kMotor1In2 = 30;
@@ -30,9 +30,9 @@ const uint8_t kPhotoFrontElements = 2;
 const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 
 // Photo Treshold
-const int kPhotoTresholdLeft = 101;
-const int kPhotoTresholdRight = 312;
-const int kPhotoTresholdFront = 119;
+const int kPhotoTresholdLeft = 110;
+const int kPhotoTresholdRight = 661;
+const int kPhotoTresholdFront = 62;
 
 // Receive signals
 const uint8_t kReceiveBno = 's';
