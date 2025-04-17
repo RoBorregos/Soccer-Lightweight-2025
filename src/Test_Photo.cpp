@@ -21,7 +21,7 @@ Motors motors(
 
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
 }
 
 void loop() {
@@ -35,13 +35,11 @@ void loop() {
         motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
         delay (kLineCorrectionTime);
         motors.StopAllMotors();
-    }
-    else if (photoDataRight.is_on_line) {
+    } else if (photoDataRight.is_on_line) {
         motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
         delay (kLineCorrectionTime);
         motors.StopAllMotors();
-    }
-    else if (photoDataFront.is_on_line) {
+    } else if (photoDataFront.is_on_line) {
         motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
         delay (kLineCorrectionTime);
         motors.StopAllMotors();

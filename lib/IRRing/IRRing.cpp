@@ -56,10 +56,15 @@ double IRRing::GetRawAngle(){
 double IRRing::GetStrength(){
     return filterStr.GetLowPass();
 }
-double IRRing::GetAngle(){
+double IRRing::GetAngle(float ballFollowOffset){
     if(angle>180){
         angle-=360;
     }
+
+    if (abs(angle > 15)){
+        angle = angle * ballFollowOffset;
+    }
+
     return angle*-1;
     
 }

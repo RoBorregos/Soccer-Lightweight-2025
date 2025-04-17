@@ -156,7 +156,7 @@ PhotoData Photo::CheckPhotosOnField(Side side) {
     Serial.print(moving_average);
     Serial.print("  Calibration line: ");
     Serial.print(calibration_line);
-    Serial.print("Is on line: ");
+    Serial.print("  Is on line: ");
     Serial.println(is_on_line);
     return {is_on_line, correctionDegree};
 }

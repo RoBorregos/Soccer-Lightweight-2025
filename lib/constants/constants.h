@@ -19,7 +19,7 @@ const double kMinPWM = 40.0; // We set the minimum PWM that the robot needs to m
 
 // Photo Left
 const uint8_t kPhotoLeftElements = 5;
-const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1,A2,A3,A4}; // These are the pins abailable on robot where test was done
+const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0,A1,A2,A3,A4}; // These are the pins abailable on robot where test was done
 
 // Photo Right
 const uint8_t kPhotoRightElements = 5;
@@ -30,9 +30,9 @@ const uint8_t kPhotoFrontElements = 2;
 const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 
 // Photo Treshold
-const int kPhotoTresholdLeft = 175;
-const int kPhotoTresholdRight = 683;
-const int kPhotoTresholdFront = 78;
+const int kPhotoTresholdLeft = 101;
+const int kPhotoTresholdRight = 312;
+const int kPhotoTresholdFront = 119;
 
 // Receive signals
 const uint8_t kReceiveBno = 's';
