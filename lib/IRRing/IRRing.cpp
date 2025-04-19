@@ -84,3 +84,16 @@ double IRRing::GetAngle(float ballFollowOffsetBack, float ballFollowOffsetSide, 
     return angle*-1;
     
 }
+//Para implementar el offset usando el PID, no sería necesario tener condicionales porque el PID se encarga de corregir el offset según el ángulo
+// double IRRing::GetAngle(){
+//     if (angle > 180){
+//         angle -= 360;
+//     }
+//     return angle*-1;
+// }
+// double IRRing::GetAnglewithOffset(float offset){
+//     angle = angle * ballFollowOffset;
+    
+//     return angle;
+// }
+//Se me ocurre tener dos funciones diferentes, porque para calcular el PID necesitamos el ángulo que ya está corregido para que este en valores de -180 a 180

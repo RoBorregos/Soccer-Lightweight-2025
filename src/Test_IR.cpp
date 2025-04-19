@@ -44,4 +44,17 @@ void loop(){
     Serial.print(ballAngle);
     Serial.print(" Yaw: ");
     Serial.println(yaw);
+
+    // Esto es una idea de como se puede usar el PID para calcular el offset
+    // double angleWithoutOffset = irring.GetAngle();
+    // //Usar pid para calcular el offset
+    // double offset = pid.Calculate(setpoint, angleWithoutOffset);
+    // Serial.print("Offset: ");
+    // Serial.println(offset);
+    // double ballAnglewithOffset = irring.GetAnglewithOffset(offset);
+    // Serial.print("Ball angle with offset: ");
+    // Serial.println(ballAnglewithOffset);
+    // //Usar el offset para corregir el movimiento
+    // motors.MoveOmnidirectionalBase(ballAnglewithOffset, 0.5, 0);
+
 }
