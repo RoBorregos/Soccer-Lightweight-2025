@@ -8,7 +8,9 @@
 #include "Photo.h"
 
 int setpoint = 0;
-const int kBallFollowOffset1 = 1.5;
+float kBallFollowOffsetBack = 1.12;
+float kBallFollowOffsetSide = 1.09;
+float kBallFollowOffsetFront = 0.9;
 unsigned long currentTime = millis();
 float lastKnownGoalX = 0;
 float lastKnownGoalY = 0;
@@ -29,7 +31,7 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
     pixy.Init(kCommunicationMode);
     motors.InitializeMotors();
     bno.InitializeBNO();
@@ -41,17 +43,19 @@ void loop() {
     //--------------------------- Update data from sensors ---------------------------
     currentTime = millis();
     irring.UpdateData();
-    double ballAngle = irring.GetAngle();
+    double ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
     pixy.updateData();
     int numberObjects = pixy.numBlocks();
     // Serial.print("Number of objects: ");
-    // Serial.println(numberObjects);
+    // Serial.print(numberObjects);
 
+    // if (abs(ballAngle) > 5){
     motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
+    // }
 
-    Serial.print("Ball angle: ");
+    Serial.print("  Ball angle: ");
     Serial.println(ballAngle);
     //--------------------------- Phototransistors reading and correction ---------------------------
 
@@ -82,8 +86,8 @@ void loop() {
     //--------------------------- Pixy with motion ---------------------------
     // for (int i = 0; i < numberObjects; i++){
     //     int signature = pixy.getSignature();
-    //     // Serial.print("signature: ");
-    //     // Serial.print(signature);
+    //     Serial.print("  signature: ");
+    //     Serial.print(signature);
     //     if (signature == targetSignature){
     //         int x = pixy.getX(i);
     //         // Serial.println("x");
@@ -92,10 +96,12 @@ void loop() {
     //         // Serial.println("y");
     //         // Serial.println(y);
     //         float goalAngle = (x-158)*(60.0/316.0)*-1;
-    //         Serial.print("angleX: ");
+    //         Serial.print("  angleX: ");
     //         Serial.println(goalAngle);
 
-    //         motors.MoveOmnidirectionalBase(goalAngle, 0.5, 0);
+    //         if (abs(ballAngle) < 5){
+    //             motors.MoveOmnidirectionalBase(goalAngle, 0.5, 0);
+    //         }
     //     }
     // }
 }

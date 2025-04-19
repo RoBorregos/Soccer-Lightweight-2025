@@ -21,7 +21,7 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
     unsigned long currentTime = millis();
     bno.InitializeBNO();
     motors.InitializeMotors();
@@ -31,7 +31,7 @@ void setup() {
 
 void loop(){
     irring.UpdateData();
-    double ballAngle = irring.GetAngle();
+    double ballAngle = irring.GetAngle(1,1, 1);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
     motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);

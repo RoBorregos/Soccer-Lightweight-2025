@@ -2,6 +2,7 @@
 #define constants_h
 #include <stdint.h>
 
+//--------------------Pines for arduino mega--------------------
 const uint8_t kMotor2In1 = 35; // Back center motor
 const uint8_t kMotor2In2 = 34;
 const uint8_t kMotor2Pwm = 5; 
@@ -13,6 +14,20 @@ const uint8_t kMotor3Pwm = 6;
 const uint8_t kMotor1In1 = 31; // Izquierda
 const uint8_t kMotor1In2 = 30;
 const uint8_t kMotor1Pwm = 7;
+
+// --------------------Pines for esp32--------------------
+
+// const uint8_t kMotor2In1 = 26; 
+// const uint8_t kMotor2In2 = 25;
+// const uint8_t kMotor2Pwm = 13; 
+
+// const uint8_t kMotor3In1 = 33; 
+// const uint8_t kMotor3In2 = 32;
+// const uint8_t kMotor3Pwm = 27; 
+
+// const uint8_t kMotor1In1 = 19; 
+// const uint8_t kMotor1In2 = 18;
+// const uint8_t kMotor1Pwm = 15;
 
 const double kMaxPWM = 255.0; // We set a max PWM to limit the motors movement for better performance and control
 const double kMinPWM = 40.0; // We set the minimum PWM that the robot needs to move
