@@ -7,7 +7,7 @@ void setup()
 {
     Serial.begin(9600);
     Serial3.begin(19200);
-    pixyCamRobot.Init();
+    pixyCamRobot.Init(SPI_MODE0);
 }
 void loop(){
     pixyCamRobot.updateData();
