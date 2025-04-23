@@ -10,7 +10,7 @@
 int setpoint = 0;
 float kBallFollowOffsetBack = 1.12;
 float kBallFollowOffsetSide = 1.09;
-float kBallFollowOffsetFront = 0.9;
+float kBallFollowOffsetFront = 0.97;
 unsigned long currentTime = millis();
 float lastKnownGoalX = 0;
 float lastKnownGoalY = 0;
@@ -31,7 +31,7 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
     pixy.Init(kCommunicationMode);
     motors.InitializeMotors();
     bno.InitializeBNO();
@@ -48,15 +48,15 @@ void loop() {
     double speed_w = pid.Calculate(setpoint, yaw);
     pixy.updateData();
     int numberObjects = pixy.numBlocks();
-    // Serial.print("Number of objects: ");
-    // Serial.print(numberObjects);
+    Serial.print("Number of objects: ");
+    Serial.print(numberObjects);
 
     // if (abs(ballAngle) > 5){
-    motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
+    motors.MoveOmnidirectionalBase(ballAngle, 0.56, 0);
     // }
 
-    Serial.print("  Ball angle: ");
-    Serial.println(ballAngle);
+    // Serial.print("  Ball angle: ");
+    // Serial.println(ballAngle);
     //--------------------------- Phototransistors reading and correction ---------------------------
 
     // PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
