@@ -56,7 +56,15 @@ double IRRing::GetRawAngle(){
 double IRRing::GetStrength(){
     return filterStr.GetLowPass();
 }
+
+// We adjust the angle using different offsets based on how far the ball is from the front.
+// Larger angles (ball behind) get a smaller correction using ballFollowOffsetBack,
+// medium angles (ball to the side) use ballFollowOffsetSide,
+// and smaller angles (ball in front) use ballFollowOffsetFront.
+// This allows more precise control depending on the ball’s position.
+
 double IRRing::GetAngle(float ballFollowOffsetBack, float ballFollowOffsetSide, float ballFollowOffsetFront){
+    
     if(angle>180){
         angle-=360;
     }
