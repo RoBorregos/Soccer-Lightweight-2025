@@ -18,7 +18,7 @@ Bno bno;
 PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100); // PID parameters: kp, ki, kd, max_error update for demo robot on april 5 2025
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
     motors.InitializeMotors();  // Inicializar los motores
     bno.InitializeBNO();
     start_millis = millis();
@@ -28,7 +28,7 @@ void loop() {
     yaw = bno.GetBNOData();
     speed_w = pid.Calculate(setpoint, yaw);
     Serial.print("Yaw: ");
-    Serial.println(yaw);
+    Serial.print(yaw);
     Serial.print("   Speed_w: ");
     Serial.println(speed_w);
     //----------------Correction with linear movement---------------------
