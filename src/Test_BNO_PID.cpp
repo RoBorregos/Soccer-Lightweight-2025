@@ -15,7 +15,8 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100); // PID parameters: kp, ki, kd, max_error update for demo robot on april 5 2025
+PID pid(1.2/kMaxPWM, 0/kMaxPWM, 0.55/kMaxPWM, 100);
+// 1.2, 0, 1.3
 
 void setup() {
     Serial.begin(115200);
@@ -32,7 +33,7 @@ void loop() {
     Serial.print("   Speed_w: ");
     Serial.println(speed_w);
     //----------------Correction with linear movement---------------------
-    motors.MoveOmnidirectionalBase(90, 0.65, 0);
+    // motors.MoveOmnidirectionalBase(90, 0.65, 0);
     if (speed_w > 0.1 || speed_w < -0.1) {
         motors.StopAllMotors();
         motors.MoveOmnidirectionalBase(0, 0, speed_w);
