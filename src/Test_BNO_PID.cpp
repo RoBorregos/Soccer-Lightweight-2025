@@ -15,7 +15,7 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(0.85/kMaxPWM, 0/kMaxPWM, 0.85/kMaxPWM, 100);
+PID pid(0.8/kMaxPWM, 0/kMaxPWM, 0.85/kMaxPWM, 100);
 // 1.2, 0, 1.3
 
 void setup() {
