@@ -17,6 +17,7 @@ public:
     void InitializeMotors();
     void SetAllSpeeds(uint8_t pwm);
     void StopAllMotors();
+    
     void GetAllSpeeds();
     void MoveOmnidirectionalBase(double target_angle, float speed, double speed_w);
     void LineCorrection(double degree);

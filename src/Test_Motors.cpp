@@ -17,10 +17,6 @@ int i = 0;
 
 void setup() {
     Serial.begin(9600);
-    Serial3.begin(19200);
-    irring.init(&currentTime);
-    irring.SetOffset(0.0);
-    pixy.Init(SPI_MODE0);
     motors.InitializeMotors();
     Serial.println("Prueba de motores iniciada.");
 }

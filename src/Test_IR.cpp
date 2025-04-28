@@ -33,11 +33,11 @@ void loop(){
     double ballAngle = irring.GetAngle(1,1, 1);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
-    // motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
-    // if (speed_w > 0.1 || speed_w < -0.1) {
-    //     motors.StopAllMotors();
-    //     motors.MoveOmnidirectionalBase(0, 0, speed_w);
-    // }
+    motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
+    if (speed_w > 0.1 || speed_w < -0.1) {
+        motors.StopAllMotors();
+        motors.MoveOmnidirectionalBase(0, 0, speed_w);
+     }
 
     Serial.print("Ball angle: ");
     Serial.print(ballAngle);
