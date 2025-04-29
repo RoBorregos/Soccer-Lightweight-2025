@@ -16,14 +16,14 @@ int targetSignature=1;
 bool goalDetected=false;
 bool ballControlled=false;
 const uint32_t kCommunicationMode= SPI_MODE0; //This mode is used because we are using the SPI communication
-uint8_t maxWidth=4;
+uint8_t maxWidth=22;
 int bestBlock=-1;
 int bestHeight=0;
 int heightGoalMax=50;
 Bno bno;
 PixyCam pixy;
 IRRing irring;
-PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100);
+PID pid(0.85/kMaxPWM, 0/kMaxPWM, 0.85/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -93,11 +93,11 @@ void loop() {
         motors.StopAllMotors();
         motors.MoveOmnidirectionalBase(0, 0, speed_w);
     }
-    if(maxWidth > 4){
-        motors.StopAllMotors();
-        motors.MoveOmnidirectionalBase(180, 0.7, 0);
-        motors.StopAllMotors();
-    }
+    // if(maxWidth > 4){
+    //     motors.StopAllMotors();
+    //     motors.MoveOmnidirectionalBase(180, 0.7, 0);
+    //     motors.StopAllMotors();
+    // }
 }   
     
 
