@@ -16,6 +16,10 @@ int targetSignature=1;
 bool goalDetected=false;
 bool ballControlled=false;
 const uint32_t kCommunicationMode= SPI_MODE0; //This mode is used because we are using the SPI communication
+uint8_t maxWidth=4;
+int bestBlock=-1;
+int bestHeight=0;
+int heightGoalMax=50;
 Bno bno;
 PixyCam pixy;
 IRRing irring;
@@ -59,26 +63,43 @@ void loop() {
         // Serial.print("signature: ");
         // Serial.print(signature);
         if (signature == targetSignature){
-            int x = pixy.getX(i);
+            int height = pixy.getHeight(i);
+            int width = pixy.getWidth(i);
+            if (height > heightGoalMax){
+                if (width > maxWidth){
+                    maxWidth = width;
+                    bestBlock = i;
+                    bestHeight = height;
+                }
+            }
+        }
+    
+    }
+    int x = pixy.getX(bestBlock);
             // Serial.println("x");
             // Serial.println(x);
-            int y = pixy.getY(i);
+    int y = pixy.getY(bestBlock);
             // Serial.println("y");
             // Serial.println(y);
-            float angle = (x-158)*(60.0/316.0)*-1;
+    float angle = (x-158)*(60.0/316.0)*-1;
             // float angleX = (x - 158) * (180.0 / 158.0); Esta por probarse
-            Serial.print("angleX: ");
-            Serial.println(angle);
+    Serial.print("angleX: ");
+    Serial.println(angle);
 
-            motors.MoveOmnidirectionalBase(angle, 0.5, 0);
+    motors.MoveOmnidirectionalBase(angle, 0.5, 0);
             
-            double speed_w = pid.Calculate(setpoint, yaw);
-            if (speed_w > 0.1 || speed_w < -0.1) {
-                motors.StopAllMotors();
-                motors.MoveOmnidirectionalBase(0, 0, speed_w);
-            }
-     }
-}
+    double speed_w = pid.Calculate(setpoint, yaw);
+    if (speed_w > 0.1 || speed_w < -0.1) {
+        motors.StopAllMotors();
+        motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    }
+    if(maxWidth > 4){
+        motors.StopAllMotors();
+        motors.MoveOmnidirectionalBase(180, 0.7, 0);
+        motors.StopAllMotors();
+    }
+}   
+    
 
 
 // }
@@ -198,5 +219,5 @@ void loop() {
     Serial.println(strength);
     delay(50);*/    
 
-    }
+
 
