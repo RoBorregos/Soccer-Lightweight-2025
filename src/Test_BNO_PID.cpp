@@ -15,11 +15,13 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100); // PID parameters: kp, ki, kd, max_error update for demo robot on april 5 2025
+PID pid(0.8/kMaxPWM, 0/kMaxPWM, 0.85/kMaxPWM, 100);
+// 1.2, 0, 1.3
 
 void setup() {
-    Serial.begin(115200);
-    motors.InitializeMotors();  // Inicializar los motores
+    Serial.begin(9600);
+    motors.InitializeMotors();
+    Serial.print("Test BNO");  // Inicializar los motores
     bno.InitializeBNO();
     start_millis = millis();
 }
@@ -32,7 +34,7 @@ void loop() {
     Serial.print("   Speed_w: ");
     Serial.println(speed_w);
     //----------------Correction with linear movement---------------------
-    motors.MoveOmnidirectionalBase(90, 0.65, 0);
+    // motors.MoveOmnidirectionalBase(90, 0.65, 0);
     if (speed_w > 0.1 || speed_w < -0.1) {
         motors.StopAllMotors();
         motors.MoveOmnidirectionalBase(0, 0, speed_w);

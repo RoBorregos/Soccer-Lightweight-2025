@@ -8,9 +8,9 @@ Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uin
 
 void Motors::InitializeMotors()
 {
-    upper_left_motor_.InitializeMotor();
-    lower_center_motor_.InitializeMotor();
-    upper_right_motor_.InitializeMotor();
+    upper_left_motor_.InitializeMotor(pwmChannel1);
+    lower_center_motor_.InitializeMotor(pwmChannel2);
+    upper_right_motor_.InitializeMotor(pwmChannel3);
 };
 
 void Motors::SetAllSpeeds(uint8_t pwm)
