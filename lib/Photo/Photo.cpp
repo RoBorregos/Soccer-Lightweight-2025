@@ -79,10 +79,8 @@ uint16_t Photo::ReadPhotoWithMUX(Side side) {
         Serial.print(i);
         Serial.print(": ");
         Serial.print(photo_array[i]);
-        
-
     }
-
+    Serial.println();
     return sum / elements;
 }
 
