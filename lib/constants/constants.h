@@ -2,55 +2,52 @@
 #define constants_h
 #include <stdint.h>
 
-// Motor 4
-/*const uint8_t MOTOR3_IN1 = 23;
-const uint8_t MOTOR3_IN2 = 22;
-const uint8_t MOTOR3_PWM = 15;*/
+//--------------------Pines for arduino mega--------------------
+const uint8_t kMotor2In1 = 35; // Back center motor
+const uint8_t kMotor2In2 = 34;
+const uint8_t kMotor2Pwm = 5; 
 
-// Motor 3
-/*const uint8_t MOTOR2_IN1 = 25;
-const uint8_t MOTOR2_IN2 = 6;
-const uint8_t MOTOR2_PWM = 20;*/
+const uint8_t kMotor3In1 = 33; // Derecha
+const uint8_t kMotor3In2 = 32;
+const uint8_t kMotor3Pwm = 6; 
 
-// Motor 1
-/*const uint8_t MOTOR4_IN1 = 9;
-const uint8_t MOTOR4_IN2 = 8;
-const uint8_t MOTOR4_PWM = 10;*/
+const uint8_t kMotor1In1 = 31; // Izquierda
+const uint8_t kMotor1In2 = 30;
+const uint8_t kMotor1Pwm = 7;
 
-// Motor 2
-/*const uint8_t MOTOR1_IN1 = 14;
-const uint8_t MOTOR1_IN2 = 11;
-const uint8_t MOTOR1_PWM = 21;*/
+// --------------------Pines for esp32--------------------
 
-const uint8_t kMotor3In1 = 53; // Back center motor
-const uint8_t kMotor3In2 = 52;
-const uint8_t kMotor3Pwm = 8; 
+// const uint8_t kMotor2In1 = 26; 
+// const uint8_t kMotor2In2 = 25;
+// const uint8_t kMotor2Pwm = 13; 
 
-const uint8_t kMotor2In1 = 50; // Derecha
-const uint8_t kMotor2In2 = 51;
-const uint8_t kMotor2Pwm = 9; 
+// const uint8_t kMotor3In1 = 33; 
+// const uint8_t kMotor3In2 = 32;
+// const uint8_t kMotor3Pwm = 27; 
 
-const uint8_t kMotor1In1 = 48; // Izquierda
-const uint8_t kMotor1In2 = 49;
-const uint8_t kMotor1Pwm = 10;
+// const uint8_t kMotor1In1 = 19; 
+// const uint8_t kMotor1In2 = 18;
+// const uint8_t kMotor1Pwm = 15;
+
+const double kMaxPWM = 255.0; // We set a max PWM to limit the motors movement for better performance and control
+const double kMinPWM = 40.0; // We set the minimum PWM that the robot needs to move
 
 // Photo Left
-const uint8_t kPhotoLeftElements = 4;
-const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0, A1, A4, A5}; // These are the pins abailable on robot where test was done
+const uint8_t kPhotoLeftElements = 5;
+const uint8_t kPhotoLeftPins[kPhotoLeftElements] = {A0,A1,A2,A3,A4}; // These are the pins abailable on robot where test was done
 
 // Photo Right
-const uint8_t kPhotoRightElements = 4;
-const uint8_t kPhotoRightPins[kPhotoRightElements] = {A6, A7, A10, A11}; // These are the pins abailable on robot where test was done
+const uint8_t kPhotoRightElements = 5;
+const uint8_t kPhotoRightPins[kPhotoRightElements] = {A5,A6,A7,A8,A9}; // These are the pins abailable on robot where test was done
 
-// No photo front abailable on test
 // Photo Front
-const uint8_t kPhotoFrontElements = 4;
-const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A9, A13, A14};
-
-
+const uint8_t kPhotoFrontElements = 2;
+const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 
 // Photo Treshold
-const int kPhotoTreshold = 2500;
+const int kPhotoTresholdLeft = 110;
+const int kPhotoTresholdRight = 661;
+const int kPhotoTresholdFront = 62;
 
 // Receive signals
 const uint8_t kReceiveBno = 's';
@@ -61,4 +58,3 @@ const uint8_t kReceiveGoalDistance = 'k';
 const uint8_t kReceiveLineAngle = 'r';
 
 #endif  
-

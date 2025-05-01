@@ -1,42 +1,48 @@
 #include "motors.h"
 #include "BNO.h"
 #include "PID.h"
+#include "constants.h"
 
 unsigned long start_millis;
 unsigned long current_millis;
+double yaw;
+double speed_w;
 int setpoint = 0;
-int translation_angle = 0;
-int adjust_angle = 0;
-
 
 Motors motors(
-    kMotor1In1, kMotor2In2, kMotor1Pwm,
-    kMotor2In1, kMotor2In2, kMotor2Pwm,
-    kMotor3In1, kMotor3In2, kMotor3Pwm);
+    kMotor1Pwm, kMotor1In1, kMotor1In2,
+    kMotor2Pwm, kMotor2In1, kMotor2In2,
+    kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(1.5, 0.00735, 45, 200); // parametros para correccion angular (1.5, 0.00735, 45, 200)
+PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100); // PID parameters: kp, ki, kd, max_error update for demo robot on april 5 2025
 
 void setup() {
-    Serial.begin(9600);
-    //ads.initializeAds();
+    Serial.begin(115200);
     motors.InitializeMotors();  // Inicializar los motores
-    Serial.println("Prueba de motores iniciada.");
     bno.InitializeBNO();
     start_millis = millis();
 }
 
 void loop() {
-    
-bno.GetBNOData();
-double yaw = bno.GetYaw();    
-translation_angle = 0;
-adjust_angle = translation_angle - 90;
-double speed_w = pid.Calculate(setpoint, yaw);
-Serial.println(yaw);
+    yaw = bno.GetBNOData();
+    speed_w = pid.Calculate(setpoint, yaw);
+    Serial.print("Yaw: ");
+    Serial.print(yaw);
+    Serial.print("   Speed_w: ");
+    Serial.println(speed_w);
+    //----------------Correction with linear movement---------------------
+    motors.MoveOmnidirectionalBase(90, 0.65, 0);
+    if (speed_w > 0.1 || speed_w < -0.1) {
+        motors.StopAllMotors();
+        motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    }
 
-if(speed_w != 0){
-    motors.StopAllMotors();
-    motors.MoveBaseWithImu(0, 0, speed_w);
-}
+    //--------------------------Correction on ist axis--------------------
+    // if(abs(yaw) > 5){
+    //     motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    // }
+    // else if(abs(yaw) < 5){
+    //     motors.StopAllMotors();
+    // }
 }

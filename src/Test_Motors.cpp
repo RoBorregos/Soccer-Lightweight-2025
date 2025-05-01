@@ -1,4 +1,13 @@
 #include "motors.h"
+#include "motor.h"
+#include "constants.h"
+#include <Arduino.h>
+#include "PID.h"
+
+
+Motor upper_left_motor(kMotor1Pwm, kMotor1In1, kMotor1In2);
+Motor lower_center_motor(kMotor2Pwm, kMotor2In1, kMotor2In2);
+Motor upper_right_motor(kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
@@ -13,24 +22,31 @@ void setup() {
 }
 
 void loop() {
-    motors.MoveBaseWithImu(0, 120, 0);
-    /*
-    motors.MoveMotor1();
-    delay(6000);
+    // motors.MoveOmnidirectionalBase(-90, 0.5, 0);
+    //--------------------------Test individual motor--------------------------
+    upper_left_motor.SetSpeed(65);
+    upper_left_motor.MovePositive();
+    delay(2000);
     motors.StopAllMotors();
-    motors.MoveMotor2();
-    delay(6000);
+    lower_center_motor.SetSpeed(65);
+    lower_center_motor.MovePositive();
+    delay(2000);
     motors.StopAllMotors();
-    motors.MoveMotor3();
-    delay(6000);
+    upper_right_motor.SetSpeed(65);
+    upper_right_motor.MovePositive();
+    delay(2000);
     motors.StopAllMotors();
-    */
-/*
-    for (i = 0; i < 360; i++) {
-        motors.MoveBaseWithImu(i, 120, 0);
-        delay(500);
-        motors.StopAllMotors();
-        delay(50);
-    }
-        */
+    
+    // upper_left_motor.SetSpeed(65);
+    // upper_left_motor.MoveNegative();
+    // delay(2000);
+    // motors.StopAllMotors();
+    // lower_center_motor.SetSpeed(65);
+    // lower_center_motor.MoveNegative();
+    // delay(2000);
+    // motors.StopAllMotors();
+    // upper_right_motor.SetSpeed(65);
+    // upper_right_motor.MoveNegative();
+    // delay(2000);
+    // motors.StopAllMotors();
 }

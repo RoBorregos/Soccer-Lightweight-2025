@@ -17,8 +17,9 @@ class IRRing
 	void init(unsigned long* current_time);
 	void UpdateData();
 	void SetOffset(double offset);
-	double GetAngle();
+	double GetRawAngle();
 	double GetStrength();
+	double GetAngle(float ballFollowOffsetBack, float ballFollowOffsetSide, float ballFollowOffsetFront);
 
 };
 #endif

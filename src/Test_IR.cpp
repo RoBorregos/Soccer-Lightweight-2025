@@ -3,14 +3,18 @@
 #include <Arduino.h>
 #include "IRRing.h"
 #include "PID.h"
+#include "Photo.h" 
 
 int setpoint = 0;
 int translation_angle = 0;
 int adjust_angle = 0;
+float kBallFollowOffset = 1.1;
 
 Bno bno;
+Photo photo;
+int kLineCorrectionTime = 200; // Tiempo de corrección en milisegundos
 IRRing irring;
-PID pid(1.5, 0.00735, 45, 200);
+PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -19,94 +23,38 @@ Motors motors(
 void setup() {
     Serial.begin(115200);
     unsigned long currentTime = millis();
+    bno.InitializeBNO();
+    motors.InitializeMotors();
     irring.init(&currentTime);
     irring.SetOffset(0.0);
 }
-void loop() {
-    bno.GetBNOData();
-    double yaw = bno.GetYaw();    
-    translation_angle = 0;
-    adjust_angle = translation_angle - 90;
-    double speed_w = pid.Calculate(setpoint, yaw);
-    // motors.MoveMotorsImu(setpoint, 150, 0);
-   
-    if(speed_w != 0){
-        motors.StopAllMotors();
-        motors.MoveBaseWithImu(0, 0, speed_w);
-    }
 
+void loop(){
     irring.UpdateData();
-    double angle=irring.GetAngle();
-    double newAngle=(angle<0 ? 360+angle:angle);
-    // newAngle=360-newAngle;
-    double strength=irring.GetStrength();
-    
-    // Added this condition to have control of the robot during the test
-    if (newAngle > 45 && newAngle < 315) {
-        motors.MoveBaseWithImu(newAngle,150,0);
-        Serial.println("fuera de rango");
-    }
-    else if (newAngle < 45 || newAngle > 315) {
+    double ballAngle = irring.GetAngle(1,1, 1);
+    double yaw = bno.GetBNOData();
+    double speed_w = pid.Calculate(setpoint, yaw);
+    motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
+    if (speed_w > 0.1 || speed_w < -0.1) {
         motors.StopAllMotors();
-        Serial.println("dentro de rango");
-    }
-    Serial.print("Angle: ");
-    Serial.print(newAngle);
-    Serial.print("\tradio: ");
-    Serial.println(strength);
-    delay(50);
-}
-
-/*PixyCam pixy;
-void setup() {
-    Serial.begin(9600);
-    pixy.init();
-}
-void loop() {
-    pixy.detectGoals();
-    delay(1000);
-  
-}*/
-
-
-/*Bno bno;
-void setup() {
-    Serial.begin(9600);
-    motors.InitializeMotors();  // Inicializar los motores
-    Serial.println("Prueba de motores iniciada.");
-
-    bno.bno_begin();
-}
-
-void loop() {
-
-    bno.getEuler();
-    */
-    /*
-    Serial.println("Mover hacia adelante");
-    motors.SetAllSpeeds(90);
-    motors.MoveForward();
-    
-    Serial.println("Mover hacia atrás");
-    motors.MoveBackward();
-    delay(2000);
-
-    Serial.println("Girar a la izquierda");
-    motors.MoveLeft();
-    delay(2000);
-
-    Serial.println("Girar a la derecha");
-    motors.MoveRight();
-    delay(2000);
-
-    Serial.println("Girar en círculos");
-    for (int angle = 0; angle < 360; angle += 45) {  // Gira en múltiples ángulos
-        motors.MoveMotors(angle, 255);
-        delay(500);
+        motors.MoveOmnidirectionalBase(0, 0, speed_w);
     }
 
-    Serial.println("Detener motores");
-    motors.StopMotors();
-    delay(3000);  
-    */
-//}
+    Serial.print("Ball angle: ");
+    Serial.print(ballAngle);
+    Serial.print(" Yaw: ");
+    Serial.println(yaw);
+
+    // Esto es una idea de como se puede usar el PID para calcular el offset
+    // double angleWithoutOffset = irring.GetAngle();
+    // //Usar pid para calcular el offset
+    // double offset = pid.Calculate(setpoint, angleWithoutOffset);
+    // Serial.print("Offset: ");
+    // Serial.println(offset);
+    // double ballAnglewithOffset = irring.GetAnglewithOffset(offset);
+    // Serial.print("Ball angle with offset: ");
+    // Serial.println(ballAnglewithOffset);
+    // //Usar el offset para corregir el movimiento
+    // motors.MoveOmnidirectionalBase(ballAnglewithOffset, 0.5, 0);
+
+}

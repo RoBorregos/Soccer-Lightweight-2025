@@ -2,20 +2,17 @@
 #include <Wire.h>
 #include "BNO.h"
 #include <PID.h>
-#include "Photo.h"
 #include "constants.h"
 
 // Definir PID con parámetros (ajústalos según tu caso)
 PID pid(6.0, 0.000, 30, 200);
 
 Bno bno;
-Photo photo;
 /*PID pid(0.6, 0.00735, 45, 200);*/
 Motors motors(
   kMotor1Pwm, kMotor1In1, kMotor1In2,
   kMotor2Pwm, kMotor2In1, kMotor2In2,
-  kMotor3Pwm, kMotor3In1, kMotor3In2,
-  kMotor4Pwm, kMotor4In1, kMotor4In2
+  kMotor3Pwm, kMotor3In1, kMotor3In2
 );
 
 Motor motor(kMotor1Pwm, kMotor1In1, kMotor1In2);
@@ -28,7 +25,7 @@ void setup() {
 void loop() {
 
     bno.GetBNOData();
-    motors.MoveBaseWithImu(15, 150, 0);
+    motors.MoveOmnidirectionalBase(15, 150, 0);
     
 
     /*
