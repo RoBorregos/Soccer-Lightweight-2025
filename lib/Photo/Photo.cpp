@@ -75,6 +75,12 @@ uint16_t Photo::ReadPhotoWithMUX(Side side) {
     for (int i = 0; i < elements; i++) {
         photo_array[i] = mux->readChannel(i);
         sum += photo_array[i];
+        Serial.print("  ");
+        Serial.print(i);
+        Serial.print(": ");
+        Serial.print(photo_array[i]);
+        
+
     }
 
     return sum / elements;

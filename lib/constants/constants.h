@@ -45,9 +45,9 @@ const uint8_t kMUXPin2_2 = 28;
 const uint8_t kMUXPin3_2 = 29;
 
 const uint8_t kSignalPin3 = A7;
-const uint8_t kMUXPin1_3 = 45;
+const uint8_t kMUXPin1_3 = 43;
 const uint8_t kMUXPin2_3 = 44;
-const uint8_t kMUXPin3_3 = 43;
+const uint8_t kMUXPin3_3 = 45;
 
 // Photo Left
 const uint8_t kPhotoLeftElements = 8;
