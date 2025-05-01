@@ -15,12 +15,13 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(1.2/kMaxPWM, 0/kMaxPWM, 0.55/kMaxPWM, 100);
+PID pid(0.8/kMaxPWM, 0/kMaxPWM, 0.85/kMaxPWM, 100);
 // 1.2, 0, 1.3
 
 void setup() {
-    Serial.begin(115200);
-    motors.InitializeMotors();  // Inicializar los motores
+    Serial.begin(9600);
+    motors.InitializeMotors();
+    Serial.print("Test BNO");  // Inicializar los motores
     bno.InitializeBNO();
     start_millis = millis();
 }
