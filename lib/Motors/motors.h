@@ -17,9 +17,15 @@ public:
     void InitializeMotors();
     void SetAllSpeeds(uint8_t pwm);
     void StopAllMotors();
+    
     void GetAllSpeeds();
     void MoveOmnidirectionalBase(double target_angle, float speed, double speed_w);
     void LineCorrection(double degree);
+
+private:
+    uint8_t pwmChannel1 = 0;
+    uint8_t pwmChannel2 = 1;
+    uint8_t pwmChannel3 = 2;
 };
 
 #endif

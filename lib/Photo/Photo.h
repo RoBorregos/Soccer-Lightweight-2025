@@ -19,13 +19,13 @@ struct PhotoData {
 
 class Photo {
 public:
-    Photo();
-    // MUX left_mux_;
-    // MUX right_mux_;
-    // MUX front_mux_;
-    // Photo(uint8_t signal_pin1, uint8_t mux_pin1_1, uint8_t mux_pin2_1, uint8_t mux_pin3_1,
-    //     uint8_t signal_pin2, uint8_t mux_pin1_2, uint8_t mux_pin2_2, uint8_t mux_pin3_2,
-    //     uint8_t signal_pin3, uint8_t mux_pin1_3, uint8_t mux_pin2_3, uint8_t mux_pin3_3);
+    // Photo();
+    MUX left_mux_;
+    MUX right_mux_;
+    MUX front_mux_;
+    Photo(uint8_t signal_pin1, uint8_t mux_pin1_1, uint8_t mux_pin2_1, uint8_t mux_pin3_1,
+         uint8_t signal_pin2, uint8_t mux_pin1_2, uint8_t mux_pin2_2, uint8_t mux_pin3_2,
+         uint8_t signal_pin3, uint8_t mux_pin1_3, uint8_t mux_pin2_3, uint8_t mux_pin3_3);    
     uint16_t ReadPhoto(Side side);
     uint16_t ReadPhotoWithMUX(Side side);
     bool CheckPhoto(Side side);
@@ -33,6 +33,7 @@ public:
     uint16_t PhotoCalibrationOnLine(Side side);
 
 private:
+    MUX* mux;
     // Photo Left
     uint16_t photo_left[kPhotoLeftElements];
     uint16_t average_photo_left;

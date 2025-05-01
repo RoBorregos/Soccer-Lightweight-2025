@@ -20,7 +20,10 @@ bool ballControlled = false;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
 int kLineCorrectionTime = 200;
 
-Photo photo;
+Photo photo(
+    kSignalPin1, kMUXPin1_1, kMUXPin2_1, kMUXPin3_1,
+    kSignalPin2, kMUXPin1_2, kMUXPin2_2, kMUXPin3_2,
+    kSignalPin3, kMUXPin1_3, kMUXPin2_3, kMUXPin3_3);
 Bno bno;
 PixyCam pixy;
 IRRing irring;
@@ -52,7 +55,7 @@ void loop() {
     Serial.print(numberObjects);
 
     // if (abs(ballAngle) > 5){
-    motors.MoveOmnidirectionalBase(ballAngle, 0.56, 0);
+    motors.MoveOmnidirectionalBase(ballAngle, 0.65, 0);
     // }
 
     // Serial.print("  Ball angle: ");

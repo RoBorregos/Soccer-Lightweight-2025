@@ -16,7 +16,7 @@ int targetSignature=1;
 bool goalDetected=false;
 bool ballControlled=false;
 const uint32_t kCommunicationMode= SPI_MODE0; //This mode is used because we are using the SPI communication
-uint8_t maxWidth=22;
+uint8_t maxWidth=18;
 int bestBlock=-1;
 int bestHeight=0;
 int heightGoalMax=50;
@@ -55,44 +55,79 @@ void loop() {
     pixy.updateData();
     // Serial.println("PixyCam updated");
     int numberObjects = pixy.numBlocks();
-    // Serial.print("Number of objects: ");
-    // Serial.println(numberObjects);
-
+    Serial.print("Number of objects: ");
+    Serial.println(numberObjects);
     for (int i = 0; i < numberObjects; i++){
         int signature = pixy.getSignature();
         // Serial.print("signature: ");
         // Serial.print(signature);
         if (signature == targetSignature){
-            int height = pixy.getHeight(i);
-            int width = pixy.getWidth(i);
-            if (height > heightGoalMax){
-                if (width > maxWidth){
-                    maxWidth = width;
-                    bestBlock = i;
-                    bestHeight = height;
-                }
-            }
-        }
-    
-    }
-    int x = pixy.getX(bestBlock);
+            int x = pixy.getX(i);
             // Serial.println("x");
             // Serial.println(x);
-    int y = pixy.getY(bestBlock);
+            int y = pixy.getY(i);
             // Serial.println("y");
             // Serial.println(y);
-    float angle = (x-158)*(60.0/316.0)*-1;
+            float angle = (x-160)*(60.0/320.0)*-1;
+            int width = pixy.getWidth(i);
+            Serial.print("width: ");
+            Serial.println(width);
+            if (width >= maxWidth) {
+                Serial.println("Muy cerca de la portería. Deteniendo motores.");
+                motors.StopAllMotors();
+                break; // Sal del bucle porque ya no se debe mover más
+            }
             // float angleX = (x - 158) * (180.0 / 158.0); Esta por probarse
-    Serial.print("angleX: ");
-    Serial.println(angle);
+            Serial.print("angleX: ");
+            Serial.println(angle);
 
-    motors.MoveOmnidirectionalBase(angle, 0.5, 0);
+            motors.MoveOmnidirectionalBase(angle, 0.5, 0);
             
-    double speed_w = pid.Calculate(setpoint, yaw);
-    if (speed_w > 0.1 || speed_w < -0.1) {
-        motors.StopAllMotors();
-        motors.MoveOmnidirectionalBase(0, 0, speed_w);
+            double speed_w = pid.Calculate(setpoint, yaw);
+            if (speed_w > 0.1 || speed_w < -0.1) {
+                 motors.StopAllMotors();
+                 motors.MoveOmnidirectionalBase(0, 0, speed_w);
+             }
+                         
+         }
     }
+
+
+    // for (int i = 0; i < numberObjects; i++){
+    //     int signature = pixy.getSignature();
+    //     // Serial.print("signature: ");
+    //     // Serial.print(signature);
+    //     if (signature == targetSignature){
+    //         int height = pixy.getHeight(i);
+    //         int width = pixy.getWidth(i);
+    //         if (height > heightGoalMax){
+    //             if (width > maxWidth){
+    //                 maxWidth = width;
+    //                 bestBlock = i;
+    //                 bestHeight = height;
+    //             }
+    //         }
+    //     }
+    
+    // }
+    // int x = pixy.getX(bestBlock);
+    //         Serial.println("x");
+    //         Serial.println(x);
+    // int y = pixy.getY(bestBlock);
+    //         Serial.println("y");
+    //         Serial.println(y);
+    // float angle = (x-158)*(60.0/316.0);
+    //         // float angleX = (x - 158) * (180.0 / 158.0); Esta por probarse
+    // Serial.print("angleX: ");
+    // Serial.println(angle*-1);
+
+    // motors.MoveOmnidirectionalBase(angle*-1, 0.5, 0);
+            
+    // double speed_w = pid.Calculate(setpoint, yaw);
+    // if (speed_w > 0.1 || speed_w < -0.1) {
+    //     motors.StopAllMotors();
+    //     motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    // }
     // if(maxWidth > 4){
     //     motors.StopAllMotors();
     //     motors.MoveOmnidirectionalBase(180, 0.7, 0);
