@@ -8,9 +8,9 @@
 #include "Photo.h"
 
 int setpoint = 0;
-float kBallFollowOffsetBack = 1.12;
-float kBallFollowOffsetSide = 1.09;
-float kBallFollowOffsetFront = 0.97;
+float kBallFollowOffsetBack = 1.06;
+float kBallFollowOffsetSide = 1.0;
+float kBallFollowOffsetFront = 0.95;
 unsigned long currentTime = millis();
 float lastKnownGoalX = 0;
 float lastKnownGoalY = 0;
@@ -87,24 +87,24 @@ void loop() {
     }
 
     //--------------------------- Pixy with motion ---------------------------
-    // for (int i = 0; i < numberObjects; i++){
-    //     int signature = pixy.getSignature();
-    //     Serial.print("  signature: ");
-    //     Serial.print(signature);
-    //     if (signature == targetSignature){
-    //         int x = pixy.getX(i);
-    //         // Serial.println("x");
-    //         // Serial.println(x);
-    //         int y = pixy.getY(i);
-    //         // Serial.println("y");
-    //         // Serial.println(y);
-    //         float goalAngle = (x-158)*(60.0/316.0)*-1;
-    //         Serial.print("  angleX: ");
-    //         Serial.println(goalAngle);
+    for (int i = 0; i < numberObjects; i++){
+        int signature = pixy.getSignature();
+        Serial.print("  signature: ");
+        Serial.print(signature);
+        if (signature == targetSignature){
+            int x = pixy.getX(i);
+            // Serial.println("x");
+            // Serial.println(x);
+            int y = pixy.getY(i);
+            // Serial.println("y");
+            // Serial.println(y);
+            float goalAngle = (x-158)*(60.0/316.0)*-1;
+            Serial.print("  angleX: ");
+            Serial.println(goalAngle);
 
-    //         if (abs(ballAngle) < 5){
-    //             motors.MoveOmnidirectionalBase(goalAngle, 0.5, 0);
-    //         }
-    //     }
-    // }
+            if (abs(ballAngle) < 5){
+                motors.MoveOmnidirectionalBase(goalAngle, 0.5, 0);
+            }
+        }
+    }
 }

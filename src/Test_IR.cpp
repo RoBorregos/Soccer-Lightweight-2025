@@ -30,7 +30,7 @@ void setup() {
 
 void loop(){
     irring.UpdateData();
-    double ballAngle = irring.GetAngle(1.06,1, 0.95);
+    double ballAngle = irring.GetAngle(1.06, 1, 0.95);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
     motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
