@@ -27,7 +27,7 @@ void setup() {
 
 void loop() {
     currentTime = millis();
-    motors.SetAllSpeeds(255);
+    motors.SetAllSpeeds(120);
     upper_left_motor.MovePositive();
     upper_right_motor.MovePositive();
     lower_center_motor.MovePositive();

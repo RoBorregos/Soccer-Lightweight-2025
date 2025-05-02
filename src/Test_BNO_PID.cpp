@@ -15,7 +15,7 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(0.8/kMaxPWM, 0/kMaxPWM, 0.85/kMaxPWM, 100);
+PID pid(1.2/kMaxPWM, 0/kMaxPWM, 0.9/kMaxPWM, 100);
 // 1.2, 0, 1.3
 
 void setup() {
@@ -38,6 +38,8 @@ void loop() {
     if (speed_w > 0.1 || speed_w < -0.1) {
         motors.StopAllMotors();
         motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    } else {
+        motors.StopAllMotors();    
     }
 
     //--------------------------Correction on ist axis--------------------

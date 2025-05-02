@@ -8,8 +8,8 @@
 #include "Photo.h"
 
 int setpoint = 0;
-float kBallFollowOffsetBack = 1.06;
-float kBallFollowOffsetSide = 1.0;
+float kBallFollowOffsetBack = 1.12;
+float kBallFollowOffsetSide = 1.09;
 float kBallFollowOffsetFront = 0.95;
 unsigned long currentTime = millis();
 float lastKnownGoalX = 0;
@@ -27,7 +27,7 @@ Photo photo(
 Bno bno;
 PixyCam pixy;
 IRRing irring;
-PID pid(0.8/kMaxPWM, 0/kMaxPWM, 0.85/kMaxPWM, 100);
+PID pid(1.2/kMaxPWM, 0/kMaxPWM, 0.9/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -44,22 +44,27 @@ void setup() {
 }
 void loop() {
     //--------------------------- Update data from sensors ---------------------------
-    currentTime = millis();
+    // currentTime = millis();
     irring.UpdateData();
     double ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
-    pixy.updateData();
-    int numberObjects = pixy.numBlocks();
-    Serial.print("Number of objects: ");
-    Serial.print(numberObjects);
+    // pixy.updateData();
+    // int numberObjects = pixy.numBlocks();
+    
+    Serial.print("  Ball angle: ");
+    Serial.println(ballAngle);
+    // Serial.print("Number of objects: ");
+    // Serial.print(numberObjects);
 
     // if (abs(ballAngle) > 5){
-    motors.MoveOmnidirectionalBase(ballAngle, 0.65, 0);
+    motors.MoveOmnidirectionalBase(ballAngle, 0.45, 0);
     // }
-
-    // Serial.print("  Ball angle: ");
-    // Serial.println(ballAngle);
+    //--------------------------- PID Correction ---------------------------
+    if (speed_w > 0.1 || speed_w < -0.1) {
+        motors.StopAllMotors();
+        motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    }
     //--------------------------- Phototransistors reading and correction ---------------------------
 
     // PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
@@ -78,12 +83,6 @@ void loop() {
         motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
         delay (kLineCorrectionTime);
         motors.StopAllMotors();
-    }
-
-    //--------------------------- PID Correction ---------------------------
-    if (speed_w > 0.1 || speed_w < -0.1) {
-        motors.StopAllMotors();
-        motors.MoveOmnidirectionalBase(0, 0, speed_w);
     }
 
     //--------------------------- Pixy with motion ---------------------------
