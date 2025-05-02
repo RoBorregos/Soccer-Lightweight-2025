@@ -67,7 +67,9 @@ void Motor::SetSpeed(float speed) {
     speed = speed * kMaxPWM;
     if (speed > kMaxPWM) {
         speed = kMaxPWM;
-    } 
+    } else if (speed < kMinPWM) {
+        speed = 0;
+    }
     analogWrite(inPWM_, speed);
     // ledcWrite(inPWM_, speed);
 }

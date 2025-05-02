@@ -19,7 +19,7 @@ bool goalDetected = false;
 bool ballControlled = false;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
 int kLineCorrectionTime = 200;
-
+int kCorrectionDegreeOffset = 15;
 Photo photo(
     kSignalPin1, kMUXPin1_1, kMUXPin2_1, kMUXPin3_1,
     kSignalPin2, kMUXPin1_2, kMUXPin2_2, kMUXPin3_2,
@@ -27,7 +27,7 @@ Photo photo(
 Bno bno;
 PixyCam pixy;
 IRRing irring;
-PID pid(1.2/kMaxPWM, 0/kMaxPWM, 0.9/kMaxPWM, 100);
+PID pid(1.125/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -57,19 +57,12 @@ void loop() {
     // Serial.print("Number of objects: ");
     // Serial.print(numberObjects);
 
-    // if (abs(ballAngle) > 5){
-    motors.MoveOmnidirectionalBase(ballAngle, 0.45, 0);
-    // }
-    //--------------------------- PID Correction ---------------------------
-    if (speed_w > 0.1 || speed_w < -0.1) {
-        motors.StopAllMotors();
-        motors.MoveOmnidirectionalBase(0, 0, speed_w);
-    }
+    motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, kCorrectionDegreeOffset);
     //--------------------------- Phototransistors reading and correction ---------------------------
 
     // PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
     // PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
-    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+    // PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
 
     // if (photoDataLeft.is_on_line) {
     //     motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
@@ -79,11 +72,11 @@ void loop() {
     //     motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
     //     delay (kLineCorrectionTime);
     //     motors.StopAllMotors();
-    if (photoDataFront.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    }
+    // if (photoDataFront.is_on_line) {
+    //     motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
+    //     delay (kLineCorrectionTime);
+    //     motors.StopAllMotors();
+    // }
 
     //--------------------------- Pixy with motion ---------------------------
     // for (int i = 0; i < numberObjects; i++){
