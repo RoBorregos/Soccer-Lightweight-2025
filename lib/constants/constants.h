@@ -3,17 +3,17 @@
 #include <stdint.h>
 
 //--------------------Pines for arduino mega--------------------
-const uint8_t kMotor1In1 = 22; // Izquierda
-const uint8_t kMotor1In2 = 23;
+const uint8_t kMotor1In1 = 23; // Izquierda
+const uint8_t kMotor1In2 = 22;
 const uint8_t kMotor1Pwm = 6;
 
-const uint8_t kMotor2In1 = 25; // derecha
-const uint8_t kMotor2In2 = 24; 
-const uint8_t kMotor2Pwm = 5; 
+const uint8_t kMotor2In1 = 27; // derecha
+const uint8_t kMotor2In2 = 26; 
+const uint8_t kMotor2Pwm = 4; 
 
-const uint8_t kMotor3In1 = 26; // atrás
-const uint8_t kMotor3In2 = 27;
-const uint8_t kMotor3Pwm = 4; 
+const uint8_t kMotor3In1 = 25; // atrás
+const uint8_t kMotor3In2 = 24;
+const uint8_t kMotor3Pwm = 5; 
 
 // --------------------Pines for esp32--------------------
 
