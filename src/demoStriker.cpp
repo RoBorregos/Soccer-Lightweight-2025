@@ -19,7 +19,7 @@ bool goalDetected = false;
 bool ballControlled = false;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
 int kLineCorrectionTime = 200;
-int kCorrectionDegreeOffset = 15;
+double kCorrectionDegreeOffset = 16;
 Photo photo(
     kSignalPin1, kMUXPin1_1, kMUXPin2_1, kMUXPin3_1,
     kSignalPin2, kMUXPin1_2, kMUXPin2_2, kMUXPin3_2,

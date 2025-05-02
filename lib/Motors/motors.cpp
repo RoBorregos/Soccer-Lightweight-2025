@@ -27,7 +27,7 @@ void Motors::StopAllMotors()
     upper_right_motor_.StopMotor();
 };
 
-void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w, int offset)
+void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w, double offset)
 {
     if (degree > 0){
         degree -= offset;
