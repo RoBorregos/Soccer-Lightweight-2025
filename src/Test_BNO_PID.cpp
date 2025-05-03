@@ -8,7 +8,7 @@ unsigned long current_millis;
 double yaw;
 double speed_w;
 int setpoint = 0;
-int kCorrectionDegreeOffset = 10;
+double kCorrectionDegreeOffset = 15;
 
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
