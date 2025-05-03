@@ -29,10 +29,14 @@ void Motors::StopAllMotors()
 
 void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w, double offset)
 {
-    if (degree > 0){
-        degree -= offset;
-    } else if (degree <= 0){
-        degree += offset;
+    if (degree < abs(180-offset)) {
+        if (degree > 0){
+            degree -= offset;
+        } else if (degree <= 0){
+            degree += offset;
+        }
+    } else if (degree > abs(180-offset)) {
+        degree = degree;
     }
     float upper_left_speed = cos(((degree - 150) * PI / 180)) * speed + speed_w;
     float lower_center_speed = cos(((degree - 270) * PI / 180)) * speed + speed_w;

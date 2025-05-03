@@ -13,14 +13,15 @@ float kBallFollowOffset = 1.1;
 Bno bno;
 int kLineCorrectionTime = 200; // Tiempo de corrección en milisegundos
 IRRing irring;
-PID pid(1.2/kMaxPWM, 0/kMaxPWM, 0.9/kMaxPWM, 100);
+PID pid(0.9375/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
     kMotor3Pwm, kMotor3In1, kMotor3In2);
+int kCorrectionDegreeOffset = 16;
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(9600);
     unsigned long currentTime = millis();
     bno.InitializeBNO();
     motors.InitializeMotors();
@@ -30,10 +31,10 @@ void setup() {
 
 void loop(){
     irring.UpdateData();
-    double ballAngle = irring.GetAngle(1.06, 1, 0.95);
+    double ballAngle = irring.GetAngle(1.0, 1.0, 1.0);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
-    // motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
+    motors.MoveOmnidirectionalBase(ballAngle, 0.5, speed_w, kCorrectionDegreeOffset);
     // if (speed_w > 0.1 || speed_w < -0.1) {
     //      motors.StopAllMotors();
     //      motors.MoveOmnidirectionalBase(0, 0, speed_w);
