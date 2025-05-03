@@ -57,7 +57,7 @@ void loop() {
     // Serial.print("Number of objects: ");
     // Serial.print(numberObjects);
 
-    motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, kCorrectionDegreeOffset);
+   // motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, kCorrectionDegreeOffset);
     //--------------------------- Phototransistors reading and correction ---------------------------
 
     // PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
