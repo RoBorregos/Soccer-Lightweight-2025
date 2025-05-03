@@ -28,9 +28,12 @@ void setup() {
 }
 void loop() {
     irring.UpdateData();
-    double ballAngle = irring.GetAngle(1.12, 1.09, 0.95);
-    if (ballAngle<=15){
-        double yaw = bno.GetBNOData();
+    double ballAngle = irring.GetAngle(1.1, 0.96, 0.95); // Ángulo hacia la pelota
+    double yaw = bno.GetBNOData();
+    double speed_w = pid.Calculate(setpoint, yaw);
+    if (ballAngle>15){
+        motors.MoveOmnidirectionalBase(ballAngle, 0.5, speed_w,KCorrectionDegreeOffset);
+    }else{
         pixy.updateData();
         int numberObjects = pixy.numBlocks();
         Serial.print("Number of objects: ");
@@ -41,19 +44,8 @@ void loop() {
                 int x = pixy.getX(i);
                 int y = pixy.getY(i);
                 float angle = (x-160)*(60.0/320.0)*-1;
-                int width = pixy.getWidth(i);
-                motors.MoveOmnidirectionalBase(angle, 0.5, 0);
-                double speed_w = pid.Calculate(setpoint, yaw);
-                motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w,KCorrectionDegreeOffset);
+                motors.MoveOmnidirectionalBase(angle, 0.5, speed_w,KCorrectionDegreeOffset); 
             }
         }
-    }else{
-        double yaw = bno.GetBNOData();
-        motors.MoveOmnidirectionalBase(ballAngle, 0.5, 0);
-        double speed_w = pid.Calculate(setpoint, yaw);
-        if (speed_w > 0.1 || speed_w < -0.1) {
-            motors.StopAllMotors();
-            motors.MoveOmnidirectionalBase(0, 0, speed_w);
-         }
     }
 }  
