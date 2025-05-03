@@ -75,14 +75,7 @@ uint16_t Photo::ReadPhotoWithMUX(Side side) {
     for (int i = 0; i < elements; i++) {
         photo_array[i] = mux->readChannel(i);
         sum += photo_array[i];
-        Serial.print("  ");
-        Serial.print(i);
-        Serial.print(": ");
-        Serial.print(photo_array[i]);
-        
-
     }
-
     return sum / elements;
 }
 
@@ -158,6 +151,16 @@ PhotoData Photo::CheckPhotosOnField(Side side) {
         sum += values_array[i];
     }
     uint16_t moving_average = sum / kMovingAverageSize;
-    bool is_on_line = value > (moving_average + calibration_line) / 2;
+    bool is_on_line = value > (calibration_line * 0.8);
+    Serial.print("  ");
+    Serial.print("Moving average: ");
+    Serial.print(moving_average);
+    Serial.print("  Value: ");
+    Serial.print(value);
+    Serial.print("  Calculation: ");
+    Serial.print(calibration_line * 0.8);
+    Serial.print("  Is on line: ");
+    Serial.println(is_on_line);
+
     return {is_on_line, correctionDegree};
 }

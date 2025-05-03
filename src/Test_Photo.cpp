@@ -30,10 +30,10 @@ void setup() {
 
 void loop() {
     currentTime = millis();
-    
+    motors.MoveOmnidirectionalBase(0, 0.4, 0);
     // PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
     // PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
-    // PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
 
     // if (photoDataLeft.is_on_line) {
     //     motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
@@ -43,19 +43,19 @@ void loop() {
     //     motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
     //     delay (kLineCorrectionTime);
     //     motors.StopAllMotors();
-    // } else if (photoDataFront.is_on_line) {
-    //     motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
-    //     delay (kLineCorrectionTime);
-    //     motors.StopAllMotors();
-    // }
+    if (photoDataFront.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
+    }
     
     // uint16_t valueleft = photo.ReadPhotoWithMUX(Side::Left);
     // uint16_t valueright = photo.ReadPhotoWithMUX(Side::Right);
-    uint16_t valuefront = photo.ReadPhotoWithMUX(Side::Front);
+    // uint16_t valuefront = photo.ReadPhotoWithMUX(Side::Front);
     // Serial.print("Left photo value: ");
     // Serial.print(valueleft);
     // Serial.print("  Right photo value: ");
     // Serial.print(valueright);
-    Serial.print("  Front photo value: ");
-    Serial.println(valuefront);
+    // Serial.print("  Front photo value: ");
+    // Serial.println(valuefront);
 }

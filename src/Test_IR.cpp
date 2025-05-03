@@ -13,7 +13,7 @@ float kBallFollowOffset = 1.1;
 Bno bno;
 int kLineCorrectionTime = 200; // Tiempo de corrección en milisegundos
 IRRing irring;
-PID pid(0.8/kMaxPWM, 0/kMaxPWM, 0.85/kMaxPWM, 100);
+PID pid(1.2/kMaxPWM, 0/kMaxPWM, 0.9/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -37,7 +37,7 @@ void loop(){
     // if (speed_w > 0.1 || speed_w < -0.1) {
     //      motors.StopAllMotors();
     //      motors.MoveOmnidirectionalBase(0, 0, speed_w);
-    //  }
+    // }
 
     Serial.print("Ball angle: ");
     Serial.print(ballAngle);
