@@ -64,7 +64,7 @@ const uint8_t kPhotoFrontPins[kPhotoFrontElements] = {A10, A11};
 // Photo Treshold
 const int kPhotoTresholdLeft = 110;
 const int kPhotoTresholdRight = 661;
-const int kPhotoTresholdFront = 239;
+const int kPhotoTresholdFront = 253;
 
 // Receive signals
 // const uint8_t kReceiveBno = 's';

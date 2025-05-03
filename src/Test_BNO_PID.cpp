@@ -8,7 +8,7 @@ unsigned long current_millis;
 double yaw;
 double speed_w;
 int setpoint = 0;
-double kCorrectionDegreeOffset = 15;
+double kCorrectionDegreeOffset = 0;
 
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
@@ -16,7 +16,7 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(1.125/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100);
+PID pid(0.75/kMaxPWM, 0.05/kMaxPWM, 0.175/kMaxPWM, 100);
 // 1.125
 
 void setup() {
@@ -35,7 +35,6 @@ void loop() {
     Serial.print("   Speed_w: ");
     Serial.println(speed_w);
     //----------------Correction with linear movement---------------------
-    // motors.MoveOmnidirectionalBase(90, 0.65, 0);
     
     motors.MoveOmnidirectionalBase(0, 0.4, speed_w, kCorrectionDegreeOffset);
     

@@ -18,8 +18,8 @@ int targetSignature = 1;
 bool goalDetected = false;
 bool ballControlled = false;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
-int kLineCorrectionTime = 200;
-double kCorrectionDegreeOffset = 16;
+int kLineCorrectionTime = 275;
+double kCorrectionDegreeOffset = 0;
 Photo photo(
     kSignalPin1, kMUXPin1_1, kMUXPin2_1, kMUXPin3_1,
     kSignalPin2, kMUXPin1_2, kMUXPin2_2, kMUXPin3_2,
@@ -27,7 +27,7 @@ Photo photo(
 Bno bno;
 PixyCam pixy;
 IRRing irring;
-PID pid(0.9375/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100);
+PID pid(0.56/kMaxPWM, 0.05/kMaxPWM, 0.1/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -46,19 +46,29 @@ void loop() {
     //--------------------------- Update data from sensors ---------------------------
     // currentTime = millis();
     irring.UpdateData();
+    double rawAngle = irring.GetRawAngle();
     double ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
     // pixy.updateData();
     // int numberObjects = pixy.numBlocks();
     
+    Serial.print("  Raw angle: ");
+    Serial.print(rawAngle);
     Serial.print("  Ball angle: ");
     Serial.println(ballAngle);
+
     // Serial.print("Number of objects: ");
     // Serial.print(numberObjects);
 
-    motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, kCorrectionDegreeOffset);
+    motors.MoveOmnidirectionalBase(ballAngle, 0.35, speed_w, kCorrectionDegreeOffset);
 
+    // PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+    // if (photoDataFront.is_on_line) {
+    //     motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, speed_w, kCorrectionDegreeOffset);
+    //     delay (kLineCorrectionTime);
+    //     motors.StopAllMotors();
+    // }
 
 
 }
