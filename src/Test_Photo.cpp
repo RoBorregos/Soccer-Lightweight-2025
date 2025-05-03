@@ -31,18 +31,18 @@ void setup() {
 void loop() {
     currentTime = millis();
     motors.MoveOmnidirectionalBase(0, 0.4, 0);
-    // PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
-    // PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
+    PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
+    PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
     PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
 
-    // if (photoDataLeft.is_on_line) {
-    //     motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
-    //     delay (kLineCorrectionTime);
-    //     motors.StopAllMotors();
-    // } else if (photoDataRight.is_on_line) {
-    //     motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
-    //     delay (kLineCorrectionTime);
-    //     motors.StopAllMotors();
+    if (photoDataLeft.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
+    } else if (photoDataRight.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
     if (photoDataFront.is_on_line) {
         motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
         delay (kLineCorrectionTime);
