@@ -30,6 +30,7 @@ class PixyCam
 	int getY(uint8_t block);
 	int getWidth(uint8_t block);
 	int getHeight(uint8_t block);
+	float angle(int x);
 
 
 };
