@@ -14,15 +14,16 @@ Motors motors(
     kMotor2Pwm, kMotor2In1, kMotor2In2,
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 int i = 0;
+uint8_t switchPin = 42;
 
 void setup() {
     Serial.begin(9600);
-    motors.InitializeMotors();
-    Serial.println("Prueba de motores iniciada.");
+    motors.InitializeMotors(switchPin);
 }
 
 void loop() {
-    // motors.MoveOmnidirectionalBase(0, 0.5, 0);
+    motors.StartStopMotors(switchPin);
+    // motors.MoveOmnidirectionalBase(0, 0.5, 0, 0);
     //--------------------------Test individual motor--------------------------
     // upper_left_motor.SetSpeed(65);
     // upper_left_motor.MovePositive();

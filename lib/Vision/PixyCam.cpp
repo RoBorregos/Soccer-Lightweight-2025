@@ -11,22 +11,11 @@ void PixyCam::updateData(){
   pixy_.ccc.getBlocks();
 }
 
-float PixyCam::angleGoal(float x){
-  if (getSignature() == 1){
-    const float FOV = 60.0;   
-    const int x_center = 158; 
-    const int x_max = 158;    
-
-    float angle = ((x - x_center) / (float)x_max) * (FOV / 2);
-    return angle;
-  }
-}
-
-int PixyCam::numBlocks(){
+uint8_t PixyCam::numBlocks(){
    return pixy_.ccc.numBlocks;
 }
 
-int PixyCam::getSignature(){
+uint8_t PixyCam::getSignature(){
    return pixy_.ccc.blocks[block].m_signature;
 }
 
@@ -39,7 +28,14 @@ int PixyCam::getY(uint8_t block){
 }
 
 int PixyCam::getWidth(uint8_t block){
-  return pixy_.ccc.blocks[block].m_width;
+  width_values[width_index] = pixy_.ccc.blocks[block].m_width;
+  width_index = (width_index + 1) % kMovingAverageSize; // Incrementar el índice circularmente
+
+  float sum = 0;
+  for (int i = 0; i < kMovingAverageSize; i++) {
+      sum += width_values[i];
+  }
+  return sum / kMovingAverageSize;
 }
 
 int PixyCam::getHeight(uint8_t block){
@@ -57,4 +53,18 @@ float PixyCam::getGoalAngle(int x){
       sum += angle_values[i];
   }
   return sum / kMovingAverageSize;
+}
+
+TargetGoalData PixyCam::getTargetGoalData(uint8_t numberObjects, uint8_t targetSignature){
+  for (int i = 0; i < numberObjects; i++){
+    uint8_t signature = getSignature();
+    if (signature == targetSignature){
+      int x = getX(i);
+      int y = getY(i);
+      int width = getWidth(i);
+      int height = getHeight(i);
+      float cameraAngle = getGoalAngle(x);
+      return {signature, x, y, width, height, cameraAngle};
+    }
+  }
 }
