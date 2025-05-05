@@ -51,6 +51,9 @@ void IRRing::SetOffset(double offset){
     this->offset=offset;
 }
 double IRRing::GetRawAngle(){
+    if(angle > 180){
+        angle -= 360;
+    }
     return angle;
 }
 double IRRing::GetStrength(){

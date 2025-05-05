@@ -14,12 +14,16 @@ struct GoalData{
 
 class PixyCam 
 {
-	private:
+private:
 	Pixy2 pixy_;
 	uint8_t block;
 	uint32_t communicationMode;
 
-	public:
+    static const int kMovingAverageSize = 5; // Tamaño del array circular
+    float angle_values[kMovingAverageSize] = {0}; // Array circular 
+    uint8_t angle_index = 0; // Índice actual
+
+public:
 	PixyCam();
 	void Init(uint32_t communicationMode);
 	void updateData();
@@ -30,6 +34,7 @@ class PixyCam
 	int getY(uint8_t block);
 	int getWidth(uint8_t block);
 	int getHeight(uint8_t block);
+	float getGoalAngle(int x);
 
 
 };

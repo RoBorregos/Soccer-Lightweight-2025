@@ -151,16 +151,16 @@ PhotoData Photo::CheckPhotosOnField(Side side) {
         sum += values_array[i];
     }
     uint16_t moving_average = sum / kMovingAverageSize;
-    bool is_on_line = value > (calibration_line * 0.8);
-    Serial.print("  ");
-    Serial.print("Moving average: ");
-    Serial.print(moving_average);
-    Serial.print("  Value: ");
-    Serial.print(value);
-    Serial.print("  Calculation: ");
-    Serial.print(calibration_line * 0.8);
-    Serial.print("  Is on line: ");
-    Serial.println(is_on_line);
+    bool is_on_line = moving_average > (calibration_line * 0.8);
+    // Serial.print("  ");
+    // Serial.print("Moving average: ");
+    // Serial.print(moving_average);
+    // Serial.print("  Value: ");
+    // Serial.print(value);
+    // Serial.print("  Calculation: ");
+    // Serial.print(calibration_line * 0.8);
+    // Serial.print("  Is on line: ");
+    // Serial.println(is_on_line);
 
     return {is_on_line, correctionDegree};
 }
