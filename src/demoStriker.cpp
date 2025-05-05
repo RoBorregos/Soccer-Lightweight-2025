@@ -19,7 +19,7 @@ bool goalDetected = false;
 bool ballControlled = false;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
 int kLineCorrectionTime = 275;
-double kCorrectionDegreeOffset = 0;
+double kCorrectionDegreeOffset = 5;
 Photo photo(
     kSignalPin1, kMUXPin1_1, kMUXPin2_1, kMUXPin3_1,
     kSignalPin2, kMUXPin1_2, kMUXPin2_2, kMUXPin3_2,
@@ -27,8 +27,8 @@ Photo photo(
 Bno bno;
 PixyCam pixy;
 IRRing irring;
-PID pid(0.56/kMaxPWM, 0.05/kMaxPWM, 0.1/kMaxPWM, 100);
-Motors motors( // motor pins for striker jamaica
+PID pid(0.45/kMaxPWM, 0.01/kMaxPWM, 0.00075/kMaxPWM, 100);//0.30  0.01 0.01
+Motors motors( // motor pins for striker jamaica0
     kMotor1Pwm, kMotor1In2, kMotor1In1,
     kMotor3Pwm, kMotor3In2, kMotor3In1,
     kMotor2Pwm, kMotor2In2, kMotor2In1);
@@ -63,8 +63,13 @@ void loop() {
 
     // Serial.print("Number of objects: ");
     // Serial.print(numberObjects);
-
-    motors.MoveOmnidirectionalBase(ballAngle, 0.35, speed_w, kCorrectionDegreeOffset);
+    float speed;
+    if (ballAngle>10 || ballAngle<-10){
+        speed = 0.35;
+    } else {
+        speed = 0.55;
+    }
+    motors.MoveOmnidirectionalBase(ballAngle, speed, speed_w, kCorrectionDegreeOffset);
 
     // PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
     // if (photoDataFront.is_on_line) {
