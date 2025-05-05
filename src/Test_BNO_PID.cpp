@@ -16,18 +16,20 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(0.75/kMaxPWM, 0.05/kMaxPWM, 0.175/kMaxPWM, 100);
+PID pid(0.125/kMaxPWM, 0.1/kMaxPWM, 0.0125/kMaxPWM, 100);
 // 1.125
+uint8_t switchPin = 42;
 
 void setup() {
     Serial.begin(9600);
-    motors.InitializeMotors();
+    motors.InitializeMotors(switchPin);
     Serial.print("Test BNO");  // Inicializar los motores
     bno.InitializeBNO();
     start_millis = millis();
 }
 
 void loop() {
+    motors.StartStopMotors(switchPin);
     yaw = bno.GetBNOData();
     speed_w = pid.Calculate(setpoint, yaw);
     Serial.print("Yaw: ");
@@ -36,12 +38,12 @@ void loop() {
     Serial.println(speed_w);
     //----------------Correction with linear movement---------------------
     
-    motors.MoveOmnidirectionalBase(0, 0.4, speed_w, kCorrectionDegreeOffset);
+    // motors.MoveOmnidirectionalBase(0, 0.4, speed_w, kCorrectionDegreeOffset);
     
 
     //--------------------------Correction on ist axis--------------------
     // if(abs(yaw) > 5){
-    //     motors.MoveOmnidirectionalBase(0, 0, speed_w);
+    //     motors.MoveOmnidirectionalBase(0, 0, speed_w, 0);
     // }
     // else if(abs(yaw) < 5){
     //     motors.StopAllMotors();

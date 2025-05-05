@@ -14,7 +14,8 @@ public:
     Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1,
            uint8_t speed2, uint8_t in1_2, uint8_t in2_2,
            uint8_t speed3, uint8_t in1_3, uint8_t in2_3);
-    void InitializeMotors();
+    void InitializeMotors(uint8_t switchPin);
+    void StartStopMotors(uint8_t switchPin);
     void SetAllSpeeds(uint8_t pwm);
     void StopAllMotors();
     
