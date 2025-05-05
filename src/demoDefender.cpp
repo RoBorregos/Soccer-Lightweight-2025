@@ -14,7 +14,7 @@ float kBallFollowOffsetSide = 1.0;
 float kBallFollowOffsetFront = 1.0;
 uint8_t targetSignature = 2;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
-int kLineCorrectionTime = 275;
+int kLineCorrectionTime = 375;
 double kCorrectionDegreeOffset = 16;
 unsigned long currentTime = millis();
 
@@ -41,7 +41,7 @@ float distanceX = 0; // Última lectura de distancia X
 TargetGoalData targetGoalData = {0, 0, 0, 0, 0, 0}; // Estructura para almacenar los datos del objetivo
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(115200);
     pixy.Init(kCommunicationMode);
     motors.InitializeMotors(switchPin);
     bno.InitializeBNO();
@@ -51,17 +51,17 @@ void setup() {
 }
 
 void loop() {
-    motors.StartStopMotors(switchPin);
+    motors.StartStopMotors(switchPin); // Switch a pin digital 
     pixy.updateData();
     irring.UpdateData();
     uint8_t numberObjects = pixy.numBlocks();
     float yaw = bno.GetBNOData();
     float ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     float speed_w = pid.Calculate(setpoint, yaw);
-    motors.MoveOmnidirectionalBase(0, 0.4, speed_w, kCorrectionDegreeOffset);
+    // motors.MoveOmnidirectionalBase(ballAngle, 0.4, speed_w, kCorrectionDegreeOffset);
     // Actualizar las lecturas del ultrasonido cada cierto tiempo
     if (millis() >= 450){ // Esperar para permitir que el sensor se comience a leer
-        if (millis() - lastUltrasonicReadTime >= ultrasonicReadInterval) {
+        if ((millis() - lastUltrasonicReadTime >= ultrasonicReadInterval)) {
             lastUltrasonicReadTime = millis(); // Actualizar el tiempo de la última lectura
             targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
             distanceY = ultrasonic.getDistanceY();
@@ -81,49 +81,57 @@ void loop() {
     Serial.println(ballAngle);
 
     // Verificar si el robot está dentro del rectángulo
-    // bool dentroDelRectangulo = (distanceY >= 30 && distanceY <= 65); // (distanceX >= -15 && distanceX <= 15)
+    bool dentroDelRectangulo = (distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY && distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX); 
     // Serial.print("Dentro del rectangulo: ");
     // Serial.println(dentroDelRectangulo);
     
- //---------------------------Correccion portero si funciona-------------------
+//---------------------------Correccion portero si funciona-------------------
 
-if (distanceY >= 65 && (distanceX >= -15 && distanceX <= 15)){
-    motors.MoveOmnidirectionalBase(180, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
-} else if (distanceY >= 65 && distanceX >= 15){
-    motors.MoveOmnidirectionalBase(-135, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
-} else if (distanceY >= 65 && distanceX <= -15){
-    motors.MoveOmnidirectionalBase(135, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
-} else if (distanceY <= 45 && (distanceX >= -15 && distanceX <= 15)){
-    motors.MoveOmnidirectionalBase(0, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
-} else if (distanceY <= 45 && distanceX >= 15){
-    motors.MoveOmnidirectionalBase(-45, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
-} else if (distanceY <= 45 && distanceX <= -15){
-    motors.MoveOmnidirectionalBase(45, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
-} else if ((distanceY >= 45 && distanceY <= 65) && distanceX >= 15){
-    motors.MoveOmnidirectionalBase(-90, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
-} else if ((distanceY >= 45 && distanceY <= 65) && distanceX <= -15){
-    motors.MoveOmnidirectionalBase(90, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
-} else if ((distanceY >= 45 && distanceY <= 65) && (distanceX >= -15 && distanceX <= 15)){
-    motors.MoveOmnidirectionalBase(ballAngle, 0.37, speed_w, kCorrectionDegreeOffset);
-    delay(kLineCorrectionTime);
-    motors.StopAllMotors();
+if (dentroDelRectangulo) {
+    float speed;
+    if (ballAngle > 10 || ballAngle < -10){
+        speed = 0.37;
+    } else if (ballAngle <= 10 && ballAngle >= -10){
+        speed = 0.5;
+    }   
+    motors.MoveOmnidirectionalBase(ballAngle, speed, speed_w, kCorrectionDegreeOffset);
 }
+else if (!dentroDelRectangulo){
+    if (distanceY >= kMaxGoalKeeperTresholdY){ // && (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)
+        motors.MoveOmnidirectionalBase(180, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kLineCorrectionTime);
+        motors.StopAllMotors();
+    } else if (distanceY <= kMinGoalKeeperTresholdY){ // && (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)
+        motors.MoveOmnidirectionalBase(0, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kLineCorrectionTime);
+        motors.StopAllMotors();
+    }
+}
+// } else if (distanceY >= kMaxGoalKeeperTresholdY && distanceX >= kGoalKeeperTresholdX){
+//     motors.MoveOmnidirectionalBase(-135, 0.37, speed_w, kCorrectionDegreeOffset);
+//     delay(kLineCorrectionTime);
+//     motors.StopAllMotors();
+// } else if (distanceY >= kMaxGoalKeeperTresholdY && distanceX <= -kGoalKeeperTresholdX){
+//     motors.MoveOmnidirectionalBase(135, 0.37, speed_w, kCorrectionDegreeOffset);
+//     delay(kLineCorrectionTime);
+//     motors.StopAllMotors();
+// } else if (distanceY <= kMinGoalKeeperTresholdY && distanceX >= kGoalKeeperTresholdX){
+//     motors.MoveOmnidirectionalBase(-45, 0.37, speed_w, kCorrectionDegreeOffset);
+//     delay(kLineCorrectionTime);
+//     motors.StopAllMotors();
+// } else if (distanceY <= kMinGoalKeeperTresholdY && distanceX <= -kGoalKeeperTresholdX){
+//     motors.MoveOmnidirectionalBase(45, 0.37, speed_w, kCorrectionDegreeOffset);
+//     delay(kLineCorrectionTime);
+//     motors.StopAllMotors();
+// } else if ((distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY) && distanceX >= kGoalKeeperTresholdX){
+//     motors.MoveOmnidirectionalBase(-90, 0.37, speed_w, kCorrectionDegreeOffset);
+//     delay(kLineCorrectionTime);
+//     motors.StopAllMotors();
+// } else if ((distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY) && distanceX <= -kGoalKeeperTresholdX){
+//     motors.MoveOmnidirectionalBase(90, 0.37, speed_w, kCorrectionDegreeOffset);
+//     delay(kLineCorrectionTime);
+//     motors.StopAllMotors();
+// }
     // if (distanceY >= 65 && (distanceX >= -15 && distanceX <= 15)){
     //     motors.MoveOmnidirectionalBase(180, 0.37, speed_w, kCorrectionDegreeOffset);
     //     delay(kLineCorrectionTime);

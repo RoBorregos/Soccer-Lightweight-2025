@@ -49,6 +49,10 @@ const int kPhotoTresholdFront = 253;
 const uint8_t kTrigPin = 33;
 const uint8_t kEchoPin = 32;
 
+const uint8_t kMinGoalKeeperTresholdY = 50; // Minimum distance to the goal in cm
+const uint8_t kMaxGoalKeeperTresholdY = 60; // Maximum distance to the goal in cm
+const int kGoalKeeperTresholdX = 15; // Minimum distance to the goal in cm
+
 // Receive signals
 // const uint8_t kReceiveBno = 's';
 // const uint8_t kReceiveBallAngle = 'c';
