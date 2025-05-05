@@ -28,21 +28,24 @@ Bno bno;
 PixyCam pixy;
 IRRing irring;
 PID pid(0.56/kMaxPWM, 0.05/kMaxPWM, 0.1/kMaxPWM, 100);
-Motors motors(
-    kMotor1Pwm, kMotor1In1, kMotor1In2,
-    kMotor2Pwm, kMotor2In1, kMotor2In2,
-    kMotor3Pwm, kMotor3In1, kMotor3In2);
+Motors motors( // motor pins for striker jamaica
+    kMotor1Pwm, kMotor1In2, kMotor1In1,
+    kMotor3Pwm, kMotor3In2, kMotor3In1,
+    kMotor2Pwm, kMotor2In2, kMotor2In1);
+
+uint8_t switchPin = 42; // Pin for the switch to start/stop the motors
 
 void setup() {
     Serial.begin(9600);
     pixy.Init(kCommunicationMode);
-    motors.InitializeMotors();
+    motors.InitializeMotors(switchPin);
     bno.InitializeBNO();
     irring.init(&currentTime);
     irring.SetOffset(0.0);
 
 }
 void loop() {
+    motors.StartStopMotors(switchPin);
     //--------------------------- Update data from sensors ---------------------------
     // currentTime = millis();
     irring.UpdateData();
