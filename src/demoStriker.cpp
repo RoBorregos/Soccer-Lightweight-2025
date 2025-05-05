@@ -66,7 +66,7 @@ void loop() {
     float speed;
     if (ballAngle>10 || ballAngle<-10){
         speed = 0.35;
-    } else {
+    } else if (ballAngle <=10 || ballAngle >= -10){
         speed = 0.55;
     }
     motors.MoveOmnidirectionalBase(ballAngle, speed, speed_w, kCorrectionDegreeOffset);
