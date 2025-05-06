@@ -14,7 +14,7 @@ float kBallFollowOffsetFront = 1.0;
 unsigned long currentTime = millis();
 float lastKnownGoalX = 0;
 float lastKnownGoalY = 0;
-int targetSignature = 1;
+int targetSignature = 2;
 bool goalDetected = false;
 bool ballControlled = false;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
@@ -34,7 +34,7 @@ Motors motors( // motor pins for striker jamaica0
     kMotor2Pwm, kMotor2In2, kMotor2In1);
 
 uint8_t switchPin = 42; // Pin for the switch to start/stop the motors
-
+TargetGoalData targetGoalData = {0, 0, 0, 0, 0, 0};
 void setup() {
     Serial.begin(9600);
     pixy.Init(kCommunicationMode);
@@ -53,6 +53,8 @@ void loop() {
     double ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
+    pixy.updateData();
+    uint8_t numberObjects = pixy.numBlocks();
     // pixy.updateData();
     // int numberObjects = pixy.numBlocks();
     
@@ -70,7 +72,19 @@ void loop() {
         speed = 0.55;
     }
     motors.MoveOmnidirectionalBase(ballAngle, speed, speed_w, kCorrectionDegreeOffset);
+    // targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
+    // double angleGoal= targetGoalData.cameraAngle ;
+    // // if (ballAngle<=10|| ballAngle>=-10){
+    //  motors.MoveOmnidirectionalBase(angleGoal, speed, speed_w, kCorrectionDegreeOffset);
+    // // }
 
+    // if(targetGoalData.signature==targetSignature){
+    //     int height=targetGoalData.height;
+    //     if (height > 4){
+    //         motors.MoveOmnidirectionalBase(180,0.35,speed_w, kCorrectionDegreeOffset);
+    //         motors.StopAllMotors();
+    //     }
+    // }
     // PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
     // if (photoDataFront.is_on_line) {
     //     motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, speed_w, kCorrectionDegreeOffset);

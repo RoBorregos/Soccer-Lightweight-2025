@@ -4,7 +4,8 @@
 
 PixyCam pixyCamRobot;
 const uint32_t kCommunicationMode = SPI_MODE0; // UART communication mode
-
+int targetSignature = 2; // Signature for yellow goal
+TargetGoalData targetGoalData = {0, 0, 0, 0, 0, 0}; // Estructura para almacenar los datos del objetivo
 void setup()
 {
     Serial.begin(9600);
@@ -12,18 +13,18 @@ void setup()
 }
 void loop(){
     pixyCamRobot.updateData();
-    Serial.println("Get blocks:");
-    Serial.println(pixyCamRobot.numBlocks());
-    Serial.println("X:");
-    Serial.println(pixyCamRobot.getX(1));
-    Serial.println("Y:");
-    Serial.println(pixyCamRobot.getY(1));
-    Serial.println("Height:");
-    Serial.println(pixyCamRobot.getHeight(1));
-    Serial.println("Signature:");
-    Serial.println(pixyCamRobot.getSignature());
+    targetGoalData = pixyCamRobot.getTargetGoalData(pixyCamRobot.numBlocks(), targetSignature); // 1 is the signature for yellow goal
     Serial.println("Weidth:");
-    Serial.println(pixyCamRobot.getWidth(1));
+    Serial.println(targetGoalData.width);
+    Serial.println("Signature:");
+    Serial.println(targetGoalData.signature);
+    Serial.println("X:");
+    Serial.println(targetGoalData.x);
+    Serial.println("Y:");
+    Serial.println(targetGoalData.y);
+    Serial.println("Height:");
+    Serial.println(targetGoalData.height);
+
 }
 /*#include <Arduino.h>
 #include "PixyCam.h"
