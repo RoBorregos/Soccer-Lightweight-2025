@@ -51,7 +51,8 @@ const uint8_t kEchoPin = 32;
 
 const uint8_t kMinGoalKeeperTresholdY = 50; // Minimum distance to the goal in cm
 const uint8_t kMaxGoalKeeperTresholdY = 60; // Maximum distance to the goal in cm
-const int kGoalKeeperTresholdX = 15; // Minimum distance to the goal in cm
+const int kLeftGoalKeeperTresholdX = 15; // Minimum distance to the goal in cm
+const int kRightGoalKeeperTresholdX = 220; // Maximum distance to the goal in cm
 
 // Receive signals
 // const uint8_t kReceiveBno = 's';
