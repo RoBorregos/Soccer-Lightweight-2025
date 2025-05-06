@@ -18,7 +18,6 @@ Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
     kMotor3Pwm, kMotor3In1, kMotor3In2);
-
 // Motors motors( // motor pins for striker jamaica
 //     kMotor1Pwm, kMotor1In2, kMotor1In1,
 //     kMotor3Pwm, kMotor3In2, kMotor3In1,
