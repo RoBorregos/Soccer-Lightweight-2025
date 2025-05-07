@@ -7,13 +7,13 @@ const uint8_t kMotor1In1 = 23; // Izquierda
 const uint8_t kMotor1In2 = 22;
 const uint8_t kMotor1Pwm = 6;
 
-const uint8_t kMotor2In1 = 27; // centro
-const uint8_t kMotor2In2 = 26; 
-const uint8_t kMotor2Pwm = 4; 
+const uint8_t kMotor2In1 = 25; // centro
+const uint8_t kMotor2In2 = 24; 
+const uint8_t kMotor2Pwm = 5;
 
-const uint8_t kMotor3In1 = 25; // derecha
-const uint8_t kMotor3In2 = 24;
-const uint8_t kMotor3Pwm = 5; 
+const uint8_t kMotor3In1 = 27; // derecha
+const uint8_t kMotor3In2 = 26;
+const uint8_t kMotor3Pwm = 4;
 
 const double kMaxPWM = 255.0; // We set a max PWM to limit the motors movement for better performance and control
 const double kMinPWM = 40.0; // We set the minimum PWM that the robot needs to move
@@ -41,9 +41,9 @@ const uint8_t kPhotoRightElements = 8;
 const uint8_t kPhotoFrontElements = 6;
 
 // Photo Treshold
-const int kPhotoTresholdLeft = 110;
-const int kPhotoTresholdRight = 661;
-const int kPhotoTresholdFront = 253;
+const int kPhotoTresholdLeft = 105;
+const int kPhotoTresholdRight = 1011;
+const int kPhotoTresholdFront = 327;
 
 // Ultrasonic sensor
 const uint8_t kTrigPin = 33;
