@@ -34,6 +34,7 @@ void loop() {
     uint16_t kPhotoTresholdLeft = photo.PhotoCalibrationOnLine(Side::Left);
     uint16_t kPhotoTresholdRight = photo.PhotoCalibrationOnLine(Side::Right);
     uint16_t kPhotoTresholdFront = photo.PhotoCalibrationOnLine(Side::Front);
+
     Serial.println("Calibration photos");
     Serial.print("Calibration Left: ");
     Serial.print(kPhotoTresholdLeft);
@@ -41,4 +42,15 @@ void loop() {
     Serial.print(kPhotoTresholdRight);
     Serial.print("   Calibration Front: ");
     Serial.println(kPhotoTresholdFront);
+    // uint16_t KphotoValidationLeft=photo.ReadPhotoWithMUX(Side::Left);
+    // uint16_t KphotoValidationRight=photo.ReadPhotoWithMUX(Side::Right);
+    // uint16_t KphotoValidationFront=photo.ReadPhotoWithMUX(Side::Front);
+    // Serial.print("Validation photoLeft:");
+    // Serial.println(KphotoValidationLeft);
+    // Serial.print("Validation photoRight:");
+    // Serial.println(KphotoValidationRight);
+    // Serial.print("Validation photoFront:");
+    // Serial.println(KphotoValidationFront);
+    
+    
 }

@@ -41,9 +41,9 @@ const uint8_t kPhotoRightElements = 8;
 const uint8_t kPhotoFrontElements = 6;
 
 // Photo Treshold
-const int kPhotoTresholdLeft = 110;
-const int kPhotoTresholdRight = 661;
-const int kPhotoTresholdFront = 253;
+const int kPhotoTresholdLeft = 530;
+const int kPhotoTresholdRight = 339;
+const int kPhotoTresholdFront = 344;
 
 // Ultrasonic sensor
 const uint8_t kTrigPin = 33;
