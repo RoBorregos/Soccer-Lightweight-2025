@@ -20,9 +20,11 @@ Motors motors(
     kMotor2Pwm, kMotor2In1, kMotor2In2,
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
+uint8_t switchPin = 42;
+
 void setup() {
     Serial.begin(9600);
-    motors.InitializeMotors();
+    motors.InitializeMotors(switchPin);
 }
 
 void loop() {

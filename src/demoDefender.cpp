@@ -95,8 +95,8 @@ void loop() {
     Serial.print(targetGoalData.x);
     // Serial.print("  Yaw: ");
     // Serial.print(yaw);
-    // Serial.print("  Ball angle: ");
-    // Serial.println(ballAngle);
+    Serial.print("  Ball angle: ");
+    Serial.println(ballAngle);
 
     // Verificar si el robot está dentro del rectángulo
     bool dentroDelRectangulo = (distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY && X <= kRightGoalKeeperTresholdX && X >= kLeftGoalKeeperTresholdX); 
@@ -109,15 +109,16 @@ if (dentroDelRectangulo) {
     if (ballAngle > 10 || ballAngle < -10){
         speed = 0.37;
     } else if (ballAngle <= 10 && ballAngle >= -10){
-        speed = 0.5;
+        speed = 0.5; 
     }   
-    motors.MoveOmnidirectionalBase(ballAngle, 0.36, speed_w, kCorrectionDegreeOffset);
+    // motors.MoveOmnidirectionalBase(ballAngle, 0.36, speed_w, kCorrectionDegreeOffset);
+    motors.StopAllMotors();
 } else if (!dentroDelRectangulo){
     // Frente centro
     if (distanceY >= kMaxGoalKeeperTresholdY && (X >= kLeftGoalKeeperTresholdX && X <= kRightGoalKeeperTresholdX)){ // && (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)
         motors.MoveOmnidirectionalBase(180, 0.37, speed_w, kCorrectionDegreeOffset);
         delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();
+        motors.StopAllMotors();;
     // Atrás centro
     } else if (distanceY <= kMinGoalKeeperTresholdY && (X >= kLeftGoalKeeperTresholdX && X <= kRightGoalKeeperTresholdX)){ // && (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)
         motors.MoveOmnidirectionalBase(0, 0.37, speed_w, kCorrectionDegreeOffset);
