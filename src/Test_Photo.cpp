@@ -35,6 +35,13 @@ void loop() {
     PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
     PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
 
+    Serial.print("Left on line");
+    Serial.print(photoDataLeft.is_on_line);
+    Serial.print("  Right on line");
+    Serial.print(photoDataRight.is_on_line);
+    Serial.print("  Front on line");
+    Serial.println(photoDataFront.is_on_line);
+
     if (photoDataLeft.is_on_line) {
         motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
         delay (kLineCorrectionTime);

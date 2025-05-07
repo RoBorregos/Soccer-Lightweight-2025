@@ -34,18 +34,18 @@ void loop() {
     motors.StartStopMotors(switchPin);
     // motors.MoveOmnidirectionalBase(0, 0.5, 0, 0);
     //--------------------------Test individual motor--------------------------
-    // upper_left_motor.SetSpeed(65);
-    // upper_left_motor.MovePositive();
-    // delay(2000);
-    // motors.StopAllMotors();
-    // lower_center_motor.SetSpeed(65);
-    // lower_center_motor.MovePositive();
-    // delay(2000);
-    // motors.StopAllMotors();
-    // upper_right_motor.SetSpeed(65);
-    // upper_right_motor.MovePositive();
-    // delay(2000);
-    // motors.StopAllMotors();
+    upper_left_motor.SetSpeed(65);
+    upper_left_motor.MovePositive();
+    delay(2000);
+    motors.StopAllMotors();
+    lower_center_motor.SetSpeed(65);
+    lower_center_motor.MovePositive();
+    delay(2000);
+    motors.StopAllMotors();
+    upper_right_motor.SetSpeed(65);
+    upper_right_motor.MovePositive();
+    delay(2000);
+    motors.StopAllMotors();
     
     // upper_left_motor.SetSpeed(65);
     // upper_left_motor.MoveNegative();
