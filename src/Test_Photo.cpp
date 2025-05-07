@@ -8,7 +8,7 @@
 
 int currentTime;
 int setpoint = 0;
-int kLineCorrectionTime = 200; // Tiempo de corrección en milisegundos
+int kLineCorrectionTime = 100; // Tiempo de corrección en milisegundos
 
 Photo photo(
     kSignalPin1, kMUXPin1_1, kMUXPin2_1, kMUXPin3_1,
@@ -19,50 +19,51 @@ Bno bno;
 PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
-    kMotor2Pwm, kMotor2In1, kMotor2In2,
+    kMotor2Pwm, kMotor2In2, kMotor2In1,
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 
 void setup() {
     Serial.begin(9600);
-    motors.InitializeMotors();
+    motors.InitializeMotors(42);
 }
 
 void loop() {
     currentTime = millis();
-    motors.MoveOmnidirectionalBase(0, 0.4, 0);
+    motors.StartStopMotors(42);
+    // motors.MoveOmnidirectionalBase(0, 0.4, 0, 0);
     PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
     PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
     PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
 
-    Serial.print("Left on line");
-    Serial.print(photoDataLeft.is_on_line);
-    Serial.print("  Right on line");
-    Serial.print(photoDataRight.is_on_line);
-    Serial.print("  Front on line");
-    Serial.println(photoDataFront.is_on_line);
+    // Serial.print("Left on line");
+    // Serial.print(photoDataLeft.is_on_line);
+    // Serial.print("  Right on line");
+    // Serial.print(photoDataRight.is_on_line);
+    // Serial.print("  Front on line");
+    // Serial.println(photoDataFront.is_on_line);
 
-    if (photoDataLeft.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    } else if (photoDataRight.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    if (photoDataFront.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-    }
-    
-    // uint16_t valueleft = photo.ReadPhotoWithMUX(Side::Left);
-    // uint16_t valueright = photo.ReadPhotoWithMUX(Side::Right);
-    // uint16_t valuefront = photo.ReadPhotoWithMUX(Side::Front);
-    // Serial.print("Left photo value: ");
-    // Serial.print(valueleft);
-    // Serial.print("  Right photo value: ");
-    // Serial.print(valueright);
-    // Serial.print("  Front photo value: ");
-    // Serial.println(valuefront);
+    // if (photoDataLeft.is_on_line) {
+    //     motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
+    //     delay (kLineCorrectionTime);
+    //     motors.StopAllMotors();
+    // } else if (photoDataRight.is_on_line) {
+    //     motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
+    //     delay (kLineCorrectionTime);
+    //     motors.StopAllMotors();
+    // } else if (photoDataFront.is_on_line) {
+    //     motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
+    //     delay (kLineCorrectionTime);
+    //     motors.StopAllMotors();
+    // }
+
+    uint16_t valueleft = photo.ReadPhotoWithMUX(Side::Left);
+    uint16_t valueright = photo.ReadPhotoWithMUX(Side::Right);
+    uint16_t valuefront = photo.ReadPhotoWithMUX(Side::Front);
+    Serial.print("Left photo value: ");
+    Serial.print(valueleft);
+    Serial.print("  Right photo value: ");
+    Serial.print(valueright);
+    Serial.print("  Front photo value: ");
+    Serial.println(valuefront);
 }

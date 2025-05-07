@@ -6,7 +6,7 @@
 
 
 Motor upper_left_motor(kMotor1Pwm, kMotor1In1, kMotor1In2);
-Motor lower_center_motor(kMotor2Pwm, kMotor2In1, kMotor2In2);
+Motor lower_center_motor(kMotor2Pwm, kMotor2In2, kMotor2In1);
 Motor upper_right_motor(kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 // motor pins for striker jamaica

@@ -29,10 +29,8 @@ void setup() {
 
 void loop() {
     currentTime = millis();
-    // motors.SetAllSpeeds(120);
-    // upper_left_motor.MovePositive();
-    // upper_right_motor.MovePositive();
-    // lower_center_motor.MovePositive();
+    motors.StartStopMotors(switchPin);
+    motors.MoveOmnidirectionalBase(0, 0.4, 0, 0);
     uint16_t kPhotoTresholdLeft = photo.PhotoCalibrationOnLine(Side::Left);
     uint16_t kPhotoTresholdRight = photo.PhotoCalibrationOnLine(Side::Right);
     uint16_t kPhotoTresholdFront = photo.PhotoCalibrationOnLine(Side::Front);

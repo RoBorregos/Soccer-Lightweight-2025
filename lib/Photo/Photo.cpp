@@ -151,7 +151,7 @@ PhotoData Photo::CheckPhotosOnField(Side side) {
         sum += values_array[i];
     }
     uint16_t moving_average = sum / kMovingAverageSize;
-    bool is_on_line = moving_average > (calibration_line * 0.8);
+    bool is_on_line = value > ((moving_average + calibration_line) / 2);  
     // Serial.print("  ");
     // Serial.print("Moving average: ");
     // Serial.print(moving_average);
