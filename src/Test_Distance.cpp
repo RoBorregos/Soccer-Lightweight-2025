@@ -35,10 +35,12 @@ Motors motors(
     kMotor2Pwm, kMotor2In1, kMotor2In2,
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
+uint8_t switchPin = 42;
+
 void setup() {
     Serial.begin(9600);
     pixy.Init(kCommunicationMode);
-    motors.InitializeMotors();
+    motors.InitializeMotors(switchPin);
     bno.InitializeBNO();
     ultrasonic.UltrasonicInit();
     irring.init(&currentTime);
@@ -46,6 +48,7 @@ void setup() {
 }
 
 void loop() {
+    motors.StartStopMotors(switchPin);
     pixy.updateData();
     int numberObjects = pixy.numBlocks();
     float yaw = bno.GetBNOData();
@@ -68,11 +71,11 @@ void loop() {
             Serial.print("  Distance X: ");
             Serial.println(distanceX);
 
-            if (distanceX >= 15){
-                motors.MoveOmnidirectionalBase(-90, 0.35, speed_w, kCorrectionDegreeOffset);
-            } else if (distanceX <= -15){
-                motors.MoveOmnidirectionalBase(90, 0.35, speed_w, kCorrectionDegreeOffset);
-            }
+            // if (distanceX >= 15){
+            //     motors.MoveOmnidirectionalBase(-90, 0.35, speed_w, kCorrectionDegreeOffset);
+            // } else if (distanceX <= -15){
+            //     motors.MoveOmnidirectionalBase(90, 0.35, speed_w, kCorrectionDegreeOffset);
+            // }
         }
     }
 }

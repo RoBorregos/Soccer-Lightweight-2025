@@ -11,7 +11,7 @@ void Ultrasonic::UltrasonicInit() {
 
 float Ultrasonic::getDistanceY() {
     digitalWrite(triggerPin, LOW);
-    delayMicroseconds(2);
+    delayMicroseconds(1);
     digitalWrite(triggerPin, HIGH);
     delayMicroseconds(10); // Mandar el pulso HIGH por 10 microsegundos
     digitalWrite(triggerPin, LOW);

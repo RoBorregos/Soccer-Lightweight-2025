@@ -91,7 +91,13 @@ double IRRing::GetAngle(float ballFollowOffsetBack, float ballFollowOffsetSide, 
     else if (angle < -180){
         angle = -180;
     }
-    
+
+    // Filtrar Valores
+    if (angle > 0.05 || angle <= -0.05){
+        lastBallAngle = angle; // 
+    } else if (angle <= 0.05 || angle >= -0.05) {
+        angle = lastBallAngle; // 
+    }  
     return angle * -1;
     
 }

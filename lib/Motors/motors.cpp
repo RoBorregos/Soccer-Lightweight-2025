@@ -6,13 +6,25 @@ Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uin
     upper_right_motor_(speed3, in1_3, in2_3)
 {};
 
-void Motors::InitializeMotors()
+void Motors::InitializeMotors(uint8_t switchPin)
 {
     upper_left_motor_.InitializeMotor(pwmChannel1);
     lower_center_motor_.InitializeMotor(pwmChannel2);
     upper_right_motor_.InitializeMotor(pwmChannel3);
+    pinMode(switchPin, INPUT_PULLUP);
 };
 
+void Motors::StartStopMotors(uint8_t switchPin)
+{
+    if (digitalRead(switchPin) == HIGH) {
+        Serial.println("Switch apagado. Deteniendo motores...");
+        StopAllMotors(); // Detener todos los motores
+        while (digitalRead(switchPin) == HIGH) {
+            // Mantenerse en este bucle hasta que el switch se vuelva a activar
+        }
+        Serial.println("Switch activado nuevamente. Reanudando...");
+    }
+}
 void Motors::SetAllSpeeds(uint8_t pwm)
 {
     upper_left_motor_.SetPWM(pwm);
