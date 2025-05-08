@@ -10,13 +10,13 @@
 
 bool isCorrecting = false;
 int setpoint = 0;
-float kBallFollowOffsetBack = 1.0;
+float kBallFollowOffsetBack = 1.2;
 float kBallFollowOffsetSide = 1.0;
 float kBallFollowOffsetFront = 1.0;
 uint8_t targetSignature = 2;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
 int kLineCorrectionTime = 375;
-double kCorrectionDegreeOffset = 16;
+double kCorrectionDegreeOffset = 10;
 unsigned long currentTime = millis();
 
 Photo photo(
@@ -28,10 +28,11 @@ PixyCam pixy;
 IRRing irring;
 Ultrasonic ultrasonic(kTrigPin, kEchoPin);
 PID pid_static(0.875/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100); 
-PID pid_w(0.9375/kMaxPWM, 0.01/kMaxPWM, 0.01/kMaxPWM, 100); //0.125 0.1 0.0125 domingo 4 de mayo 21:30
+PID pid_w(0.75/kMaxPWM, 0/kMaxPWM, 0.005/kMaxPWM, 100); //0.125 0.1 0.0125 domingo 4 de mayo 21:30
+//0.9375 0.01 0.01
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
-    kMotor2Pwm, kMotor2In1, kMotor2In2,
+    kMotor2Pwm, kMotor2In2, kMotor2In1,
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 uint8_t switchPin = 42;
@@ -65,7 +66,7 @@ void loop() {
     float yaw = bno.GetBNOData();
     float ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     float speed_w = pid_w.Calculate(setpoint, yaw);
-    motors.MoveOmnidirectionalBase(ballAngle, 0.4, speed_w, kCorrectionDegreeOffset);
+    motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
     // if (valueFront >0|| valueLeft  > 0 || valueRight >0){
     //     Serial.println("Linea detectada");
     //     motors.StopAllMotors();
