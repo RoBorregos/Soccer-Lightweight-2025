@@ -50,16 +50,23 @@ float correctionStartTime = 0;
 
 void setup() {
     Serial.begin(9600);
+    Serial.println("Starting...");
     pixy.Init(kCommunicationMode);
+    Serial.println("Pixy initialized.");
     motors.InitializeMotors(switchPin);
+    Serial.println("Motors initialized.");
     bno.InitializeBNO();
-    ultrasonic.UltrasonicInit();
+    Serial.println("BNO initialized.");
     irring.init(&currentTime);
+    Serial.println("IRRing initialized.");
     irring.SetOffset(0.0);
+    Serial.println("Setup complete.");
 }
 
 void loop() {
+    Serial.println("Looping...");   
     motors.StartStopMotors(switchPin); // Switch a pin digital 
+    currentTime = millis();
     pixy.updateData();
     irring.UpdateData();
     uint8_t numberObjects = pixy.numBlocks();
@@ -68,27 +75,6 @@ void loop() {
     Serial.println(ballAngle);
     float speed_w = pid_w.Calculate(setpoint, yaw);
 
-    if (millis()>=450){
-        PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
-        PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
-        PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
-        if (photoDataLeft.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
-            delay (kLineCorrectionTime);
-            motors.StopAllMotors();
-        } else if (photoDataRight.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
-            delay (kLineCorrectionTime);
-            motors.StopAllMotors();
-        } else if (photoDataFront.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
-            delay (kLineCorrectionTime);
-            motors.StopAllMotors();
-        }
-
-    }
-    
-    //motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
 
     bool hasPosesion = abs(ballAngle) > 10;
 
@@ -103,6 +89,33 @@ void loop() {
         }
     }
     Serial.print(hasPosesion);
+
+
+    PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
+    PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
+    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+
+    if (millis()>=3500){
+        if (photoDataLeft.is_on_line) {
+            motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
+            delay (kLineCorrectionTime);
+            motors.StopAllMotors();
+            return;
+        } else if (photoDataRight.is_on_line) {
+            motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
+            delay (kLineCorrectionTime);
+            motors.StopAllMotors();
+            return;
+        } else if (photoDataFront.is_on_line) {
+            motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
+            delay (kLineCorrectionTime);
+            motors.StopAllMotors();
+            return;
+        }
+    }
+    
+    //motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
+
     
     // if (valueFront >0|| valueLeft  > 0 || valueRight >0){
     //     Serial.println("Linea detectada");
