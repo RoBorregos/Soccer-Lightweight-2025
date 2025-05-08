@@ -35,7 +35,7 @@ void loop() {
     PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
     PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
     PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
-
+    //motors.MoveOmnidirectionalBase(0, 0.4, 0, 0);
     // Serial.print("Left on line");
     // Serial.print(photoDataLeft.is_on_line);
     // Serial.print("  Right on line");

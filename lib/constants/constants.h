@@ -2,6 +2,7 @@
 #define constants_h
 #include <stdint.h>
 
+
 //--------------------Pines for arduino mega--------------------
 const uint8_t kMotor1In1 = 23; // Izquierda
 const uint8_t kMotor1In2 = 22;
@@ -41,9 +42,9 @@ const uint8_t kPhotoRightElements = 8;
 const uint8_t kPhotoFrontElements = 6;
 
 // Photo Treshold
-const int kPhotoTresholdLeft = 308;
-const int kPhotoTresholdRight = 317;
-const int kPhotoTresholdFront = 305; // 81
+const int kPhotoTresholdLeft = 300;
+const int kPhotoTresholdRight = 310;
+const int kPhotoTresholdFront = 300; // 81
 
 // Ultrasonic sensor
 const uint8_t kTrigPin = 33;

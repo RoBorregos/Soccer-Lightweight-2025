@@ -45,13 +45,8 @@ TargetGoalData targetGoalData = {0, 0, 0, 0, 0, 0}; // Estructura para almacenar
 
 int X;
 
-uint8_t kGoalkeeperCorrectionTime = 50;
+uint8_t kGoalkeeperCorrectionTime = 30;
 float correctionStartTime = 0;
-
-PhotoData photoDataLeft {0};
-PhotoData photoDataRight {0};
-PhotoData photoDataFront {0};
-
 
 void setup() {
     Serial.begin(9600);
@@ -70,43 +65,44 @@ void loop() {
     uint8_t numberObjects = pixy.numBlocks();
     float yaw = bno.GetBNOData();
     float ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
+    Serial.println(ballAngle);
     float speed_w = pid_w.Calculate(setpoint, yaw);
 
-    if (millis() >= 450){
-        photoDataLeft = photo.CheckPhotosOnField(Side::Left);
-        photoDataRight = photo.CheckPhotosOnField(Side::Right);
-        photoDataFront = photo.CheckPhotosOnField(Side::Front);
+    if (millis()>=1500){
+        PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
+        PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
+        PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+        if (photoDataLeft.is_on_line) {
+            motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
+            delay (kLineCorrectionTime);
+            motors.StopAllMotors();
+        } else if (photoDataRight.is_on_line) {
+            motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
+            delay (kLineCorrectionTime);
+            motors.StopAllMotors();
+        } else if (photoDataFront.is_on_line) {
+            motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
+            delay (kLineCorrectionTime);
+            motors.StopAllMotors();
+        }
+
     }
+    
     //motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
 
-    if (photoDataLeft.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-        return;
-    } else if (photoDataRight.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-        return;
-    } else if (photoDataFront.is_on_line) {
-        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
-        delay (kLineCorrectionTime);
-        motors.StopAllMotors();
-        return;
-    }
+    bool hasPosesion = abs(ballAngle) > 10;
 
-    if (abs(ballAngle) > 10) {
+    if (hasPosesion) {
  // Ajustar velocidad según el ángulo
-        motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, kCorrectionDegreeOffset);
-    } else {
+        motors.MoveOmnidirectionalBase(ballAngle,0.4, speed_w, kCorrectionDegreeOffset);
+    } else if (!hasPosesion) {
         TargetGoalData targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
         
         if(targetGoalData.signature == targetSignature) {
-            motors.MoveOmnidirectionalBase(targetGoalData.cameraAngle, 0.45, speed_w, kCorrectionDegreeOffset);
+            motors.MoveOmnidirectionalBase(targetGoalData.cameraAngle, 0.4, speed_w, kCorrectionDegreeOffset);
         }
     }
-
+    Serial.print(hasPosesion);
     
     // if (valueFront >0|| valueLeft  > 0 || valueRight >0){
     //     Serial.println("Linea detectada");
