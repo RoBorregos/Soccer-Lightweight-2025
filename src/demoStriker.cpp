@@ -48,6 +48,11 @@ int X;
 uint8_t kGoalkeeperCorrectionTime = 50;
 float correctionStartTime = 0;
 
+PhotoData photoDataLeft {0};
+PhotoData photoDataRight {0};
+PhotoData photoDataFront {0};
+
+
 void setup() {
     Serial.begin(9600);
     pixy.Init(kCommunicationMode);
@@ -67,10 +72,11 @@ void loop() {
     float ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     float speed_w = pid_w.Calculate(setpoint, yaw);
 
-    PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
-    PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
-    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
-
+    if (millis() >= 450){
+        photoDataLeft = photo.CheckPhotosOnField(Side::Left);
+        photoDataRight = photo.CheckPhotosOnField(Side::Right);
+        photoDataFront = photo.CheckPhotosOnField(Side::Front);
+    }
     //motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
 
     if (photoDataLeft.is_on_line) {
@@ -92,7 +98,7 @@ void loop() {
 
     if (abs(ballAngle) > 10) {
  // Ajustar velocidad según el ángulo
-        motors.MoveOmnidirectionalBase(ballAngle,0.45, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, kCorrectionDegreeOffset);
     } else {
         TargetGoalData targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
         

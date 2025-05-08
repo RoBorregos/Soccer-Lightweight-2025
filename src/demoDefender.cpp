@@ -40,7 +40,7 @@ unsigned long lastUltrasonicReadTime = 0; // Último tiempo de lectura del ultra
 const unsigned long ultrasonicReadInterval = 50; // Intervalo de lectura en milisegundos
 float distanceY = 0; // Última lectura de distancia Y
 float distanceX = 0; // Última lectura de distancia X
-TargetGoalData targetGoalData = {0, 0, 0, 0, 0, 0}; // Estructura para almacenar los datos del objetivo
+TargetGoalData targetGoalData = {0}; // Estructura para almacenar los datos del objetivo
 
 int X;
 
