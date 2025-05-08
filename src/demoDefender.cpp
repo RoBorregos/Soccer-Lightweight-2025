@@ -58,6 +58,7 @@ void setup() {
 }
 
 void loop() {
+    uint8_t j = 0;
     motors.StartStopMotors(switchPin); // Switch a pin digital 
     pixy.updateData();
     irring.UpdateData();

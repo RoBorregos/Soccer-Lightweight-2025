@@ -6,6 +6,11 @@
 #define T_MODEA 833
 unsigned long time_ms = 0;
 
+void printAngulo(vectorRT_t *self) {
+  Serial.print("a ");
+  Serial.print(self->theta);
+  Serial.print("\n");
+}
 
 void setup() {
     Serial.begin(115200);
@@ -37,10 +42,4 @@ void loop() {
       Serial.print("\n");
 
     }
-}
-
-void printAngulo(vectorRT_t *self) {
-    Serial.print("a ");
-    Serial.print(self->theta);
-    Serial.print("\n");
 }

@@ -26,6 +26,7 @@ uint8_t switchPin = 42;
 uint8_t LeftIRPin = 2; // Pin for the left IR sensor
 uint8_t RightIRPin = 3; // Pin for the right IR sensor
 uint8_t FrontIRPin = 4; // Pin for the front IR sensor
+
 IRSOS irsos(LeftIRPin, RightIRPin, FrontIRPin);
 
 void setup() {

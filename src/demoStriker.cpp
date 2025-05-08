@@ -65,8 +65,14 @@ void setup() {
 
 void loop() {
     Serial.println("Looping...");   
+    uint8_t j = 0;
+    int motors_start_time;
     motors.StartStopMotors(switchPin); // Switch a pin digital 
-    currentTime = millis();
+    j = 1;
+    if (j == 1){
+        motors_start_time = millis();
+        j = 2;
+    }
     pixy.updateData();
     irring.UpdateData();
     uint8_t numberObjects = pixy.numBlocks();
@@ -95,7 +101,7 @@ void loop() {
     PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
     PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
 
-    if (millis()>=3500){
+    if (millis() - motors_start_time >= 1500){
         if (photoDataLeft.is_on_line) {
             motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
             delay (kLineCorrectionTime);
