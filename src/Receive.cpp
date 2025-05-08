@@ -2,7 +2,7 @@
 
 void setup() {
     Serial.begin(9600);    // Para ver datos en el monitor serie
-    Serial1.begin(9600);   // Comunicación UART con el Uno
+    Serial2.begin(9600);   // Comunicación UART con el Uno
   }
   
   void loop() {
