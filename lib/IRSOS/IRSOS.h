@@ -15,12 +15,14 @@ private:
 
 public:
     // Constructor: Initialize the IR receiver with the specified pin
-    IRSOS(uint8_t LeftIRPin, uint8_t RightIRPin, uint8_t FrontIRPin) {}
-
+    IRSOS(uint8_t leftPin, uint8_t rightPin, uint8_t frontPin) : 
+    LeftIRPin(leftPin), RightIRPin(rightPin), FrontIRPin(frontPin) {} 
     // Initialize the IR receiver
     void IRInit(); 
     void readSignal();
-    
+    int getLeftIRSignal();
+    int getRightIRSignal();
+    int getFrontIRSignal();
 };
 
 #endif // IRSOS_H
