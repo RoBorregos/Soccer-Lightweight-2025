@@ -28,14 +28,22 @@ void setup() {
     motors.InitializeMotors(switchPin);
     irring.init(&currentTime);
     irring.SetOffset(0.0);
+    digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop(){
-    motors.StartStopMotors(switchPin);
     irring.UpdateData();
     double ballAngle = irring.GetAngle(1.0, 1.0, 1.0);
     double yaw = bno.GetBNOData();
     double speed_w = pid.Calculate(setpoint, yaw);
+    // if (ballAngle != 0){
+    //     digitalWrite(LED_BUILTIN, HIGH);
+    //     delay(600);
+    //     digitalWrite(LED_BUILTIN, LOW);
+    //     delay(600);
+    // } else if (ballAngle == 0){
+    //     digitalWrite(LED_BUILTIN, HIGH);
+    // }
     // motors.MoveOmnidirectionalBase(ballAngle, 0.5, speed_w, kCorrectionDegreeOffset);
     // if (speed_w > 0.1 || speed_w < -0.1) {
     //      motors.StopAllMotors();

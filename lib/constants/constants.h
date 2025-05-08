@@ -20,20 +20,20 @@ const double kMinPWM = 40.0; // We set the minimum PWM that the robot needs to m
 
 //--------------------Pins for multiplexer and phototransistors--------------------
 
-const uint8_t kSignalPin1 = A6; 
-const uint8_t kMUXPin1_1 = 14; 
-const uint8_t kMUXPin2_1 = 15;
-const uint8_t kMUXPin3_1 = 16;
+// const uint8_t kSignalPin1 = A6; 
+// const uint8_t kMUXPin1_1 = 14; 
+// const uint8_t kMUXPin2_1 = 15;
+// const uint8_t kMUXPin3_1 = 16;
 
-const uint8_t kSignalPin2 = A8;
-const uint8_t kMUXPin1_2 = 17;
-const uint8_t kMUXPin2_2 = 28;
-const uint8_t kMUXPin3_2 = 29;
+// const uint8_t kSignalPin2 = A8;
+// const uint8_t kMUXPin1_2 = 17;
+// const uint8_t kMUXPin2_2 = 28;
+// const uint8_t kMUXPin3_2 = 29;
 
-const uint8_t kSignalPin3 = A7;
-const uint8_t kMUXPin1_3 = 43;
-const uint8_t kMUXPin2_3 = 44;
-const uint8_t kMUXPin3_3 = 45;
+// const uint8_t kSignalPin3 = A7;
+// const uint8_t kMUXPin1_3 = 43;
+// const uint8_t kMUXPin2_3 = 44;
+// const uint8_t kMUXPin3_3 = 45;
 
 // Phototransistors
 const uint8_t kPhotoLeftElements = 8;
