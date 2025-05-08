@@ -45,7 +45,7 @@ TargetGoalData targetGoalData = {0, 0, 0, 0, 0, 0}; // Estructura para almacenar
 
 int X;
 
-uint8_t kGoalkeeperCorrectionTime = 30;
+uint8_t kGoalkeeperCorrectionTime = 50;
 float correctionStartTime = 0;
 
 void setup() {
@@ -68,7 +68,7 @@ void loop() {
     Serial.println(ballAngle);
     float speed_w = pid_w.Calculate(setpoint, yaw);
 
-    if (millis()>=1500){
+    if (millis()>=450){
         PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
         PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
         PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
