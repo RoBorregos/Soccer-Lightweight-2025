@@ -17,13 +17,13 @@ last_time(0)
 void IRRing::init(unsigned long*current_time)
 {
     this->current_time=current_time;
-    Serial1.begin(115200);
-    Serial1.setTimeout(100);
+    Serial.begin(115200);
+    Serial.setTimeout(100);
 }
 
 void IRRing::UpdateData() {
-    if (Serial1.available()) {
-        String data = Serial1.readStringUntil('\n');
+    if (Serial.available()) {
+        String data = Serial.readStringUntil('\n');
         data.trim();  
         
         // Data is expected to be received in the format: 

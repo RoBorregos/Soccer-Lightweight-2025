@@ -3,7 +3,6 @@
 #include <Arduino.h>
 #include "IRRing.h"
 #include "PID.h"
-#include "Photo.h" 
 
 int setpoint = 0;
 int translation_angle = 0;

@@ -15,7 +15,7 @@ float kBallFollowOffsetFront = 1.0;
 unsigned long currentTime = millis();
 float lastKnownGoalX = 0;
 float lastKnownGoalY = 0;
-int targetSignature = 2;
+int targetSignature = 1;
 bool goalDetected = false;
 bool ballControlled = false;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
@@ -64,6 +64,8 @@ void loop() {
             float distanceX = ultrasonic.getDistanceX(angle, distanceY);
             Serial.print("Signature: ");
             Serial.print(signature);
+            Serial.print("  X: ");
+            Serial.print(x);
             Serial.print("  Angle: ");
             Serial.print(angle);
             Serial.print("  Distance Y: ");

@@ -27,11 +27,11 @@ Photo photo(
 Bno bno;
 PixyCam pixy;
 IRRing irring;
-PID pid(0.56/kMaxPWM, 0.05/kMaxPWM, 0.1/kMaxPWM, 100);
+PID pid(0.9/kMaxPWM, 0.0/kMaxPWM, 0.0/kMaxPWM, 100);
 Motors motors( // motor pins for striker jamaica
-    kMotor1Pwm, kMotor1In2, kMotor1In1,
-    kMotor3Pwm, kMotor3In2, kMotor3In1,
-    kMotor2Pwm, kMotor2In2, kMotor2In1);
+    kMotor1Pwm, kMotor1In1, kMotor1In2,
+    kMotor2Pwm, kMotor2In2, kMotor2In1,
+    kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 uint8_t switchPin = 42; // Pin for the switch to start/stop the motors
 

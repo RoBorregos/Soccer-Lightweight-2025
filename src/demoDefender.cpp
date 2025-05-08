@@ -28,7 +28,7 @@ PixyCam pixy;
 IRRing irring;
 Ultrasonic ultrasonic(kTrigPin, kEchoPin);
 PID pid_static(0.875/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100); 
-PID pid_w(0.9375/kMaxPWM, 0/kMaxPWM, 0.11/kMaxPWM, 100); //0.125 0.1 0.0125 domingo 4 de mayo 21:30
+PID pid_w(0.9375/kMaxPWM, 0.01/kMaxPWM, 0.01/kMaxPWM, 100); //0.125 0.1 0.0125 domingo 4 de mayo 21:30
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -67,11 +67,11 @@ void loop() {
     float speed_w = pid_w.Calculate(setpoint, yaw);
     float staticCorrection = pid_static.Calculate(setpoint, yaw);
 
-    if(yaw > 5 || yaw < -5){
-        motors.StopAllMotors();
-        motors.MoveOmnidirectionalBase(0, 0, staticCorrection, 0);
-    }
-    // motors.MoveOmnidirectionalBase(ballAngle, 0.4, speed_w, kCorrectionDegreeOffset);
+    // if(yaw > 5 || yaw < -5){
+    //     motors.StopAllMotors();
+    //     motors.MoveOmnidirectionalBase(0, 0, staticCorrection, 0);
+    // }
+    // motors.MoveOmnidirectionalBase(0, 0.4, speed_w, kCorrectionDegreeOffset);
     // Actualizar las lecturas del ultrasonido cada cierto tiempo
     if (millis() >= 450){ // Esperar para permitir que el sensor se comience a leer
         if ((millis() - lastUltrasonicReadTime >= ultrasonicReadInterval)) {
@@ -99,63 +99,63 @@ void loop() {
     Serial.println(ballAngle);
 
     // Verificar si el robot está dentro del rectángulo
-    bool dentroDelRectangulo = (distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY && X <= kRightGoalKeeperTresholdX && X >= kLeftGoalKeeperTresholdX); 
+    bool dentroDelRectangulo = (distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY && (X <= kRightGoalKeeperTresholdX && X >= kLeftGoalKeeperTresholdX) || (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)); 
     Serial.print("  Dentro del rectangulo: ");
     Serial.println(dentroDelRectangulo);
     
 //---------------------------Correccion portero con valor X de la cámara-------------------
-if (dentroDelRectangulo) {
+if (!dentroDelRectangulo){
+//     // Frente centro
+    if (distanceY >= kMaxGoalKeeperTresholdY && (X >= kLeftGoalKeeperTresholdX && X <= kRightGoalKeeperTresholdX)){ // || (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX))
+        motors.MoveOmnidirectionalBase(180, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kGoalkeeperCorrectionTime);
+        motors.StopAllMotors();;
+//     // Atrás centro
+    } else if (distanceY <= kMinGoalKeeperTresholdY && (X >= kLeftGoalKeeperTresholdX && X <= kRightGoalKeeperTresholdX)){ // || (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)
+        motors.MoveOmnidirectionalBase(0, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kGoalkeeperCorrectionTime);
+        motors.StopAllMotors();
+//     // Frente Izquierda
+    } else if (distanceY >= kMaxGoalKeeperTresholdY && X <= kLeftGoalKeeperTresholdX){ // || distanceX >= kGoalKeeperTresholdX
+        motors.MoveOmnidirectionalBase(-135, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kGoalkeeperCorrectionTime);
+        motors.StopAllMotors();
+//     // Frente Derecha
+    } else if (distanceY >= kMaxGoalKeeperTresholdY && X >= kRightGoalKeeperTresholdX){ // || distanceX <= -kGoalKeeperTresholdX
+        motors.MoveOmnidirectionalBase(135, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kGoalkeeperCorrectionTime);
+        motors.StopAllMotors();
+//     // Atrás Izquierda
+    } else if (distanceY <= kMinGoalKeeperTresholdY && X <= kLeftGoalKeeperTresholdX){ //  || distanceX >= kGoalKeeperTresholdX)
+        motors.MoveOmnidirectionalBase(-45, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kGoalkeeperCorrectionTime);
+        motors.StopAllMotors();
+//     // Atrás Derecha
+    } else if (distanceY <= kMinGoalKeeperTresholdY && X >= kRightGoalKeeperTresholdX){ // || distanceX <= -kGoalKeeperTresholdX)
+        motors.MoveOmnidirectionalBase(45, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kGoalkeeperCorrectionTime);
+        motors.StopAllMotors();
+//     // Izquierda
+    } else if ((distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY) && X <= kLeftGoalKeeperTresholdX){ // || distanceX >= kGoalKeeperTresholdX)
+        motors.MoveOmnidirectionalBase(-90, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kGoalkeeperCorrectionTime);
+        motors.StopAllMotors(); 
+     // Derecha
+    } else if ((distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY) && X >= kRightGoalKeeperTresholdX){ // || distanceX <= -kGoalKeeperTresholdX)
+        motors.MoveOmnidirectionalBase(90, 0.37, speed_w, kCorrectionDegreeOffset);
+        delay(kGoalkeeperCorrectionTime);
+        motors.StopAllMotors();
+    }
+} if (dentroDelRectangulo) {
     float speed;
     if (ballAngle > 10 || ballAngle < -10){
         speed = 0.37;
     } else if (ballAngle <= 10 && ballAngle >= -10){
         speed = 0.5; 
     }   
-    // motors.MoveOmnidirectionalBase(ballAngle, 0.36, speed_w, kCorrectionDegreeOffset);
-    motors.StopAllMotors();
-} else if (!dentroDelRectangulo){
-    // Frente centro
-    if (distanceY >= kMaxGoalKeeperTresholdY && (X >= kLeftGoalKeeperTresholdX && X <= kRightGoalKeeperTresholdX)){ // && (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)
-        motors.MoveOmnidirectionalBase(180, 0.37, speed_w, kCorrectionDegreeOffset);
-        delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();;
-    // Atrás centro
-    } else if (distanceY <= kMinGoalKeeperTresholdY && (X >= kLeftGoalKeeperTresholdX && X <= kRightGoalKeeperTresholdX)){ // && (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)
-        motors.MoveOmnidirectionalBase(0, 0.37, speed_w, kCorrectionDegreeOffset);
-        delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();
-    // Frente Izquierda
-    } else if (distanceY >= kMaxGoalKeeperTresholdY && X <= kLeftGoalKeeperTresholdX){
-        motors.MoveOmnidirectionalBase(-135, 0.37, speed_w, kCorrectionDegreeOffset);
-        delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();
-    // Frente Derecha
-    } else if (distanceY >= kMaxGoalKeeperTresholdY && X >= kRightGoalKeeperTresholdX){
-        motors.MoveOmnidirectionalBase(135, 0.37, speed_w, kCorrectionDegreeOffset);
-        delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();
-    // Atrás Izquierda
-    } else if (distanceY <= kMinGoalKeeperTresholdY && X <= kLeftGoalKeeperTresholdX){
-        motors.MoveOmnidirectionalBase(-45, 0.37, speed_w, kCorrectionDegreeOffset);
-        delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();
-    // Atrás Derecha
-    } else if (distanceY <= kMinGoalKeeperTresholdY && X >= kRightGoalKeeperTresholdX){
-        motors.MoveOmnidirectionalBase(45, 0.37, speed_w, kCorrectionDegreeOffset);
-        delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();
-    // Izquierda
-    } else if ((distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY) && X <= kLeftGoalKeeperTresholdX){
-        motors.MoveOmnidirectionalBase(-90, 0.37, speed_w, kCorrectionDegreeOffset);
-        delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();
-    // Derecha
-    } else if ((distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY) && X >= kRightGoalKeeperTresholdX){
-        motors.MoveOmnidirectionalBase(90, 0.37, speed_w, kCorrectionDegreeOffset);
-        delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();
-    }
-}
+    motors.MoveOmnidirectionalBase(ballAngle, 0.35, speed_w, kCorrectionDegreeOffset);
+    // motors.StopAllMotors();
+} 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 
