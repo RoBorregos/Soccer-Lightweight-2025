@@ -24,14 +24,14 @@ Motors motors(
 
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(19200);
     motors.InitializeMotors(42);
 }
 
 void loop() {
     currentTime = millis();
     motors.StartStopMotors(42);
-    // motors.MoveOmnidirectionalBase(0, 0.4, 0, 0);
+    motors.MoveOmnidirectionalBase(0, 0.4, 0, 0);
     PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
     PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
     PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);

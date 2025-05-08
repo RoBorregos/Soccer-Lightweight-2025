@@ -49,22 +49,15 @@ uint8_t kGoalkeeperCorrectionTime = 50;
 float correctionStartTime = 0;
 
 void setup() {
-    Serial.begin(9600);
-    Serial.println("Starting...");
+    Serial.begin(115000);
     pixy.Init(kCommunicationMode);
-    Serial.println("Pixy initialized.");
     motors.InitializeMotors(switchPin);
-    Serial.println("Motors initialized.");
     bno.InitializeBNO();
-    Serial.println("BNO initialized.");
     irring.init(&currentTime);
-    Serial.println("IRRing initialized.");
     irring.SetOffset(0.0);
-    Serial.println("Setup complete.");
 }
 
 void loop() {
-    Serial.println("Looping...");   
     uint8_t j = 0;
     int motors_start_time;
     motors.StartStopMotors(switchPin); // Switch a pin digital 
@@ -78,19 +71,18 @@ void loop() {
     uint8_t numberObjects = pixy.numBlocks();
     float yaw = bno.GetBNOData();
     float ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
-    Serial.println(ballAngle);
     float speed_w = pid_w.Calculate(setpoint, yaw);
-
 
     bool hasPosesion = abs(ballAngle) > 10;
 
     if (hasPosesion) {
  // Ajustar velocidad según el ángulo
-        motors.MoveOmnidirectionalBase(ballAngle,0.4, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(ballAngle, 0.4, speed_w, kCorrectionDegreeOffset);
     } else if (!hasPosesion) {
         TargetGoalData targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
-        
         if(targetGoalData.signature == targetSignature) {
+            // setpoint = targetGoalData.cameraAngle;
+            // speed_w = pid_w.Calculate(setpoint, yaw);
             motors.MoveOmnidirectionalBase(targetGoalData.cameraAngle, 0.4, speed_w, kCorrectionDegreeOffset);
         }
     }
