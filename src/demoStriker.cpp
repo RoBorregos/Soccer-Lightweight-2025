@@ -66,7 +66,29 @@ void loop() {
     float yaw = bno.GetBNOData();
     float ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     float speed_w = pid_w.Calculate(setpoint, yaw);
+
+    PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
+    PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
+    PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
+
     motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
+
+    if (photoDataLeft.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
+    } else if (photoDataRight.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
+    } else if (photoDataFront.is_on_line) {
+        motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
+        delay (kLineCorrectionTime);
+        motors.StopAllMotors();
+    }
+
+
+    
     // if (valueFront >0|| valueLeft  > 0 || valueRight >0){
     //     Serial.println("Linea detectada");
     //     motors.StopAllMotors();
