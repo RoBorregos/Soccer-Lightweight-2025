@@ -66,5 +66,50 @@ void loop() {
     float ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     float speed_w = pid_w.Calculate(setpoint, yaw);
     motors.MoveOmnidirectionalBase(ballAngle, 0.4, speed_w, kCorrectionDegreeOffset);
+    // if (valueFront >0|| valueLeft  > 0 || valueRight >0){
+    //     Serial.println("Linea detectada");
+    //     motors.StopAllMotors();
+    //     delay(kLineCorrectionTime);
+
+    //     if (valueFront >0){
+    //         motors.MoveOmnidirectionalBase(180,0.35,speed_w,kCorrectionDegreeOffset);
+    //     }else if (valueLeft >0){
+    //         motors.MoveOmnidirectionalBase(45,0.35,speed_w,kCorrectionDegreeOffset);
+    //     }else if(valueRight>0){
+    //         motors.MoveOmnidirectionalBase(-45,0.35,speed_w,kCorrectionDegreeOffset);
+    //     }
+    //     return;
+    // }
+    // // Fase 1: Seguir el balón con el aro IR
+    // if (!ballControlled) {
+    //     Serial.println("Siguiendo el balón...");
+    //     float speed = (abs(ballAngle) > 10) ? 0.35 : 0.55; // Ajustar velocidad según el ángulo
+    //     motors.MoveOmnidirectionalBase(ballAngle, speed, speed_w, kCorrectionDegreeOffset);
+
+    //     // Si el balón está controlado (dentro de un rango pequeño de ángulo)
+    //     if (abs(ballAngle) <= 10) {
+    //         Serial.println("Balón controlado. Verificando portería...");
+    //         ballControlled = true; // Cambiar a la siguiente fase
+    //         Serial.println("Balón controlado. Cambiando a la portería...");
+    //     }
+    // }
+    // // Fase 2: Ir hacia la portería
+    // else if (!goalDetected) {
+    //     Serial.println("Buscando portería...");
+    //     targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
+    //     double angleGoal = targetGoalData.cameraAngle;
+    //     Serial.print("Angle goal:");
+    //     Serial.println(angleGoal);
+
+    //     // Moverse hacia la portería
+    //     motors.MoveOmnidirectionalBase(angleGoal, 0.35, speed_w, kCorrectionDegreeOffset);
+
+    //     // Si la portería es detectada
+    //     if (targetGoalData.signature == targetSignature) {
+    //         goalDetected = true; // Cambiar a la siguiente fase
+    //         Serial.println("Portería detectada. Verificando distancia...");
+    //     }
+    // }
+    // 
     
 }
