@@ -71,22 +71,35 @@ void loop() {
     PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
     PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
 
-    motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
+    //motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
 
     if (photoDataLeft.is_on_line) {
         motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
         delay (kLineCorrectionTime);
         motors.StopAllMotors();
+        return;
     } else if (photoDataRight.is_on_line) {
         motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
         delay (kLineCorrectionTime);
         motors.StopAllMotors();
+        return;
     } else if (photoDataFront.is_on_line) {
         motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
         delay (kLineCorrectionTime);
         motors.StopAllMotors();
+        return;
     }
 
+    if (abs(ballAngle) > 10) {
+ // Ajustar velocidad según el ángulo
+        motors.MoveOmnidirectionalBase(ballAngle,0.45, speed_w, kCorrectionDegreeOffset);
+    } else {
+        TargetGoalData targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
+        
+        if(targetGoalData.signature == targetSignature) {
+            motors.MoveOmnidirectionalBase(targetGoalData.cameraAngle, 0.45, speed_w, kCorrectionDegreeOffset);
+        }
+    }
 
     
     // if (valueFront >0|| valueLeft  > 0 || valueRight >0){
