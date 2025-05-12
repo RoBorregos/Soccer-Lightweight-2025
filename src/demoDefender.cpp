@@ -68,11 +68,6 @@ void loop() {
     float speed_w = pid_w.Calculate(setpoint, yaw);
     float staticCorrection = pid_static.Calculate(setpoint, yaw);
 
-    // if(yaw > 5 || yaw < -5){
-    //     motors.StopAllMotors();
-    //     motors.MoveOmnidirectionalBase(0, 0, staticCorrection, 0);
-    // }
-    // motors.MoveOmnidirectionalBase(0, 0.4, speed_w, kCorrectionDegreeOffset);
     // Actualizar las lecturas del ultrasonido cada cierto tiempo
     if (millis() >= 450){ // Esperar para permitir que el sensor se comience a leer
         if ((millis() - lastUltrasonicReadTime >= ultrasonicReadInterval)) {

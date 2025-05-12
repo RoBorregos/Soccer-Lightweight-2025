@@ -79,25 +79,25 @@ void loop() {
 //     Serial.print(photoDataRight.is_on_line);
 //     Serial.print("  Front on line: ");
 //     Serial.println(photoDataFront.is_on_line);
-// // Pixy
-//     int targerSignature = 2;
-//     pixy.updateData();
-//     int numberObjects = pixy.numBlocks();
-//     TargetGoalData targetGoalData = pixy.getTargetGoalData(numberObjects, targerSignature);
-//     Serial.print("numberObjects: ");
-//     Serial.print(numberObjects);
-//     Serial.print("  signature: ");
-//     Serial.print(targetGoalData.signature);
-//     Serial.print("  x: ");
-//     Serial.print(targetGoalData.x);
-//     Serial.print("  y: ");
-//     Serial.print(targetGoalData.y);
-//     Serial.print("  width: ");
-//     Serial.print(targetGoalData.width);
-//     Serial.print("  height: ");
-//     Serial.print(targetGoalData.height);
-//     Serial.print("  cameraAngle: ");
-//     Serial.println(targetGoalData.cameraAngle);
+// Pixy
+    int targerSignature = 2;
+    pixy.updateData();
+    int numberObjects = pixy.numBlocks();
+    TargetGoalData targetGoalData = pixy.getTargetGoalData(numberObjects, targerSignature);
+    Serial.print("numberObjects: ");
+    Serial.print(numberObjects);
+    Serial.print("  signature: ");
+    Serial.print(targetGoalData.signature);
+    Serial.print("  x: ");
+    Serial.print(targetGoalData.x);
+    Serial.print("  y: ");
+    Serial.print(targetGoalData.y);
+    Serial.print("  width: ");
+    Serial.print(targetGoalData.width);
+    Serial.print("  height: ");
+    Serial.print(targetGoalData.height);
+    Serial.print("  cameraAngle: ");
+    Serial.println(targetGoalData.cameraAngle);
 // // Ultrasonic
 //     float distanceY = ultrasonic.getDistanceY();
 //     float distanceX = ultrasonic.getDistanceX(targetGoalData.cameraAngle, distanceY);

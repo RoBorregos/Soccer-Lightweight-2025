@@ -39,12 +39,12 @@ const uint8_t kMUXPin3_3 = 45;
 // Phototransistors
 const uint8_t kPhotoLeftElements = 8;
 const uint8_t kPhotoRightElements = 8;
-const uint8_t kPhotoFrontElements = 6;
+const uint8_t kPhotoFrontElements = 8;
 
 // Photo Treshold
-const int kPhotoTresholdLeft = 345;
-const int kPhotoTresholdRight = 375;
-const int kPhotoTresholdFront = 330; // 81
+const int kPhotoTresholdLeft = 260;
+const int kPhotoTresholdRight = 290;
+const int kPhotoTresholdFront = 315; // 81
 
 // Ultrasonic sensor
 const uint8_t kTrigPin = 33;
@@ -55,13 +55,5 @@ const uint8_t kMaxGoalKeeperTresholdY = 65; // Maximum distance to the goal in c
 const int kLeftGoalKeeperTresholdX = 116; // Minimum distance to the goal in cm
 const int kRightGoalKeeperTresholdX = 275; // Maximum distance to the goal in cm
 const uint8_t kGoalKeeperTresholdX = 15;
-
-// Receive signals
-// const uint8_t kReceiveBno = 's';
-// const uint8_t kReceiveBallAngle = 'c';
-// const uint8_t kReceiveBallDistance = 'd';
-// const uint8_t kReceiveGoalAngle = 'g';
-// const uint8_t kReceiveGoalDistance = 'k';
-// const uint8_t kReceiveLineAngle = 'r';
 
 #endif  

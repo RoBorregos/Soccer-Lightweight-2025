@@ -49,7 +49,7 @@ uint8_t kGoalkeeperCorrectionTime = 50;
 float correctionStartTime = 0;
 
 void setup() {
-    Serial.begin(115000);
+    Serial.begin(9600);
     pixy.Init(kCommunicationMode);
     motors.InitializeMotors(switchPin);
     bno.InitializeBNO();
@@ -77,7 +77,7 @@ void loop() {
 
     if (hasPosesion) {
  // Ajustar velocidad según el ángulo
-        motors.MoveOmnidirectionalBase(ballAngle, 0.4, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, kCorrectionDegreeOffset);
     } else if (!hasPosesion) {
         TargetGoalData targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
         if(targetGoalData.signature == targetSignature) {
