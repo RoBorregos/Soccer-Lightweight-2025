@@ -4,7 +4,6 @@
 #include "IRRing.h"
 #include "PID.h"
 #include "constants.h"
-#include "IRSOS.h"
 
 int setpoint = 0;
 int translation_angle = 0;
@@ -27,7 +26,6 @@ uint8_t LeftIRPin = 2; // Pin for the left IR sensor
 uint8_t RightIRPin = 3; // Pin for the right IR sensor
 uint8_t FrontIRPin = 4; // Pin for the front IR sensor
 
-IRSOS irsos(LeftIRPin, RightIRPin, FrontIRPin);
 
 void setup() {
     Serial.begin(115200);
@@ -37,7 +35,6 @@ void setup() {
     irring.init(&currentTime);
     irring.SetOffset(0.0);
     digitalWrite(LED_BUILTIN, LOW);
-    irsos.IRInit();
 }
 
 void loop(){
@@ -64,16 +61,7 @@ void loop(){
     // }
 
 
-    int IRLedto = irsos.getLeftIRSignal();
-    int IRRightto = irsos.getRightIRSignal();
-    int IRFrontto = irsos.getFrontIRSignal();
 
-    Serial.print("Left IR: ");
-    Serial.print(IRLedto);
-    Serial.print(" Right IR: ");
-    Serial.print(IRRightto);
-    Serial.print(" Front IR: ");
-    Serial.println(IRFrontto);
 }
 
 
