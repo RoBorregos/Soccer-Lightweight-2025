@@ -2,23 +2,26 @@
 #include "motor.h"
 #include "constants.h"
 
-Motor::Motor(const uint8_t inPWM, const uint8_t in1,const  uint8_t in2)
+Motor::Motor(const uint8_t inPWM, const uint8_t in1, const  uint8_t in2)
 {
     inPWM_ = inPWM;
     in1_ = in1;
     in2_ = in2;
 }
 
-void Motor::InitializeMotor()
+void Motor::InitializeMotor(uint8_t pwmChannel)
 {
     pinMode(in1_, OUTPUT);
     pinMode(in2_, OUTPUT);
     pinMode(inPWM_, OUTPUT);
+    // ledcSetup(pwmChannel, frequency, resolution);
+    // ledcAttachPin(inPWM_, pwmChannel);
 };
 
 void Motor::SetPWM(const uint8_t pwm)
 {
     analogWrite(inPWM_, pwm);
+    // ledcWrite(inPWM_, pwm);
 };
 
 void Motor::MovePositive()
@@ -64,6 +67,9 @@ void Motor::SetSpeed(float speed) {
     speed = speed * kMaxPWM;
     if (speed > kMaxPWM) {
         speed = kMaxPWM;
-    } 
+    } else if (speed < kMinPWM) {
+        speed = 0;
+    }
     analogWrite(inPWM_, speed);
+    // ledcWrite(inPWM_, speed);
 }

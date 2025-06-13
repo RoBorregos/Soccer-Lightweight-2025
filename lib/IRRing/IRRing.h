@@ -10,7 +10,8 @@ class IRRing
 	double strength;
 	double offset;
 	unsigned long* current_time;
-	unsigned long last_time=0;
+	unsigned long last_time = 0;
+	double lastBallAngle = 0;
 
 	public:
 	IRRing();

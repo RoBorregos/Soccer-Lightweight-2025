@@ -51,6 +51,9 @@ void IRRing::SetOffset(double offset){
     this->offset=offset;
 }
 double IRRing::GetRawAngle(){
+    if(angle > 180){
+        angle -= 360;
+    }
     return angle;
 }
 double IRRing::GetStrength(){
@@ -65,8 +68,8 @@ double IRRing::GetStrength(){
 
 double IRRing::GetAngle(float ballFollowOffsetBack, float ballFollowOffsetSide, float ballFollowOffsetFront){
     
-    if(angle>180){
-        angle-=360;
+    if(angle > 180){
+        angle -= 360;
     }
     
     if (abs(angle) > 52){
@@ -88,8 +91,14 @@ double IRRing::GetAngle(float ballFollowOffsetBack, float ballFollowOffsetSide, 
     else if (angle < -180){
         angle = -180;
     }
-    
-    return angle*-1;
+
+    // Filtrar Valores
+    if (angle > 0.05 || angle <= -0.05){
+        lastBallAngle = angle; // 
+    } else if (angle <= 0.05 || angle >= -0.05) {
+        angle = lastBallAngle; // 
+    }  
+    return angle * -1;
     
 }
 //Para implementar el offset usando el PID, no sería necesario tener condicionales porque el PID se encarga de corregir el offset según el ángulo

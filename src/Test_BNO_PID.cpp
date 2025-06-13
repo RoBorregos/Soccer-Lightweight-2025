@@ -8,6 +8,7 @@ unsigned long current_millis;
 double yaw;
 double speed_w;
 int setpoint = 0;
+double kCorrectionDegreeOffset = 0;
 
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
@@ -15,33 +16,36 @@ Motors motors(
     kMotor3Pwm, kMotor3In1, kMotor3In2);
 
 Bno bno;
-PID pid(1.2/kMaxPWM, 0/kMaxPWM, 1.3/kMaxPWM, 100); // PID parameters: kp, ki, kd, max_error update for demo robot on april 5 2025
+PID pid_static(0.875/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100); 
+// 1.125
+uint8_t switchPin = 42;
 
 void setup() {
-    Serial.begin(115200);
-    motors.InitializeMotors();  // Inicializar los motores
+    Serial.begin(9600);
+    motors.InitializeMotors(switchPin);
+    Serial.print("Test BNO");  // Inicializar los motores
     bno.InitializeBNO();
     start_millis = millis();
 }
 
 void loop() {
+    motors.StartStopMotors(switchPin);
     yaw = bno.GetBNOData();
-    speed_w = pid.Calculate(setpoint, yaw);
+    speed_w = pid_static.Calculate(setpoint, yaw);
     Serial.print("Yaw: ");
     Serial.print(yaw);
     Serial.print("   Speed_w: ");
     Serial.println(speed_w);
     //----------------Correction with linear movement---------------------
-    motors.MoveOmnidirectionalBase(90, 0.65, 0);
-    if (speed_w > 0.1 || speed_w < -0.1) {
-        motors.StopAllMotors();
-        motors.MoveOmnidirectionalBase(0, 0, speed_w);
-    }
+    
+    // motors.MoveOmnidirectionalBase(0, 0.4, speed_w, kCorrectionDegreeOffset);
+    
 
     //--------------------------Correction on ist axis--------------------
-    // if(abs(yaw) > 5){
-    //     motors.MoveOmnidirectionalBase(0, 0, speed_w);
-    // }
+    if(abs(yaw) > 5){
+        motors.StopAllMotors();
+        motors.MoveOmnidirectionalBase(0, 0, speed_w, 0);
+    }
     // else if(abs(yaw) < 5){
     //     motors.StopAllMotors();
     // }

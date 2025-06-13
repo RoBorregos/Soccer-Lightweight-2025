@@ -6,13 +6,25 @@ Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uin
     upper_right_motor_(speed3, in1_3, in2_3)
 {};
 
-void Motors::InitializeMotors()
+void Motors::InitializeMotors(uint8_t switchPin)
 {
-    upper_left_motor_.InitializeMotor();
-    lower_center_motor_.InitializeMotor();
-    upper_right_motor_.InitializeMotor();
+    upper_left_motor_.InitializeMotor(pwmChannel1);
+    lower_center_motor_.InitializeMotor(pwmChannel2);
+    upper_right_motor_.InitializeMotor(pwmChannel3);
+    pinMode(switchPin, INPUT_PULLUP);
 };
 
+void Motors::StartStopMotors(uint8_t switchPin)
+{
+    if (digitalRead(switchPin) == HIGH) {
+        Serial.println("Switch apagado. Deteniendo motores...");
+        StopAllMotors(); // Detener todos los motores
+        while (digitalRead(switchPin) == HIGH) {
+            // Mantenerse en este bucle hasta que el switch se vuelva a activar
+        }
+        Serial.println("Switch activado nuevamente. Reanudando...");
+    }
+}
 void Motors::SetAllSpeeds(uint8_t pwm)
 {
     upper_left_motor_.SetPWM(pwm);
@@ -27,8 +39,17 @@ void Motors::StopAllMotors()
     upper_right_motor_.StopMotor();
 };
 
-void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w)
+void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w, double offset)
 {
+    if (degree < abs(15)) {
+        if (degree > 0){
+            degree -= offset;
+        } else if (degree <= 0){
+            degree += offset;
+        }
+    } else if (degree > abs(15)) {
+        degree = degree;
+    }
     float upper_left_speed = cos(((degree - 150) * PI / 180)) * speed + speed_w;
     float lower_center_speed = cos(((degree - 270) * PI / 180)) * speed + speed_w;
     float upper_right_speed = cos(((degree - 30) * PI / 180)) * speed + speed_w;
