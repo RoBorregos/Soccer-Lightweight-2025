@@ -1,9 +1,6 @@
 #include "Photo.h"
-//---------------Transition from individual pins to MUX------------------ 
-// On the ReadPhoto methods there is a line commented because the MUX is not integrated to the hardware yet
-// The commented line is for the individual reading of the photoresistors
 
-// Photo::Photo()
+// Photo::Photo() // Used for functions without MUX
 Photo::Photo(uint8_t signal_pin1, uint8_t mux_pin1_1, uint8_t mux_pin2_1, uint8_t mux_pin3_1,
             uint8_t signal_pin2, uint8_t mux_pin1_2, uint8_t mux_pin2_2, uint8_t mux_pin3_2,
             uint8_t signal_pin3, uint8_t mux_pin1_3, uint8_t mux_pin2_3, uint8_t mux_pin3_3) :
@@ -12,7 +9,7 @@ Photo::Photo(uint8_t signal_pin1, uint8_t mux_pin1_1, uint8_t mux_pin2_1, uint8_
     front_mux_(signal_pin3, mux_pin1_3, mux_pin2_3, mux_pin3_3) 
         {}
 
-// uint16_t Photo::ReadPhoto(Side side) { // Este método devuelve el promedio de los valores leídos
+// uint16_t Photo::ReadPhoto(Side side) { // This function is to read the values of the phototransistors without MUX
 //     int sum = 0;
 //     uint16_t* photo_array;
 //     int elements;
@@ -79,47 +76,32 @@ uint16_t Photo::ReadPhotoWithMUX(Side side) {
     return sum / elements;
 }
 
-bool Photo::CheckPhoto(Side side) {
-    int average = ReadPhoto(side);
-    // int average = ReadPhotoWithMUX(side);
-    switch (side) {
-        case Side::Left:
-            return average > kPhotoTresholdLeft;
-        case Side::Right:
-            return average > kPhotoTresholdRight;
-        case Side::Front:
-            return average > kPhotoTresholdFront;
-        default:
-            return false; // Invalid side
-    }
-}
-
 uint16_t Photo::PhotoCalibrationOnLine(Side side) {
-    unsigned long start_time = millis(); // Registrar el tiempo de inicio
-    unsigned long duration = 10000; // Duración de 10 segundos en milisegundos
-    uint32_t sum = 0; // Suma acumulada de los valores leídos
-    uint16_t count = 0; // Contador de lecturas
+    unsigned long start_time = millis(); // Register the start time
+    unsigned long duration = 10000; // Duration of 10 seconds in milliseconds
+    uint32_t sum = 0; // Accumulated sum of the read values
+    uint16_t count = 0; // Readings counter
 
     while (millis() - start_time < duration) {
-        // Leer el valor promedio del lado especificado
+        // Read the value from the specified side
         uint16_t value = ReadPhotoWithMUX(side);
         sum += value;
         count++;
         Serial.println(count);
-        delay(30); // Esperar un poco entre lecturas
+        delay(30); // Wait a bit between readings
     }
 
     return sum / count;
 }
 
 PhotoData Photo::CheckPhotosOnField(Side side) {
-    uint16_t value = ReadPhotoWithMUX(side); // Leer el valor actual del lado especificado
+    uint16_t value = ReadPhotoWithMUX(side); // Read the current value from the specified side
     uint16_t* values_array;
     int* index;
     uint16_t calibration_line;
     int correctionDegree;
 
-    // Seleccionar el array y el índice correspondiente al lado
+    // Select the array and the corresponding index for the side
     switch (side) {
         case Side::Left:
             values_array = left_values;
@@ -141,11 +123,11 @@ PhotoData Photo::CheckPhotosOnField(Side side) {
             break;
     }
 
-    // Actualizar el array circular
+    // Update the circular array
     values_array[*index] = value;
-    *index = (*index + 1) % kMovingAverageSize; // Incrementar el índice circularmente
+    *index = (*index + 1) % kMovingAverageSize; // Increment the index circularly
 
-    // Calcular el promedio móvil
+    // Calculate the moving average
     uint32_t sum = 0;
     for (int i = 0; i < kMovingAverageSize; i++) {
         sum += values_array[i];

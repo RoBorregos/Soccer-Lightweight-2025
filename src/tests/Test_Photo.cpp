@@ -21,6 +21,7 @@ Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In2, kMotor2In1,
     kMotor3Pwm, kMotor3In1, kMotor3In2);
+uint8_t j = 1;
 
 
 void setup() {
@@ -30,15 +31,13 @@ void setup() {
 
 void loop() {
     currentTime = millis();
-    uint8_t j = 0;
     int motors_start_time;
     motors.StartStopMotors(42);
-    j = 1;
     if (j == 1){
         motors_start_time = millis();
         j = 2;
     }
-    motors.MoveOmnidirectionalBase(0, 0.4, 0, 0);
+    motors.MoveOmnidirectionalBase(0, 0.4, 0);
     PhotoData photoDataLeft = photo.CheckPhotosOnField(Side::Left);
     PhotoData photoDataRight = photo.CheckPhotosOnField(Side::Right);
     PhotoData photoDataFront = photo.CheckPhotosOnField(Side::Front);
@@ -62,15 +61,15 @@ void loop() {
 
     if (millis() - motors_start_time >= 700){
         if (photoDataLeft.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
+            motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
             delay (kLineCorrectionTime);
             motors.StopAllMotors();
         } else if (photoDataRight.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
+            motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
             delay (kLineCorrectionTime);
             motors.StopAllMotors();
         } else if (photoDataFront.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
+            motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
             delay (kLineCorrectionTime);
             motors.StopAllMotors();
         }

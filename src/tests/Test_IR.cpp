@@ -11,7 +11,7 @@ int adjust_angle = 0;
 float kBallFollowOffset = 1.1;
 
 Bno bno;
-int kLineCorrectionTime = 200; // Tiempo de corrección en milisegundos
+int kLineCorrectionTime = 200; // Correction time in milliseconds
 IRRing irring;
 PID pid(0.8437/kMaxPWM, 0.02/kMaxPWM, 0.1/kMaxPWM, 100);
 Motors motors(

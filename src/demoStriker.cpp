@@ -8,6 +8,8 @@
 #include "Photo.h"
 #include "Ultrasonic.h"
 
+uint8_t j = 1;
+
 bool isCorrecting = false;
 int setpoint = 0;
 float kBallFollowOffsetBack = 1.2;
@@ -16,7 +18,6 @@ float kBallFollowOffsetFront = 1.0;
 uint8_t targetSignature = 2;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
 int kLineCorrectionTime = 375;
-double kCorrectionDegreeOffset = 10;
 unsigned long currentTime = millis();
 
 Photo photo(
@@ -27,9 +28,7 @@ Bno bno;
 PixyCam pixy;
 IRRing irring;
 Ultrasonic ultrasonic(kTrigPin, kEchoPin);
-PID pid_static(0.875/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100); 
-PID pid_w(0.75/kMaxPWM, 0/kMaxPWM, 0.005/kMaxPWM, 100); //0.125 0.1 0.0125 domingo 4 de mayo 21:30
-//0.9375 0.01 0.01
+PID pid_w(0.75/kMaxPWM, 0/kMaxPWM, 0.005/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In2, kMotor2In1,
@@ -37,11 +36,11 @@ Motors motors(
 
 uint8_t switchPin = 42;
 
-unsigned long lastUltrasonicReadTime = 0; // Último tiempo de lectura del ultrasonido
-const unsigned long ultrasonicReadInterval = 50; // Intervalo de lectura en milisegundos
-float distanceY = 0; // Última lectura de distancia Y
-float distanceX = 0; // Última lectura de distancia X
-TargetGoalData targetGoalData = {0, 0, 0, 0, 0, 0}; // Estructura para almacenar los datos del objetivo
+unsigned long lastUltrasonicReadTime = 0; // Last ultrasonic read time
+const unsigned long ultrasonicReadInterval = 50; // Reading interval in milliseconds
+float distanceY = 0; // Last Y distance reading
+float distanceX = 0; // Last X distance reading
+TargetGoalData targetGoalData = {0, 0, 0, 0, 0, 0}; // Structure to store target data
 
 int X;
 
@@ -58,10 +57,8 @@ void setup() {
 }
 
 void loop() {
-    uint8_t j = 0;
     int motors_start_time;
-    motors.StartStopMotors(switchPin); // Switch a pin digital 
-    j = 1;
+    motors.StartStopMotors(switchPin); // Switch to digital pin 
     if (j == 1){
         motors_start_time = millis();
         j = 2;
@@ -76,14 +73,12 @@ void loop() {
     bool hasPosesion = abs(ballAngle) > 10;
 
     if (hasPosesion) {
- // Ajustar velocidad según el ángulo
-        motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, kCorrectionDegreeOffset);
+        // Adjust speed based on angle
+        motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w);
     } else if (!hasPosesion) {
         TargetGoalData targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
         if(targetGoalData.signature == targetSignature) {
-            // setpoint = targetGoalData.cameraAngle;
-            // speed_w = pid_w.Calculate(setpoint, yaw);
-            motors.MoveOmnidirectionalBase(targetGoalData.cameraAngle, 0.4, speed_w, kCorrectionDegreeOffset);
+            motors.MoveOmnidirectionalBase(targetGoalData.cameraAngle, 0.4, speed_w);
         }
     }
     Serial.print(hasPosesion);
@@ -95,70 +90,20 @@ void loop() {
 
     if (millis() - motors_start_time >= 1500){
         if (photoDataLeft.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0, 0);
+            motors.MoveOmnidirectionalBase(photoDataLeft.correction_degree, 1, 0);
             delay (kLineCorrectionTime);
             motors.StopAllMotors();
             return;
         } else if (photoDataRight.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0,0 );
+            motors.MoveOmnidirectionalBase(photoDataRight.correction_degree, 1, 0);
             delay (kLineCorrectionTime);
             motors.StopAllMotors();
             return;
         } else if (photoDataFront.is_on_line) {
-            motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0, 0);
+            motors.MoveOmnidirectionalBase(photoDataFront.correction_degree, 1, 0);
             delay (kLineCorrectionTime);
             motors.StopAllMotors();
             return;
         }
     }
-    
-    //motors.MoveOmnidirectionalBase(ballAngle, 0.45, speed_w, 0);
-
-    
-    // if (valueFront >0|| valueLeft  > 0 || valueRight >0){
-    //     Serial.println("Linea detectada");
-    //     motors.StopAllMotors();
-    //     delay(kLineCorrectionTime);
-
-    //     if (valueFront >0){
-    //         motors.MoveOmnidirectionalBase(180,0.35,speed_w,kCorrectionDegreeOffset);
-    //     }else if (valueLeft >0){
-    //         motors.MoveOmnidirectionalBase(45,0.35,speed_w,kCorrectionDegreeOffset);
-    //     }else if(valueRight>0){
-    //         motors.MoveOmnidirectionalBase(-45,0.35,speed_w,kCorrectionDegreeOffset);
-    //     }
-    //     return;
-    // }
-    // // Fase 1: Seguir el balón con el aro IR
-    // if (!ballControlled) {
-    //     Serial.println("Siguiendo el balón...");
-    //     float speed = (abs(ballAngle) > 10) ? 0.35 : 0.55; // Ajustar velocidad según el ángulo
-    //     motors.MoveOmnidirectionalBase(ballAngle, speed, speed_w, kCorrectionDegreeOffset);
-
-    //     // Si el balón está controlado (dentro de un rango pequeño de ángulo)
-    //     if (abs(ballAngle) <= 10) {
-    //         Serial.println("Balón controlado. Verificando portería...");
-    //         ballControlled = true; // Cambiar a la siguiente fase
-    //         Serial.println("Balón controlado. Cambiando a la portería...");
-    //     }
-    // }
-    // // Fase 2: Ir hacia la portería
-    // else if (!goalDetected) {
-    //     Serial.println("Buscando portería...");
-    //     targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
-    //     double angleGoal = targetGoalData.cameraAngle;
-    //     Serial.print("Angle goal:");
-    //     Serial.println(angleGoal);
-
-    //     // Moverse hacia la portería
-    //     motors.MoveOmnidirectionalBase(angleGoal, 0.35, speed_w, kCorrectionDegreeOffset);
-
-    //     // Si la portería es detectada
-    //     if (targetGoalData.signature == targetSignature) {
-    //         goalDetected = true; // Cambiar a la siguiente fase
-    //         Serial.println("Portería detectada. Verificando distancia...");
-    //     }
-    // }
-    // 
-    
 }

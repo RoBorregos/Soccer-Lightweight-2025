@@ -9,19 +9,16 @@ Motor::Motor(const uint8_t inPWM, const uint8_t in1, const  uint8_t in2)
     in2_ = in2;
 }
 
-void Motor::InitializeMotor(uint8_t pwmChannel)
+void Motor::InitializeMotor()
 {
     pinMode(in1_, OUTPUT);
     pinMode(in2_, OUTPUT);
     pinMode(inPWM_, OUTPUT);
-    // ledcSetup(pwmChannel, frequency, resolution);
-    // ledcAttachPin(inPWM_, pwmChannel);
 };
 
 void Motor::SetPWM(const uint8_t pwm)
 {
     analogWrite(inPWM_, pwm);
-    // ledcWrite(inPWM_, pwm);
 };
 
 void Motor::MovePositive()
@@ -42,21 +39,6 @@ void Motor::StopMotor()
     digitalWrite(in2_, LOW);
 };
 
-/*uint8_t Motor::GetInPWM()
-{
-    return inPWM_;
-};
-
-uint8_t Motor::GetIn1()
-{
-    return in1_;
-};
-
-uint8_t Motor::GetIn2()
-{
-    return in2_;
-};
-*/
 void Motor::SetSpeed(float speed) {
     if (speed >= 0) { 
         MovePositive();
@@ -71,5 +53,4 @@ void Motor::SetSpeed(float speed) {
         speed = 0;
     }
     analogWrite(inPWM_, speed);
-    // ledcWrite(inPWM_, speed);
 }

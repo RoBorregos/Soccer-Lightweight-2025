@@ -17,7 +17,6 @@ Motors motors(
 
 Bno bno;
 PID pid_static(0.875/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100); 
-// 1.125
 uint8_t switchPin = 42;
 
 void setup() {
@@ -44,7 +43,7 @@ void loop() {
     //--------------------------Correction on ist axis--------------------
     if(abs(yaw) > 5){
         motors.StopAllMotors();
-        motors.MoveOmnidirectionalBase(0, 0, speed_w, 0);
+        motors.MoveOmnidirectionalBase(0, 0, speed_w);
     }
     // else if(abs(yaw) < 5){
     //     motors.StopAllMotors();
