@@ -1,118 +1,50 @@
 #include "motors.h"
-#include "Arduino.h"
-#include "constants.h"
 
-Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uint8_t in1_2, uint8_t in2_2, uint8_t speed3, uint8_t in1_3, uint8_t in2_3, uint8_t speed4, uint8_t in1_4, uint8_t in2_4) 
-:upper_right_motor_(speed1, in1_1, in2_1),
-  upper_left_motor_(speed2, in1_2, in2_2),
-  lower_right_motor_(speed3, in1_3, in2_3),
-  lower_left_motor_(speed4, in1_4, in2_4)
+Motors::Motors(uint8_t speed1, uint8_t in1_1, uint8_t in2_1, uint8_t speed2, uint8_t in1_2, uint8_t in2_2, uint8_t speed3, uint8_t in1_3, uint8_t in2_3) :
+    upper_left_motor_(speed1, in1_1, in2_1),
+    lower_center_motor_(speed2, in1_2, in2_2),
+    upper_right_motor_(speed3, in1_3, in2_3)
 {};
 
-void Motors::InitializeMotors()
+void Motors::InitializeMotors(uint8_t switchPin)
 {
-    upper_right_motor_.InitializeMotor();
     upper_left_motor_.InitializeMotor();
-    lower_right_motor_.InitializeMotor();
-    lower_left_motor_.InitializeMotor();
+    lower_center_motor_.InitializeMotor();
+    upper_right_motor_.InitializeMotor();
+    pinMode(switchPin, INPUT_PULLUP);
 };
-// Sets the speed for all motors simultaneously.
 
-void Motors::SetAllSpeeds(uint8_t speed)
+void Motors::StartStopMotors(uint8_t switchPin)
 {
-    upper_right_motor_.SetSpeed(kMotor1Pwm, speed);
-    upper_left_motor_.SetSpeed(kMotor2Pwm, speed);
-    lower_right_motor_.SetSpeed(kMotor3Pwm, speed);
-    lower_left_motor_.SetSpeed(kMotor4Pwm, speed);
-};
-
-// Prints the current speed of all motors to the serial monitor.
-void Motors::GetAllSpeeds()
+    if (digitalRead(switchPin) == HIGH) {
+        Serial.println("Switch off. Stopping all motors...");
+        StopAllMotors(); // Stop all motors
+        while (digitalRead(switchPin) == HIGH) {
+            // Stay in this loop until the switch is activated again
+        }
+        Serial.println("Switch activated again. Resuming...");
+    }
+}
+void Motors::SetAllSpeeds(uint8_t pwm)
 {
-    Serial.print("Motor 1: ");
-    Serial.println(upper_right_motor_.GetSpeed());
-    Serial.print("Motor 2: ");
-    Serial.println(upper_left_motor_.GetSpeed());
-    Serial.print("Motor 3: ");
-    Serial.println(lower_right_motor_.GetSpeed());
-    Serial.print("Motor 4: ");
-    Serial.println(lower_left_motor_.GetSpeed());
+    upper_left_motor_.SetPWM(pwm);
+    lower_center_motor_.SetPWM(pwm);
+    upper_right_motor_.SetPWM(pwm);
 };
 
-// Stops all motors by setting their speed to zero.
 void Motors::StopAllMotors()
 {
-    upper_right_motor_.StopMotor();
     upper_left_motor_.StopMotor();
-    lower_right_motor_.StopMotor();
-    lower_left_motor_.StopMotor();
+    lower_center_motor_.StopMotor();
+    upper_right_motor_.StopMotor();
 };
 
-void Motors::MoveBaseForward()
+void Motors::MoveOmnidirectionalBase(double degree, float speed, double speed_w)
 {
-    upper_right_motor_.MoveForward();
-    upper_left_motor_.MoveForward();
-    lower_right_motor_.MoveForward();
-    lower_left_motor_.MoveForward();
-};
-
-void Motors::MoveBaseRight()
-{
-    StopAllMotors();
-    upper_right_motor_.MoveForward();
-    upper_left_motor_.MoveBackward();
-    lower_right_motor_.MoveBackward();
-    lower_left_motor_.MoveBackward();
-};
-
-void Motors::MoveBaseLeft()
-{
-    StopAllMotors();
-    upper_right_motor_.MoveBackward();
-    upper_left_motor_.MoveForward();
-    lower_right_motor_.MoveForward();
-    lower_left_motor_.MoveForward();
-};
-
-void Motors::MoveBaseBackward()
-{
-    StopAllMotors();
-    upper_left_motor_.MoveBackward();
-    lower_right_motor_.MoveForward();
-};
-
-
-void Motors::MoveBaseInDirection(int degree, uint8_t speed)
-{
-    float m1 = cos(((45 + degree) * PI / 180));
-    float m2 = cos(((135 + degree) * PI / 180));
-    float m3 = cos(((225 + degree) * PI / 180));
-    float m4 = cos(((315 + degree) * PI / 180));
-    int speedA = abs(int(m1 * speed));
-    int speedB = abs(int(m2 * speed));
-    int speedC = abs(int(m3 * speed));
-    int speedD = abs(int(m4 * speed));
-
-    analogWrite(upper_right_motor_.GetSpeed(), speedA);
-    analogWrite(upper_left_motor_.GetSpeed(), speedB);
-    analogWrite(lower_right_motor_.GetSpeed(), speedC);
-    analogWrite(lower_left_motor_.GetSpeed(), speedD);
-};
-
-void Motors::MoveBaseWithImu(double degree, uint8_t speed, double speed_w)
-{
-    float m2 = cos(((45 + degree) * PI / 180)) * speed + speed_w;
-    float m3 = cos(((135 + degree) * PI / 180)) * speed + speed_w;
-    float m4 = cos(((225 + degree) * PI / 180)) * speed + speed_w;
-    float m1 = cos(((315 + degree) * PI / 180)) * speed + speed_w;
-    int speedA = abs(int(m1));
-    int speedB = abs(int(m2));
-    int speedC = abs(int(m3));
-    int speedD = abs(int(m4));
-
-    analogWrite(upper_right_motor_.GetSpeed(), speedA);
-    analogWrite(upper_left_motor_.GetSpeed(), speedB);
-    analogWrite(lower_right_motor_.GetSpeed(), speedC);
-    analogWrite(lower_left_motor_.GetSpeed(), speedD);
-
+    float upper_left_speed = cos(((degree - 150) * PI / 180)) * speed + speed_w;
+    float lower_center_speed = cos(((degree - 270) * PI / 180)) * speed + speed_w;
+    float upper_right_speed = cos(((degree - 30) * PI / 180)) * speed + speed_w;
+    upper_left_motor_.SetSpeed(upper_left_speed);
+    lower_center_motor_.SetSpeed(lower_center_speed);
+    upper_right_motor_.SetSpeed( upper_right_speed);
 };

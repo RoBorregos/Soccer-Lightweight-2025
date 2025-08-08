@@ -7,25 +7,20 @@
 class Motor
 {
 public:
-    Motor(const uint8_t speed,const  uint8_t in1, const uint8_t in2);
+    Motor(const uint8_t inPWM,const  uint8_t in1, const uint8_t in2);
     void InitializeMotor();
-    void MoveForward();
-    void MoveBackward();
+    void MovePositive();
+    void MoveNegative();
     void StopMotor();
-    void SetSpeed(const uint8_t pwm, const  uint8_t speed);
-    uint8_t GetSpeed();
-    uint8_t GetIn1();
-    uint8_t GetIn2();
-    float GetRPM();
-    float GetAngularVelocity();
-    float GetDegree();
-    void SetDirectionAndMove(float value);
-    void SetDirectionAndMoveWithImu(float value);
+    void SetPWM(const uint8_t pwm);
+    void SetSpeed(float speed);
 
 private:
-    const uint8_t speed_;
-    const uint8_t in1_;
-    const uint8_t in2_;
+    uint8_t inPWM_;
+    uint8_t in1_;
+    uint8_t in2_;
+    uint16_t frequency = 1000;
+    uint8_t resolution = 8;
 };
 
 #endif
