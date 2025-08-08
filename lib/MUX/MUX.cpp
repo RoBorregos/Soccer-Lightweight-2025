@@ -11,11 +11,11 @@ void MUX::InitializeMUX() {
 }
 
 float MUX::readChannel(uint8_t channel) {
-    // configurar los pines de selección para escojer el canal que se va a leeer
+    // configurate the multiplexer to select the channel
     digitalWrite(s0_, channel & 0x01);
     digitalWrite(s1_, (channel >> 1) & 0x01);
     digitalWrite(s2_, (channel >> 2) & 0x01);
     delayMicroseconds(5); // Allow signals to settle
-    // leer el canal seleccionado
+    // read the selected channel
     return analogRead(signal_pin_);
 }

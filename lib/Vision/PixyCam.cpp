@@ -29,7 +29,7 @@ int PixyCam::getY(uint8_t block){
 
 int PixyCam::getWidth(uint8_t block){
   width_values[width_index] = pixy_.ccc.blocks[block].m_width;
-  width_index = (width_index + 1) % kMovingAverageSize; // Incrementar el índice circularmente
+  width_index = (width_index + 1) % kMovingAverageSize; // Increase the index circularly
 
   float sum = 0;
   for (int i = 0; i < kMovingAverageSize; i++) {
@@ -45,9 +45,9 @@ int PixyCam::getHeight(uint8_t block){
 float PixyCam::getGoalAngle(int x){
   float angle = (x-160)*(60.0/320.0)*-1;
   angle_values[angle_index] = angle;
-  angle_index = (angle_index + 1) % kMovingAverageSize; // Incrementar el índice circularmente
+  angle_index = (angle_index + 1) % kMovingAverageSize; // Increase the index circularly
 
-  // Calcular el promedio móvil
+  // Calculate the moving average
   float sum = 0;
   for (int i = 0; i < kMovingAverageSize; i++) {
       sum += angle_values[i];

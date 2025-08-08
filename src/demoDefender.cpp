@@ -16,7 +16,6 @@ float kBallFollowOffsetFront = 1.0;
 uint8_t targetSignature = 2;
 const uint32_t kCommunicationMode = SPI_MODE0; //This mode is used because we are using the SPI communication
 int kLineCorrectionTime = 375;
-double kCorrectionDegreeOffset = 16;
 unsigned long currentTime = millis();
 
 Photo photo(
@@ -27,8 +26,7 @@ Bno bno;
 PixyCam pixy;
 IRRing irring;
 Ultrasonic ultrasonic(kTrigPin, kEchoPin);
-PID pid_static(0.875/kMaxPWM, 0/kMaxPWM, 0/kMaxPWM, 100); 
-PID pid_w(0.9375/kMaxPWM, 0.01/kMaxPWM, 0.01/kMaxPWM, 100); //0.125 0.1 0.0125 domingo 4 de mayo 21:30
+PID pid_w(0.9375/kMaxPWM, 0.01/kMaxPWM, 0.01/kMaxPWM, 100);
 Motors motors(
     kMotor1Pwm, kMotor1In1, kMotor1In2,
     kMotor2Pwm, kMotor2In1, kMotor2In2,
@@ -36,11 +34,11 @@ Motors motors(
 
 uint8_t switchPin = 42;
 
-unsigned long lastUltrasonicReadTime = 0; // Último tiempo de lectura del ultrasonido
-const unsigned long ultrasonicReadInterval = 50; // Intervalo de lectura en milisegundos
-float distanceY = 0; // Última lectura de distancia Y
-float distanceX = 0; // Última lectura de distancia X
-TargetGoalData targetGoalData = {0}; // Estructura para almacenar los datos del objetivo
+unsigned long lastUltrasonicReadTime = 0; // Last ultrasonic read time
+const unsigned long ultrasonicReadInterval = 50; // Reading interval in milliseconds
+float distanceY = 0; // Last Y distance reading
+float distanceX = 0; // Last X distance reading
+TargetGoalData targetGoalData = {0}; // Structure to store target data
 
 int X;
 
@@ -58,20 +56,18 @@ void setup() {
 }
 
 void loop() {
-    uint8_t j = 0;
-    motors.StartStopMotors(switchPin); // Switch a pin digital 
+    motors.StartStopMotors(switchPin); // Switch to digital pin
     pixy.updateData();
     irring.UpdateData();
     uint8_t numberObjects = pixy.numBlocks();
     float yaw = bno.GetBNOData();
     float ballAngle = irring.GetAngle(kBallFollowOffsetBack, kBallFollowOffsetSide, kBallFollowOffsetFront);
     float speed_w = pid_w.Calculate(setpoint, yaw);
-    float staticCorrection = pid_static.Calculate(setpoint, yaw);
 
-    // Actualizar las lecturas del ultrasonido cada cierto tiempo
-    if (millis() >= 450){ // Esperar para permitir que el sensor se comience a leer
+    // Update ultrasonic readings every certain time
+    if (millis() >= 450){ // Wait to allow the sensor to start reading
         if ((millis() - lastUltrasonicReadTime >= ultrasonicReadInterval)) {
-            lastUltrasonicReadTime = millis(); // Actualizar el tiempo de la última lectura
+            lastUltrasonicReadTime = millis(); // Update the last read time
             targetGoalData = pixy.getTargetGoalData(numberObjects, targetSignature);
             distanceY = ultrasonic.getDistanceY();
             distanceX = ultrasonic.getDistanceX(targetGoalData.cameraAngle, distanceY);
@@ -79,77 +75,71 @@ void loop() {
         }
     }
 
+
+    // Verify if the robot has possession of the ball
+    bool dentroDelRectangulo = (distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY && (X <= kRightGoalKeeperTresholdX && X >= kLeftGoalKeeperTresholdX) || (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)); 
+
     // Serial.print("Signature: ");
     // Serial.print(targetGoalData.signature);
     // Serial.print("  Angle: ");
     // Serial.print(targetGoalData.cameraAngle);
-    Serial.print("  Distance Y: ");
-    Serial.print(distanceY);
+    // Serial.print("  Distance Y: ");
+    // Serial.print(distanceY);
     // Serial.print("  Distance X: ");
     // Serial.print(distanceX);
-    Serial.print("  X: ");
-    Serial.print(targetGoalData.x);
+    // Serial.print("  X: ");
+    // Serial.print(targetGoalData.x);
     // Serial.print("  Yaw: ");
     // Serial.print(yaw);
-    Serial.print("  Ball angle: ");
-    Serial.println(ballAngle);
-
-    // Verificar si el robot está dentro del rectángulo
-    bool dentroDelRectangulo = (distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY && (X <= kRightGoalKeeperTresholdX && X >= kLeftGoalKeeperTresholdX) || (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)); 
-    Serial.print("  Dentro del rectangulo: ");
-    Serial.println(dentroDelRectangulo);
+    // Serial.print("  Ball angle: ");
+    // Serial.println(ballAngle);
+    // Serial.print("  Dentro del rectangulo: ");
+    // Serial.println(dentroDelRectangulo);
     
-//---------------------------Correccion portero con valor X de la cámara-------------------
+//---------------------------Goalkeeper correction------------------
 if (!dentroDelRectangulo){
-//     // Frente centro
+    // Front center
     if (distanceY >= kMaxGoalKeeperTresholdY && (X >= kLeftGoalKeeperTresholdX && X <= kRightGoalKeeperTresholdX)){ // || (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX))
-        motors.MoveOmnidirectionalBase(180, 0.37, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(180, 0.37, speed_w);
         delay(kGoalkeeperCorrectionTime);
-        motors.StopAllMotors();;
-//     // Atrás centro
+        motors.StopAllMotors();
+    // Back center
     } else if (distanceY <= kMinGoalKeeperTresholdY && (X >= kLeftGoalKeeperTresholdX && X <= kRightGoalKeeperTresholdX)){ // || (distanceX >= -kGoalKeeperTresholdX && distanceX <= kGoalKeeperTresholdX)
-        motors.MoveOmnidirectionalBase(0, 0.37, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(0, 0.37, speed_w);
         delay(kGoalkeeperCorrectionTime);
         motors.StopAllMotors();
-//     // Frente Izquierda
+    // Front Left
     } else if (distanceY >= kMaxGoalKeeperTresholdY && X <= kLeftGoalKeeperTresholdX){ // || distanceX >= kGoalKeeperTresholdX
-        motors.MoveOmnidirectionalBase(-135, 0.37, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(-135, 0.37, speed_w);
         delay(kGoalkeeperCorrectionTime);
         motors.StopAllMotors();
-//     // Frente Derecha
+    // Front Right
     } else if (distanceY >= kMaxGoalKeeperTresholdY && X >= kRightGoalKeeperTresholdX){ // || distanceX <= -kGoalKeeperTresholdX
-        motors.MoveOmnidirectionalBase(135, 0.37, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(135, 0.37, speed_w);
         delay(kGoalkeeperCorrectionTime);
         motors.StopAllMotors();
-//     // Atrás Izquierda
+    // Back Left
     } else if (distanceY <= kMinGoalKeeperTresholdY && X <= kLeftGoalKeeperTresholdX){ //  || distanceX >= kGoalKeeperTresholdX)
-        motors.MoveOmnidirectionalBase(-45, 0.37, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(-45, 0.37, speed_w);
         delay(kGoalkeeperCorrectionTime);
         motors.StopAllMotors();
-//     // Atrás Derecha
+    // Back Right
     } else if (distanceY <= kMinGoalKeeperTresholdY && X >= kRightGoalKeeperTresholdX){ // || distanceX <= -kGoalKeeperTresholdX)
-        motors.MoveOmnidirectionalBase(45, 0.37, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(45, 0.37, speed_w);
         delay(kGoalkeeperCorrectionTime);
         motors.StopAllMotors();
-//     // Izquierda
+    // Left
     } else if ((distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY) && X <= kLeftGoalKeeperTresholdX){ // || distanceX >= kGoalKeeperTresholdX)
-        motors.MoveOmnidirectionalBase(-90, 0.37, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(-90, 0.37, speed_w);
         delay(kGoalkeeperCorrectionTime);
         motors.StopAllMotors(); 
-     // Derecha
+     // Right
     } else if ((distanceY >= kMinGoalKeeperTresholdY && distanceY <= kMaxGoalKeeperTresholdY) && X >= kRightGoalKeeperTresholdX){ // || distanceX <= -kGoalKeeperTresholdX)
-        motors.MoveOmnidirectionalBase(90, 0.37, speed_w, kCorrectionDegreeOffset);
+        motors.MoveOmnidirectionalBase(90, 0.37, speed_w);
         delay(kGoalkeeperCorrectionTime);
         motors.StopAllMotors();
     }
 } if (dentroDelRectangulo) {
-    float speed;
-    if (ballAngle > 10 || ballAngle < -10){
-        speed = 0.37;
-    } else if (ballAngle <= 10 && ballAngle >= -10){
-        speed = 0.5; 
-    }   
-    motors.MoveOmnidirectionalBase(ballAngle, 0.35, speed_w, kCorrectionDegreeOffset);
-    // motors.StopAllMotors();
+    motors.MoveOmnidirectionalBase(ballAngle, 0.35, speed_w);
 } 
 }

@@ -27,7 +27,6 @@ public:
          uint8_t signal_pin3, uint8_t mux_pin1_3, uint8_t mux_pin2_3, uint8_t mux_pin3_3);    
     uint16_t ReadPhoto(Side side);
     uint16_t ReadPhotoWithMUX(Side side);
-    bool CheckPhoto(Side side);
     PhotoData CheckPhotosOnField(Side side);
     uint16_t PhotoCalibrationOnLine(Side side);
 
